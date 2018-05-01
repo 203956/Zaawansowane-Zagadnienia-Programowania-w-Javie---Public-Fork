@@ -1,0 +1,10 @@
+/* You can add global styles to this file, and also import other style files */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  flex: 1 0 auto;
+}
