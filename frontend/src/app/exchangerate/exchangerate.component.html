@@ -1,3 +1,6 @@
-<p>
-  exchangerate works!
-</p>
+<div class="container">
+  <label for="currency">Waluta:</label>
+  <select class="form-control" id="currency" (change)="chooseCurrency($event)">
+    <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
+  </select>
+</div>

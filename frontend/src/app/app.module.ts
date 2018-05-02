@@ -5,18 +5,24 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ExchangerateComponent } from './exchangerate/exchangerate.component';
 import {AppRoutingModule} from "./app-routing.module";
+import {AvailableCurrenciesService} from "./exchangerate/available-currencies.service";
+import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExchangerateComponent
+    ExchangerateComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AvailableCurrenciesService,
+    HttpClient
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
