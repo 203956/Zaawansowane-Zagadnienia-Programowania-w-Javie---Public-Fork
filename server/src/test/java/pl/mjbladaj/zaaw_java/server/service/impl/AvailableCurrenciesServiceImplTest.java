@@ -73,7 +73,7 @@ public class AvailableCurrenciesServiceImplTest {
     }
     @After
     public void tearDown() {
-        Mockito.reset();
+        Mockito.reset(currencyRepository);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class AvailableCurrenciesServiceImplTest {
     @Test
     public void shouldReturnEmptyListOfAvailableCurrencies() {
         //given
-        Mockito.reset();
+        Mockito.reset(currencyRepository);
         //when
         List<Currency> available = currenciesService.getAll();
         //then
