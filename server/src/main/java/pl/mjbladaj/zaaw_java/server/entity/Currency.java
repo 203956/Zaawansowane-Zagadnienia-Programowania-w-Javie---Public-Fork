@@ -21,6 +21,7 @@ public class Currency {
 
     @NotBlank
     @Size(max = 3)
+    @Column(unique = true)
     private String symbol;
 
     @NotBlank
