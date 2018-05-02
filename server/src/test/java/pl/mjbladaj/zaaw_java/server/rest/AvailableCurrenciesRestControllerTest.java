@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
-import pl.mjbladaj.zaaw_java.server.entity.Currency;
+import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 import java.util.ArrayList;
@@ -25,22 +25,22 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(AvailableCurrenciesRest.class)
-public class AvailableCurrenciesRestTest {
+@WebMvcTest(AvailableCurrenciesRestController.class)
+public class AvailableCurrenciesRestControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @MockBean
     private AvailableCurrenciesService availableCurrenciesService;
-    private List<Currency> getAvailableCurrencies() {
-        ArrayList<Currency> currencies = new ArrayList<>();
-        currencies.add(Currency
+    private List<AvailableCurrency> getAvailableCurrencies() {
+        ArrayList<AvailableCurrency> currencies = new ArrayList<>();
+        currencies.add(AvailableCurrency
                 .builder()
                 .id(1)
                 .symbol("AUD")
                 .build());
 
-        currencies.add(Currency
+        currencies.add(AvailableCurrency
                 .builder()
                 .id(2)
                 .symbol("CHF")

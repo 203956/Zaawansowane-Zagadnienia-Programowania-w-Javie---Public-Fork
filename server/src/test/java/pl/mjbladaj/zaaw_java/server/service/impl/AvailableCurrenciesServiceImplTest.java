@@ -4,16 +4,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.mjbladaj.zaaw_java.server.dao.CurrencyRepository;
+import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
-import pl.mjbladaj.zaaw_java.server.entity.Currency;
+import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 import java.util.ArrayList;
@@ -37,21 +36,21 @@ public class AvailableCurrenciesServiceImplTest {
     private AvailableCurrenciesService currenciesService;
 
     @MockBean
-    private CurrencyRepository currencyRepository;
+    private AvailableCurrencyRepository availableCurrencyRepository;
 
-    private List<Currency> getAvailableCurrencies() {
-        ArrayList<Currency> currencies = new ArrayList<>();
-        currencies.add(Currency
+    private List<AvailableCurrency> getAvailableCurrencies() {
+        ArrayList<AvailableCurrency> currencies = new ArrayList<>();
+        currencies.add(AvailableCurrency
         .builder()
         .symbol("GBP")
         .build());
 
-        currencies.add(Currency
+        currencies.add(AvailableCurrency
                 .builder()
                 .symbol("EUR")
                 .build());
 
-        currencies.add(Currency
+        currencies.add(AvailableCurrency
                 .builder()
                 .symbol("DOL")
                 .build());
@@ -61,26 +60,26 @@ public class AvailableCurrenciesServiceImplTest {
 
     @Before
     public void setUp() {
-        Mockito.when(currencyRepository.findAll())
+        Mockito.when(availableCurrencyRepository.findAll())
                 .thenReturn(getAvailableCurrencies());
 
-        Mockito.when(currencyRepository.findBySymbol("PLN"))
+        Mockito.when(availableCurrencyRepository.findBySymbol("PLN"))
                 .thenReturn(Optional.of(
-                        Currency.builder().symbol("PLN").build()
+                        AvailableCurrency.builder().symbol("PLN").build()
                 ));
-        Mockito.when(currencyRepository.findBySymbol("MVN"))
+        Mockito.when(availableCurrencyRepository.findBySymbol("MVN"))
                 .thenReturn(Optional.empty());
     }
     @After
     public void tearDown() {
-        Mockito.reset(currencyRepository);
+        Mockito.reset(availableCurrencyRepository);
     }
 
     @Test
     public void shouldReturnListOfAvailableCurrencies() {
         //given
         //when
-        List<Currency> available = currenciesService.getAll();
+        List<AvailableCurrency> available = currenciesService.getAll();
         //then
         assertEquals(3, available.size());
 
@@ -91,9 +90,9 @@ public class AvailableCurrenciesServiceImplTest {
     @Test
     public void shouldReturnEmptyListOfAvailableCurrencies() {
         //given
-        Mockito.reset(currencyRepository);
+        Mockito.reset(availableCurrencyRepository);
         //when
-        List<Currency> available = currenciesService.getAll();
+        List<AvailableCurrency> available = currenciesService.getAll();
         //then
         assertEquals(0, available.size());
     }

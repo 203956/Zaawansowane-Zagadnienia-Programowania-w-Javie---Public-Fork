@@ -13,8 +13,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-@Table(name = "currencies")
-public class Currency {
+@Table(name = "available_currencies")
+public class AvailableCurrency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

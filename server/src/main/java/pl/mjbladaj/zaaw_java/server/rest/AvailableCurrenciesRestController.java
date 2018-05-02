@@ -11,7 +11,7 @@ import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 @RestController
 @RequestMapping("/api/currencies/available")
-public class AvailableCurrenciesRest {
+public class AvailableCurrenciesRestController {
 
     @Autowired
     private AvailableCurrenciesService availableCurrenciesService;
