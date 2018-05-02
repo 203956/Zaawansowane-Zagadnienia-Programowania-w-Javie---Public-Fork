@@ -1,0 +1,11 @@
+INSERT INTO currencies(symbol, name) VALUES ('GBP', 'Funt brytyjski');
+INSERT INTO currencies(symbol, name) VALUES ('EUR', 'Euro');
+INSERT INTO currencies(symbol, name) VALUES ('CAD', 'Dolar kanadyjski');
+INSERT INTO currencies(symbol, name) VALUES ('DOL', 'Dolar amerykański');
+INSERT INTO currencies(symbol, name) VALUES ('AUD', 'Dolar australijski');
+INSERT INTO currencies(symbol, name) VALUES ('CHF', 'Frank szwajcarski');
+INSERT INTO currencies(symbol, name) VALUES ('SEK', 'Korona szwecka');
+INSERT INTO currencies(symbol, name) VALUES ('NOK', 'Korona norweska');
+INSERT INTO currencies(symbol, name) VALUES ('HUF', 'Forint węgierski');
+INSERT INTO currencies(symbol, name) VALUES ('JPY', 'Jen japoński');
+INSERT INTO currencies(symbol, name) VALUES ('RUB', 'Rubel rosyjski');
