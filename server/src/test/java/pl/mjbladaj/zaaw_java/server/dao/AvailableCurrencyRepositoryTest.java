@@ -53,12 +53,13 @@ public class AvailableCurrencyRepositoryTest {
         //then
         assertFalse(founded.isPresent());
     }
+    @Autowired
+    CurrencyExchangeRate currencyExchangeRate;
 
     @Test
     public void should() {
-        CurrencyExchangeImpl c = new CurrencyExchangeImpl();
 
 
-        assertEquals(0, c.getActualExchangeRate() );
+        assertEquals(0, currencyExchangeRate.getActualExchangeRate() );
     }
 }
