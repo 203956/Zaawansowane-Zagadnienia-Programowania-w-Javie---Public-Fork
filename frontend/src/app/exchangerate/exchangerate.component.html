@@ -1,6 +1,19 @@
 <div class="container">
-  <label for="currency">Waluta:</label>
-  <select class="form-control" id="currency" (change)="chooseCurrency($event)">
-    <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
-  </select>
+  <div class="col-md-4 col-sm-12">
+
+    <label for="currency">Waluta 1 :</label>
+    <select class="form-control " id="currency" (change)="chooseCurrency($event)">
+      <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
+    </select>
+  </div>
+  <div class="col-md-4 col-sm-12">
+
+
+    <label for="currency2">Waluta 2 :</label>
+    <select class="form-control" id="currency2" (change)="chooseCurrency($event)">
+      <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
+    </select>
+  </div>
 </div>
+
+

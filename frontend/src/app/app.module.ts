@@ -7,6 +7,7 @@ import { ExchangerateComponent } from './exchangerate/exchangerate.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {AvailableCurrenciesService} from "./exchangerate/available-currencies.service";
 import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {AverageDifferenceService} from "./exchangerate/average-difference.service";
 
 
 @NgModule({
@@ -17,11 +18,12 @@ import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     AvailableCurrenciesService,
-    HttpClient
+    HttpClient,
+    AverageDifferenceService
   ],
   bootstrap: [AppComponent]
 })

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.mjbladaj.zaaw_java.server.dao.impl.CurrencyExchangeImpl;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 
 import java.util.Optional;
@@ -51,5 +52,13 @@ public class AvailableCurrencyRepositoryTest {
         Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("PLN");
         //then
         assertFalse(founded.isPresent());
+    }
+
+    @Test
+    public void should() {
+        CurrencyExchangeImpl c = new CurrencyExchangeImpl();
+
+
+        assertEquals(0, c.getActualExchangeRate() );
     }
 }

@@ -24,11 +24,11 @@
     "angular-bootstrap-md": "^5.2.3",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
-    "rxjs": "^5.4.1",
-    "zone.js": "^0.8.14",
     "font-awesome": "^4.7.0",
     "node": "^9.11.0",
-    "require": "^2.4.20"
+    "require": "^2.4.20",
+    "rxjs": "^5.4.1",
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@angular/cli": "1.2.6",
