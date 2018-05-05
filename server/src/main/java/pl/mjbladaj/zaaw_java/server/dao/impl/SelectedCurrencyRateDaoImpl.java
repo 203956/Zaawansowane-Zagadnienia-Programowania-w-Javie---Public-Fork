@@ -9,6 +9,8 @@ import pl.mjbladaj.zaaw_java.server.dto.Rate;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import org.springframework.core.env.Environment;
 
+
+
 @Service
 public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
 
@@ -19,9 +21,9 @@ public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
     private Environment env;
 
     @Override
-    public Rate getRate(String currency) {
+    public Rate getRate(String fromCurrency, String toCurrency) {
         ResponseEntity<Rate> response = restTemplate
-                .getForEntity(env.getProperty("exchange.currency.base.url") + currency + "_PLN", Rate.class);
+                .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" + toCurrency, Rate.class);
         return response.getBody();
     }
 }
