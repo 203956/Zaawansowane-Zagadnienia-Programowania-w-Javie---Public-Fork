@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.mjbladaj.zaaw_java.server.service.SelectedCurrencyRateService;
+import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 
 @RestController
 @RequestMapping("/api")
 public class SelectedCurrencyRestController {
 
     @Autowired
-    private SelectedCurrencyRateService selectedCurrencyRateService;
+    private SelectedCurrencyRateDao selectedCurrencyRateService;
 
     @GetMapping("/{currency}/rate")
     public ResponseEntity getRate(@PathVariable String currency) {

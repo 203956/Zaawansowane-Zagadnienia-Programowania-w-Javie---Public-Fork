@@ -15,7 +15,7 @@ export class ExchangerateComponent implements OnInit {
   currencies: Array<Currency>;
   rate: Rate;
   jsonR: JsonResponse;
-  rateValue: number;
+  rateValue: string;
   errorMessage: string;
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -50,8 +50,7 @@ export class ExchangerateComponent implements OnInit {
   }
 
   getRatequotesValue() {
-    for (const [key, value] of Array.from(this.rate.quotes)) {
-      this.rateValue = value;
+    for (const [key, value] of Array.from(this.rate.results)) {
     }
   }
 }

@@ -3,14 +3,13 @@ package pl.mjbladaj.zaaw_java.server.dto;
 import lombok.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
+@Builder
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Rate {
-    private Boolean success;
-    private String terms;
-    private String privacy;
-    private String source;
-    private Long timestamp;
-    private HashMap<String, Number> quotes = new HashMap<>();;
+    private Map<String, Number> query = new HashMap<>();
+    private Map<String, HashMap<String, Object>> results = new HashMap<>();
 }

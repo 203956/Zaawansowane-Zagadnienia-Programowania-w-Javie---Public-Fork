@@ -1,8 +1,4 @@
 export class JsonResponse {
-   success: boolean;
-   terms: string;
-   privacy: string;
-   source: string;
-   timestamp: number;
-   quotes: { [name: string]: number };
+  query: { [name: string]: number };
+  results: { [name: string]: { [name: string]: any}};
 }
