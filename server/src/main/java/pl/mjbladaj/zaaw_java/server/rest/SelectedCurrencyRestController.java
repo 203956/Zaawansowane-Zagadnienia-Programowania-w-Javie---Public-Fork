@@ -41,7 +41,8 @@ public class SelectedCurrencyRestController {
     }
 
     @GetMapping("/{symbol}/{date}/rate")
-    public ResponseEntity getConvertedRateForGivenDay(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol, @PathVariable("date") String date) {
+    public ResponseEntity getConvertedRateForGivenDay(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,
+                                                      @PathVariable("date") String date) {
         try {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenDay(symbol, "PLN", date));
         } catch (EntityNotFoundException e) {
@@ -52,7 +53,9 @@ public class SelectedCurrencyRestController {
     }
 
     @GetMapping("/{symbol}/{startDate}/{endDate}/rate")
-    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,@PathVariable("startDate") String startDate, @PathVariable("endDate")String endDate) {
+    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,
+                                                         @PathVariable("startDate") String startDate,
+                                                         @PathVariable("endDate")String endDate) {
         try {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
         } catch (EntityNotFoundException e) {
@@ -63,7 +66,10 @@ public class SelectedCurrencyRestController {
     }
 
     @GetMapping("{base}/{symbol}/{startDate}/{endDate}/rate")
-    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,@PathVariable("symbol") String symbol,@PathVariable("startDate") String startDate, @PathVariable("endDate")String endDate) {
+    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,
+                                                         @PathVariable("symbol") String symbol,
+                                                         @PathVariable("startDate") String startDate,
+                                                         @PathVariable("endDate")String endDate) {
         try {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(base, symbol, startDate, endDate));
         } catch (EntityNotFoundException e) {
@@ -74,7 +80,11 @@ public class SelectedCurrencyRestController {
     }
 
     @GetMapping("{base}/{symbol1}/{symbol2}/{startDate}/{endDate}/rate")
-    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,@PathVariable("symbol1") String symbol1,@PathVariable("symbol2") String symbol2,@PathVariable("startDate") String startDate, @PathVariable("endDate")String endDate) {
+    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,
+                                                         @PathVariable("symbol1") String symbol1,
+                                                         @PathVariable("symbol2") String symbol2,
+                                                         @PathVariable("startDate") String startDate,
+                                                         @PathVariable("endDate")String endDate) {
         try {
             return ResponseEntity.ok(rateService.getDifferenceInRatesRatesForGivenPeriod(base, symbol1, symbol2, startDate, endDate));
         } catch (EntityNotFoundException e) {

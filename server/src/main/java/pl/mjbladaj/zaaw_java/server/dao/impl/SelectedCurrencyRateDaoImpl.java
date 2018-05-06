@@ -46,43 +46,40 @@ public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
 
     @Override
     public List<RateInTime> getGivenPeriodRate(String fromCurrency, String toCurrency, String startDate, String endDate) throws TimePeriodNotAvailableException {
-        return check(startDate, endDate, fromCurrency, toCurrency);
+        DateTime start = convertStringToDateTime(startDate);
+        DateTime end = convertStringToDateTime(endDate);
+        return distributeRquest(start, end, fromCurrency, toCurrency);
     }
 
-    private List<RateInTime> check(String start, String end, String baseCurrency, String goalCurrency) throws TimePeriodNotAvailableException {
-
-        DateTime startDay = convertStringToDateTime(start);
-        DateTime endDay = convertStringToDateTime(end);
+    private List<RateInTime> distributeRquest(DateTime startDate, DateTime endDate, String baseCurrency, String goalCurrency) throws TimePeriodNotAvailableException {
         DateTime today = new DateTime();
-
-        if(Math.abs(Days.daysBetween(today, startDay).getDays()) >365) {
-            if(Math.abs(Days.daysBetween(today, endDay).getDays()) < 365) {
+        if(Math.abs(Days.daysBetween(today, startDate).getDays()) >365) {
+            if(Math.abs(Days.daysBetween(today, endDate).getDays()) < 365) {
                 do{
-                    startDay = startDay.plusDays(1);
-                } while( Math.abs(Days.daysBetween(today, startDay).getDays()) >365);
+                    startDate = startDate.plusDays(1);
+                } while( Math.abs(Days.daysBetween(today, startDate).getDays()) >365);
             } else {
                 throw new TimePeriodNotAvailableException();
             }
         }
         List<RateInTime> result = new ArrayList<>();
-        DateTime dateHolder = endDay;
-        while( Days.daysBetween( startDay, endDay ).getDays() >= maxDaysInOneRequest ) {
-
-            endDay =  endDay.minusDays( maxDaysInOneRequest+ 1 );
-            result.add(sendRequest(baseCurrency, goalCurrency, endDay, dateHolder));
-            dateHolder = endDay.minusDays(1);
+        DateTime dateHolder = endDate;
+        while( Days.daysBetween( startDate, endDate ).getDays() >= maxDaysInOneRequest ) {
+            endDate =  endDate.minusDays( maxDaysInOneRequest+ 1 );
+            result.add(sendRequest(baseCurrency, goalCurrency, endDate, dateHolder));
+            dateHolder = endDate.minusDays(1);
         }
-        result.add( sendRequest(baseCurrency, goalCurrency, startDay, dateHolder));
+        result.add( sendRequest(baseCurrency, goalCurrency, startDate, dateHolder));
         return result;
     }
 
     private RateInTime sendRequest(String fromCurrency, String toCurrency, DateTime startDate, DateTime endDate) {
-        String d1 = convertDateToString(startDate);
-        String d2 = convertDateToString(endDate);
+        String start = convertDateToString(startDate);
+        String end = convertDateToString(endDate);
 
         ResponseEntity<RateInTime> response = restTemplate
                 .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" +
-                                toCurrency + "&date=" + d1 + "&endDate=" + d2, RateInTime.class);
+                                toCurrency + "&date=" + start + "&endDate=" + end, RateInTime.class);
         return response.getBody();
     }
 

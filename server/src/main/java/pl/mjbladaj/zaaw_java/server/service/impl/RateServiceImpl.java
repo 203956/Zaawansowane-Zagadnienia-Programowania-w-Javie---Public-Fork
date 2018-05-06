@@ -62,6 +62,10 @@ public class RateServiceImpl implements RateService {
         val rate2 = selectedCurrencyRateDao.getGivenPeriodRate(fromCurrency, symbol2, startDay, endDay);
         List<CurrencyRateInTime> result2 = RateInTimeConverter.getCurrenciesRateInTime(rate2, fromCurrency + "_" + symbol2);
 
+        return mergeResults(result1, result2);
+    }
+
+    private List<CurrencyRateInTime> mergeResults(List<CurrencyRateInTime> result1, List<CurrencyRateInTime> result2) {
         List<CurrencyRateInTime> result = new ArrayList<>();
         for (val elem: result1) {
             CurrencyRateInTime currencyRateInTime = new CurrencyRateInTime();
@@ -74,9 +78,7 @@ public class RateServiceImpl implements RateService {
             currencyRateInTime.setRate(elem.getRate() - el.getRate() );
             result.add(currencyRateInTime);
         }
-
         return result;
     }
-
 
 }
