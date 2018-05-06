@@ -1,4 +1,4 @@
-package pl.mjbladaj.zaaw_java.server.dao.impl.models;
+package pl.mjbladaj.zaaw_java.server.models;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class Rate {
+public class FreeCurrenciesComRate {
 
     @Builder.Default
     private Map<String, Number> query = new HashMap<>();

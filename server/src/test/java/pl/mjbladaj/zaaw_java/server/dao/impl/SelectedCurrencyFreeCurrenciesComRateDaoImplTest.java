@@ -19,8 +19,7 @@ import pl.mjbladaj.zaaw_java.server.ClassMatcher;
 import pl.mjbladaj.zaaw_java.server.RateGenerator;
 import pl.mjbladaj.zaaw_java.server.StringsMatcher;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
-import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
-import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
+import pl.mjbladaj.zaaw_java.server.models.FreeCurrenciesComRate;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
@@ -30,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
-public class SelectedCurrencyRateDaoImplTest {
+public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
 
     private static String BASE_URL = "https://example.com/convert?q=";
 
@@ -47,7 +46,7 @@ public class SelectedCurrencyRateDaoImplTest {
     private SelectedCurrencyRateDao selectedCurrencyRateDao;
 
     @TestConfiguration
-    static class SelectedCurrencyRateDaoImplTestContextConfiguration {
+    static class SelectedCurrencyFreeCurrenciesComRateDaoImplTestContextConfiguration {
         @Bean
         public SelectedCurrencyRateDao selectedCurrencyRateDao() {
             return new SelectedCurrencyRateDaoImpl();
@@ -70,13 +69,13 @@ public class SelectedCurrencyRateDaoImplTest {
                 .thenReturn(BASE_URL);
 
         Mockito.when(restTemplate
-                .getForEntity(getValidUrl(), Rate.class))
+                .getForEntity(getValidUrl(), FreeCurrenciesComRate.class))
                 .thenReturn(ResponseEntity.ok(RateGenerator.getRate()));
 
         Mockito.when(restTemplate
                 .getForEntity(
                         argThat(new StringsMatcher(getInvalidUrl())),
-                        argThat(new ClassMatcher(Rate.class))))
+                        argThat(new ClassMatcher(FreeCurrenciesComRate.class))))
                 .thenReturn(ResponseEntity.ok(RateGenerator.getEmptyRate()));
     }
 

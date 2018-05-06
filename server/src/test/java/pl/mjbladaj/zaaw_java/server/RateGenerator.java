@@ -1,6 +1,6 @@
 package pl.mjbladaj.zaaw_java.server;
 
-import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
+import pl.mjbladaj.zaaw_java.server.models.FreeCurrenciesComRate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +20,15 @@ public abstract class RateGenerator {
         return resultMap;
     }
 
-    public static Rate getRate() {
-        return Rate
+    public static FreeCurrenciesComRate getRate() {
+        return FreeCurrenciesComRate
                 .builder()
                 .query(getQueryMap())
                 .results(getResultsMap())
                 .build();
     }
-    public static Rate getEmptyRate() {
-        return Rate
+    public static FreeCurrenciesComRate getEmptyRate() {
+        return FreeCurrenciesComRate
                 .builder()
                 .query(new HashMap<>())
                 .results(new HashMap<>())

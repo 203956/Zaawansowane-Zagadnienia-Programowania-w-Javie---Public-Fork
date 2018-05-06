@@ -12,14 +12,12 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.mjbladaj.zaaw_java.server.RateGenerator;
 import pl.mjbladaj.zaaw_java.server.StringsMatcher;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
-import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
 import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
@@ -28,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
-public class RateServiceImplTest {
+public class FreeCurrenciesComRateServiceImplTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -43,7 +41,7 @@ public class RateServiceImplTest {
     private RateService rateService;
 
     @TestConfiguration
-    static class RateServiceImplTestContextConfiguration {
+    static class FreeCurrenciesComRateServiceImplTestContextConfiguration {
         @Bean
         public RateService rateService() {
             return new RateServiceImpl();

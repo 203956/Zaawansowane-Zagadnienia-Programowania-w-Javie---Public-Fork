@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pl.mjbladaj.zaaw_java.server.converters.RateConverter;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
-import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
