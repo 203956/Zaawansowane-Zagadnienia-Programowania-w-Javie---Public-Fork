@@ -33,22 +33,23 @@ public class AvailableCurrencyRepositoryTest {
         //given
         AvailableCurrency currency = AvailableCurrency
                 .builder()
-                .symbol("PLN")
-                .name("Polish zloty")
+                .symbol("MVN")
+                .name("Maven dollar")
                 .build();
         entityManager.persist(currency);
         entityManager.flush();
         //when
-        Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("PLN");
+        Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("MVN");
         //then
         assertTrue(founded.isPresent());
-        assertEquals("Polish zloty", founded.get().getName());
+        assertEquals("Maven dollar", founded.get().getName());
+        assertEquals("MVN", founded.get().getSymbol());
     }
     @Test
     public void shouldNotFindCurrency() {
         //given
         //when
-        Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("PLN");
+        Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("MVN");
         //then
         assertFalse(founded.isPresent());
     }

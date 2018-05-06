@@ -36,6 +36,7 @@ public class SelectedCurrencyRestController {
         try {
             return ResponseEntity.ok(rateService.getConvertedRate(symbol, "PLN"));
         } catch (EntityNotFoundException | CurrencyNotAvailableException e) {
+            System.out.println(e);
             return ResponseEntity.status(404).build();
         }
     }
