@@ -38,6 +38,6 @@ public class RateServiceImpl implements RateService {
 
     private void checkReuestsResults(Rate rate) throws EntityNotFoundException {
         if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
-            throw new EntityNotFoundException("Currency does not exist.");
+            throw new EntityNotFoundException("Currency does not exists.");
     }
 }

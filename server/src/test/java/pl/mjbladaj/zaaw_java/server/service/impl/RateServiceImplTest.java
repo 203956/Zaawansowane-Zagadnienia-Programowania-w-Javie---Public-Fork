@@ -51,7 +51,6 @@ public class RateServiceImplTest {
         public RateService rateService() {
             return new RateServiceImpl();
         }
-
     }
 
     private Map<String, Number> getQueryMap() {
@@ -77,6 +76,8 @@ public class RateServiceImplTest {
     private Rate getEmptyRate() {
         return Rate
                 .builder()
+                .query(new HashMap<>())
+                .results(new HashMap<>())
                 .build();
     }
 
@@ -87,7 +88,7 @@ public class RateServiceImplTest {
         Mockito.when(selectedCurrencyRateDao.getRate("DOL", "PLN"))
                 .thenReturn(getEmptyRate());
 
-        Mockito.when(selectedCurrencyRateDao.getRate("EUR", "DOL"))
+        Mockito.when(selectedCurrencyRateDao.getRate("PLN", "DOL"))
                 .thenReturn(getEmptyRate());
 
         Mockito.when(selectedCurrencyRateDao.getRate("DOL", "DCL"))
@@ -170,7 +171,7 @@ public class RateServiceImplTest {
     public void shouldThrowEntityNotFoundWhenFirstCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
         //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
+        expectedException.expect(EntityNotFoundException.class);
         expectedException.expectMessage("Currency does not exists.");
         //when
         CurrencyRate convertedRate = rateService.getConvertedRate("DOL", "PLN");
@@ -181,7 +182,7 @@ public class RateServiceImplTest {
     public void shouldThrowEntityNotFoundWhenSecondCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
         //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
+        expectedException.expect(EntityNotFoundException.class);
         expectedException.expectMessage("Currency does not exists.");
         //when
         CurrencyRate convertedRate = rateService.getConvertedRate("PLN", "DOL");
@@ -192,10 +193,11 @@ public class RateServiceImplTest {
     public void shouldThrowEntityNotFoundWhenBothCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
         //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
+        expectedException.expect(EntityNotFoundException.class);
         expectedException.expectMessage("Currency does not exists.");
         //when
         CurrencyRate convertedRate = rateService.getConvertedRate("DOL", "DCL");
         //then
     }
+
 }
