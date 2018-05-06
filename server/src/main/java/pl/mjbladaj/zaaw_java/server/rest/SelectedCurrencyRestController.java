@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
+import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
 
 
@@ -45,6 +46,8 @@ public class SelectedCurrencyRestController {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenDay(symbol, "PLN", date));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).build();
+        } catch (TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(403).build();
         }
     }
 
@@ -54,6 +57,30 @@ public class SelectedCurrencyRestController {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).build();
+        }catch (TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(403).build();
+        }
+    }
+
+    @GetMapping("{base}/{symbol}/{startDate}/{endDate}/rate")
+    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,@PathVariable("symbol") String symbol,@PathVariable("startDate") String startDate, @PathVariable("endDate")String endDate) {
+        try {
+            return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(base, symbol, startDate, endDate));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).build();
+        } catch (TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(403).build();
+        }
+    }
+
+    @GetMapping("{base}/{symbol1}/{symbol2}/{startDate}/{endDate}/rate")
+    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,@PathVariable("symbol1") String symbol1,@PathVariable("symbol2") String symbol2,@PathVariable("startDate") String startDate, @PathVariable("endDate")String endDate) {
+        try {
+            return ResponseEntity.ok(rateService.getDifferenceInRatesRatesForGivenPeriod(base, symbol1, symbol2, startDate, endDate));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).build();
+        }catch (TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(403).build();
         }
     }
 }

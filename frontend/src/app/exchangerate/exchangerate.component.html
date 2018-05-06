@@ -20,7 +20,7 @@
     </div>
   </div>
   <br>
-  <div class="row break col-md-12">aktualna stawka: {{rateValue}}</div>
+  <div class="row break col-md-12">aktualna stawka ZŁOTY->{{chosenCurrency1}}: {{rateValue}}</div>
 
   <div class="row">
     <div class="col-md-12">
@@ -32,15 +32,35 @@
       <input id="date2" class="col-md-2" type="text" value={{endDate}} placeholder="2018-01-30">
     </div>
 
-
   </div>
   <div class="row radio">
     <button class=" btn-block" (click)="getDifferenceForChosenPeriodOfTime()">Wyświetl różnice kupna</button>
   </div>
+  <div class="break"> </div>
 
-  <div *ngFor="let elem of result">
-  <div class="row"> {{elem.time}}: {{elem.rate}}</div>
-  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th> DATA </th>
+        <th> CENA {{chosenCurrency1}} -> {{chosenCurrency2}}</th>
+        <th> CENA {{chosenCurrency1}} -> {{chosenCurrency3}} </th>
+        <th> ROŻNICA </th>
+      </tr>
+    </thead>
+    <tbody *ngIf="result1.length!=0 && result2.length != 0 && resultDifference.length !=0">
+      <ng-container *ngFor="let elem of result1, let i=index">
+        <tr>
+          <td> {{elem.time}} </td>
+          <td> {{elem.rate}} </td>
+          <td> {{result2[i].rate}} </td>
+          <td> {{resultDifference[i].rate}} </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+
+
 
 
 </div>

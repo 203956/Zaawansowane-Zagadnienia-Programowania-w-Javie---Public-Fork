@@ -4,6 +4,7 @@ import {AvailableCurrenciesService} from './available-currencies.service';
 import {Currency} from './models/currency';
 import {CurrencyRate} from "./models/currencyRate";
 import {RateInTime} from "./models/RateInTime";
+import {AverageDifferenceService} from "./average-difference.service";
 
 @Component({
   selector: 'app-exchangerate',
@@ -17,8 +18,10 @@ export class ExchangerateComponent implements OnInit {
   rateValue: number;
   errorMessage: string;
   endDate: string = "2018-03-22";
-  startDate: string = "2018-03-12";
-  result: RateInTime[] = [];
+  startDate: string = "2018-03-11";
+  result1: RateInTime[] = [];
+  result2: RateInTime[] = [];
+  resultDifference: RateInTime[] = [];
 
   chosenCurrency1: Currency;
   chosenCurrency2: Currency;
@@ -26,7 +29,8 @@ export class ExchangerateComponent implements OnInit {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private availableCurrencyService: AvailableCurrenciesService) {
+              private availableCurrencyService: AvailableCurrenciesService,
+              private averageDifference: AverageDifferenceService) {
   }
 
   ngOnInit() {
@@ -42,22 +46,36 @@ export class ExchangerateComponent implements OnInit {
   }
 
    chooseCurrency2(event): void {
-   // this.getSelectedCurrencyRate(event.target.value);
      this.chosenCurrency2 = event.target.value;
-
    }
-  chooseCurrency3(event): void {
-   // this.getSelectedCurrencyRate(event.target.value);
-    this.chosenCurrency3 = event.target.value;
 
+  chooseCurrency3(event): void {
+    this.chosenCurrency3 = event.target.value;
   }
 
   getDifferenceForChosenPeriodOfTime() {
-    this.availableCurrencyService.test(this.startDate, this.endDate, this.chosenCurrency1, this.chosenCurrency2)
+    this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1, this.chosenCurrency2)
       .then(e=> {
         e.map(elem =>
-        this.result.push(elem));
-        console.log(this.result);
+        this.result1.push(elem));
+        console.log(this.result1);
+      })
+      .catch(error=> console.log(error));
+
+    this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1, this.chosenCurrency3)
+      .then(e=> {
+        e.map(elem =>
+          this.result2.push(elem));
+        console.log(this.result2);
+      })
+      .catch(error=> console.log(error));
+
+    this.averageDifference.getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1,
+                                                                                      this.chosenCurrency2, this.chosenCurrency3)
+      .then(e=> {
+        e.map(elem =>
+          this.resultDifference.push(elem));
+        console.log(this.resultDifference);
       })
       .catch(error=> console.log(error));
   }

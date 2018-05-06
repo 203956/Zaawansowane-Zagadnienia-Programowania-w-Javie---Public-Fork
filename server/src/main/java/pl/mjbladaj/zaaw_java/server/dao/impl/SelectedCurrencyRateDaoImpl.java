@@ -12,10 +12,9 @@ import pl.mjbladaj.zaaw_java.server.dto.Rate;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import org.springframework.core.env.Environment;
 import pl.mjbladaj.zaaw_java.server.dto.RateInTime;
-import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
+import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -28,6 +27,8 @@ public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
     @Autowired
     private Environment env;
 
+    private int maxDaysInOneRequest = 7;
+
     @Override
     public Rate getRate(String fromCurrency, String toCurrency) {
         ResponseEntity<Rate> response = restTemplate
@@ -38,57 +39,63 @@ public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
     @Override
     public RateInTime getGivenDayRate(String fromCurrency, String toCurrency, String date) {
         ResponseEntity<RateInTime> response = restTemplate
-                .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" + toCurrency + "&date=" + date, RateInTime.class);
+                .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" +
+                        toCurrency + "&date=" + date, RateInTime.class);
         return response.getBody();
     }
 
     @Override
-    public List<RateInTime> getGivenPeriodRate(String fromCurrency, String toCurrency, String startDate, String endDate) throws EntityNotFoundException {
+    public List<RateInTime> getGivenPeriodRate(String fromCurrency, String toCurrency, String startDate, String endDate) throws TimePeriodNotAvailableException {
         return check(startDate, endDate, fromCurrency, toCurrency);
-
-
     }
 
-    private List<RateInTime> check(String start, String end, String fromCurrency, String toCurrency) throws EntityNotFoundException {
-        val startDate = start.split("-");
-        DateTime d1 = new DateTime(Integer.parseInt(startDate[0]),
-                Integer.parseInt(startDate[1]),
-                Integer.parseInt(startDate[2]), 0, 0);
-        val endDate = end.split("-");
+    private List<RateInTime> check(String start, String end, String baseCurrency, String goalCurrency) throws TimePeriodNotAvailableException {
 
-        DateTime d2 = new DateTime(Integer.parseInt(endDate[0]),
-                Integer.parseInt(endDate[1]),
-                Integer.parseInt(endDate[2]), 0, 0);
+        DateTime startDay = convertStringToDateTime(start);
+        DateTime endDay = convertStringToDateTime(end);
         DateTime today = new DateTime();
 
-        if(Math.abs(Days.daysBetween(today, d1).getDays()) >365) {
-            if(Math.abs(Days.daysBetween(today, d2).getDays()) < 365) {
+        if(Math.abs(Days.daysBetween(today, startDay).getDays()) >365) {
+            if(Math.abs(Days.daysBetween(today, endDay).getDays()) < 365) {
                 do{
-                    d1 = d1.plusDays(1);
-                } while( Math.abs(Days.daysBetween(today, d1).getDays()) >365);
+                    startDay = startDay.plusDays(1);
+                } while( Math.abs(Days.daysBetween(today, startDay).getDays()) >365);
             } else {
-                throw new EntityNotFoundException("Currency does not exist.");
+                throw new TimePeriodNotAvailableException();
             }
         }
         List<RateInTime> result = new ArrayList<>();
-        DateTime dateHolder = d2;
-        while (Days.daysBetween(d1, d2).getDays() > 8) {
+        DateTime dateHolder = endDay;
+        while( Days.daysBetween( startDay, endDay ).getDays() >= maxDaysInOneRequest ) {
 
-            d2 =  d2.minusDays(8);
-            result.add(sendRequest(fromCurrency, toCurrency, d2, dateHolder));
-            dateHolder = d2.minusDays(1);
+            endDay =  endDay.minusDays( maxDaysInOneRequest+ 1 );
+            result.add(sendRequest(baseCurrency, goalCurrency, endDay, dateHolder));
+            dateHolder = endDay.minusDays(1);
         }
-        result.add( sendRequest(fromCurrency, toCurrency, d1, dateHolder));
+        result.add( sendRequest(baseCurrency, goalCurrency, startDay, dateHolder));
         return result;
     }
 
     private RateInTime sendRequest(String fromCurrency, String toCurrency, DateTime startDate, DateTime endDate) {
-        String d1 = startDate.year().get() + "-" + startDate.monthOfYear().get() + "-" + startDate.dayOfMonth().get();
-        String d2 = endDate.year().get() + "-" + endDate.monthOfYear().get() + "-" + endDate.dayOfMonth().get();
+        String d1 = convertDateToString(startDate);
+        String d2 = convertDateToString(endDate);
 
         ResponseEntity<RateInTime> response = restTemplate
-                .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" + toCurrency + "&date=" + d1 + "&endDate=" + d2, RateInTime.class);
+                .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" +
+                                toCurrency + "&date=" + d1 + "&endDate=" + d2, RateInTime.class);
         return response.getBody();
+    }
+
+    private DateTime convertStringToDateTime(String stringDate) {
+        val splitedDate = stringDate.split("-");
+        DateTime date = new DateTime(Integer.parseInt(splitedDate[0]),
+                Integer.parseInt(splitedDate[1]),
+                Integer.parseInt(splitedDate[2]), 0, 0);
+        return date;
+    }
+
+    private String convertDateToString(DateTime date) {
+        return date.year().get() + "-" + date.monthOfYear().get() + "-" + date.dayOfMonth().get();
     }
 
 }
