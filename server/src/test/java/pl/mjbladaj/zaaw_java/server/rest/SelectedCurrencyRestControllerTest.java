@@ -41,6 +41,12 @@ public class SelectedCurrencyRestControllerTest {
     public void setUp() throws EntityNotFoundException, CurrencyNotAvailableException {
         Mockito.when(rateService.getConvertedRate("EUR", "PLN"))
                 .thenReturn(getCurrencyRate());
+
+        Mockito.when(rateService.getConvertedRate("DOL", "PLN"))
+                .thenThrow(new CurrencyNotAvailableException());
+
+        Mockito.when(rateService.getConvertedRate("GBP", "PLN"))
+                .thenThrow(new EntityNotFoundException());
     }
 
     @After
@@ -55,12 +61,18 @@ public class SelectedCurrencyRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rate", is(3.4554)));
     }
-/*
+
     @Test
-    public void shouldThrowEntityNotFoundExceptionWhenAskForNonAvailableCurrency() throws Exception {
+    public void shouldReturn404WhenApiDontProvidesCurrency() throws Exception {
         mvc.perform(get("/api/currencies/DOL/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
-    */
+
+    @Test
+    public void shouldReturn404WhenCurrencyIsNotAvailable() throws Exception {
+        mvc.perform(get("/api/currencies/GBP/rate")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
 }
