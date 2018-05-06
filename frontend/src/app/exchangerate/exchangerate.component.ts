@@ -31,9 +31,9 @@ export class ExchangerateComponent implements OnInit {
     this.getSelectedCurrencyRate(event.target.value);
   }
 
-  getSelectedCurrencyRate(currency: string) {
+  getSelectedCurrencyRate(symbol: string) {
     this.availableCurrencyService
-      .getRate1(currency).subscribe(
+      .getRate(symbol).subscribe(
       result => {
         this.rate = result;
       },

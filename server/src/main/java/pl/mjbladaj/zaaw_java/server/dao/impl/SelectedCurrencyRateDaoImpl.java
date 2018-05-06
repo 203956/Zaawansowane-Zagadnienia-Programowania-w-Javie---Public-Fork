@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import pl.mjbladaj.zaaw_java.server.dto.Rate;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import org.springframework.core.env.Environment;
-
+import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 
 
 @Service
