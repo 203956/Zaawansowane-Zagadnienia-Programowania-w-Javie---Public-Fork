@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AvailableCurrenciesService} from "./available-currencies.service";
-import {Currency} from "./models/currency";
+import {AvailableCurrenciesService} from './available-currencies.service';
+import {Currency} from './models/currency';
+import {CurrencyRate} from "./models/currencyRate";
 
 @Component({
   selector: 'app-exchangerate',
@@ -11,7 +12,9 @@ import {Currency} from "./models/currency";
 export class ExchangerateComponent implements OnInit {
 
   currencies: Array<Currency>;
-
+  rate: CurrencyRate;
+  rateValue: number;
+  errorMessage: string;
   constructor(private router: Router,
               private route: ActivatedRoute,
               private availableCurrencyService: AvailableCurrenciesService) {
@@ -23,12 +26,26 @@ export class ExchangerateComponent implements OnInit {
         result => this.currencies = result
     );
   }
+
   chooseCurrency(event): void {
-    console.log(event.target.value);
+    this.getSelectedCurrencyRate(event.target.value);
   }
 
   test() {
     this.availableCurrencyService.test();
   }
 
+  getSelectedCurrencyRate(symbol: string) {
+    this.availableCurrencyService
+      .getRate(symbol).subscribe(
+      result => {
+        this.rate = result;
+      },
+      error => this.errorMessage = error,
+      () => {
+        console.log(this.rate.rate);
+        this.rateValue = this.rate.rate;
+      }
+    );
+  }
 }
