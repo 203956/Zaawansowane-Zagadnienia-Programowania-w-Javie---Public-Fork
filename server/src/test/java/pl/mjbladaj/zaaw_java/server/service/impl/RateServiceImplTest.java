@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.mjbladaj.zaaw_java.server.StringsMatcher;
 import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import pl.mjbladaj.zaaw_java.server.dao.impl.SelectedCurrencyRateDaoImpl;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
 public class RateServiceImplTest {
@@ -85,33 +87,21 @@ public class RateServiceImplTest {
         Mockito.when(selectedCurrencyRateDao.getRate("EUR", "PLN"))
                 .thenReturn(getRate());
 
-        Mockito.when(selectedCurrencyRateDao.getRate("DOL", "PLN"))
-                .thenReturn(getEmptyRate());
-
-        Mockito.when(selectedCurrencyRateDao.getRate("PLN", "DOL"))
-                .thenReturn(getEmptyRate());
-
-        Mockito.when(selectedCurrencyRateDao.getRate("DOL", "DCL"))
+        Mockito.when(selectedCurrencyRateDao.getRate(
+                argThat(new StringsMatcher("DOL", "PLN")),
+                argThat(new StringsMatcher("PLN", "DOL", "DCL"))
+        ))
                 .thenReturn(getEmptyRate());
     }
 
     private void setUpAvailableCurrenciesService() {
-        Mockito.when(availableCurrenciesService.isAvailable("PLN"))
+        Mockito.when(availableCurrenciesService.isAvailable(
+                argThat(new StringsMatcher("PLN", "EUR", "DOL", "DCL"))
+        ))
                 .thenReturn(Availability.builder().availability(true).build());
-
-        Mockito.when(availableCurrenciesService.isAvailable("EUR"))
-                .thenReturn(Availability.builder().availability(true).build());
-
-        Mockito.when(availableCurrenciesService.isAvailable("DOL"))
-                .thenReturn(Availability.builder().availability(true).build());
-
-        Mockito.when(availableCurrenciesService.isAvailable("DCL"))
-                .thenReturn(Availability.builder().availability(true).build());
-
-        Mockito.when(availableCurrenciesService.isAvailable("MVN"))
-                .thenReturn(Availability.builder().availability(false).build());
-
-        Mockito.when(availableCurrenciesService.isAvailable("JAV"))
+        Mockito.when(availableCurrenciesService.isAvailable(
+                argThat(new StringsMatcher("MVN", "JAV"))
+        ))
                 .thenReturn(Availability.builder().availability(false).build());
     }
 
