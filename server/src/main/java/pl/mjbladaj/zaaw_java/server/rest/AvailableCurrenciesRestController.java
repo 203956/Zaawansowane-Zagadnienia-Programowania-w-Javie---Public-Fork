@@ -1,9 +1,6 @@
 package pl.mjbladaj.zaaw_java.server.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +23,7 @@ public class AvailableCurrenciesRestController {
     private AvailableCurrenciesService availableCurrenciesService;
 
     @ApiOperation(value = "Returns list of available currencies.",
-            response = AvailableCurrency.class)
+            response = AvailableCurrency.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Currencies founded."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
