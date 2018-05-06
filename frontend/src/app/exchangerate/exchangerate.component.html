@@ -1,21 +1,42 @@
 <div class="container">
-  <div class="col-md-4 col-sm-12">
+  <div class="row">
 
-    <label for="currency">Waluta 1 :</label>
-    <select class="form-control " id="currency" (change)="chooseCurrency($event)">
-      <option *ngFor="let currency of currencies; " value={{currency.symbol}} >{{currency.symbol}} - {{currency.name}}</option>
-    </select>
+    <div class="col-md-4 col-sm-12">
+
+      <label for="currency">Waluta 1 :</label>
+      <select class="form-control " id="currency" (change)="chooseCurrency($event)">
+        <option *ngFor="let currency of currencies; " value={{currency.symbol}} >{{currency.symbol}} - {{currency.name}}</option>
+      </select>
+    </div>
+    <div class="col-md-4 col-sm-12">
+
+
+      <label for="currency2">Waluta 2 :</label>
+      <select class="form-control" id="currency2" (change)="chooseCurrency($event)">
+        <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
+      </select>
+    </div>
   </div>
-  <div class="col-md-4 col-sm-12">
+  <br>
+  <div class="row">
+    <div class="col-md-4">
+      <label for="date1" > Date 1:</label>
+      <input id="date1" type="text" value={{startDate}} placeholder="2018-01-30">
+    </div>
+    <div class="col-md-4">
+      <label for="date2" > Date 2:</label>
+      <input id="date2" type="text" value={{endDate}} placeholder="2018-01-30">
+    </div>
 
 
-    <label for="currency2">Waluta 2 :</label>
-    <select class="form-control" id="currency2" (change)="chooseCurrency($event)">
-      <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
-    </select>
+  </div>
+  <div class="row radio">
+    <button class=" btn-block" (click)="test()">Calculate difference</button>
   </div>
 
-  <button (click)="test()">test</button>
+  <div *ngFor="let elem of result">
+  <div class="row"> {{elem.time}}: {{elem.rate}}</div>
+  </div>
 
   <div>{{rateValue}}</div>
 </div>

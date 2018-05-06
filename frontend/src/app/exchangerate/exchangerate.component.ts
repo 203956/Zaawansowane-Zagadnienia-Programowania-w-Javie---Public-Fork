@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AvailableCurrenciesService} from './available-currencies.service';
 import {Currency} from './models/currency';
 import {CurrencyRate} from "./models/currencyRate";
+import {RateInTime} from "./models/RateInTime";
 
 @Component({
   selector: 'app-exchangerate',
@@ -15,6 +16,9 @@ export class ExchangerateComponent implements OnInit {
   rate: CurrencyRate;
   rateValue: number;
   errorMessage: string;
+  endDate: string = "2018-03-22";
+  startDate: string = "2018-03-12";
+  result: RateInTime[] = [];
   constructor(private router: Router,
               private route: ActivatedRoute,
               private availableCurrencyService: AvailableCurrenciesService) {
@@ -32,7 +36,15 @@ export class ExchangerateComponent implements OnInit {
   }
 
   test() {
-    this.availableCurrencyService.test();
+    this.availableCurrencyService.test(this.startDate, this.endDate).then(e=> {
+    e.map(elem =>
+    this.result.push(elem));
+      console.log(this.result);
+    }).catch(error=> console.log(error));
+      /*.map(e=>
+      this.result.push(e)
+    );*/
+
   }
 
   getSelectedCurrencyRate(symbol: string) {

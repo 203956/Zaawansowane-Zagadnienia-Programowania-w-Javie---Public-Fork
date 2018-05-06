@@ -1,6 +1,7 @@
 package pl.mjbladaj.zaaw_java.server.service.impl;
 
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mjbladaj.zaaw_java.server.converters.RateConverter;
@@ -43,13 +44,12 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public List<CurrencyRateInTime> getConvertedRateForGivenPeriod(String fromCurrency, String toCurrency, String startDay, String endDay) throws EntityNotFoundException {
-        RateInTime rate = selectedCurrencyRateDao.getGivenPeriodRate(fromCurrency, toCurrency, startDay, endDay);
+        val rate = selectedCurrencyRateDao.getGivenPeriodRate(fromCurrency, toCurrency, startDay, endDay);
 
-        if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
-            throw new EntityNotFoundException("Currency does not exist.");
+        /*if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
+            throw new EntityNotFoundException("Currency does not exist.");*/
 
         return  RateInTimeConverter.getCurrenciesRateInTime(rate, fromCurrency + "_" + toCurrency);
-
     }
 
 

@@ -3,6 +3,7 @@ import {Currency} from "./models/currency";
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {CurrencyRate} from './models/currencyRate';
+import {RateInTime} from "./models/RateInTime";
 
 @Injectable()
 export class AvailableCurrenciesService {
@@ -16,9 +17,16 @@ export class AvailableCurrenciesService {
   getAvailableCurrency(): Observable<Currency[]> {
     return this.http.get<Currency[]>(this.availableCurrenciesPath);
   }
-  test() {
-    return this.http.get<number>(this.selectedCurrencyPath + "CHF/2018-03-25/2018-03-28/rate" ).toPromise().then(resolve=> {
+
+  test(startDate, endDate): Promise<RateInTime[]> {
+    let url = this.selectedCurrencyPath + "CHF/"+ startDate +"/" + endDate+ "/rate"
+    console.log(url);
+    return this.http.get<RateInTime[]>(url).toPromise(
+    ).then(resolve=> {
       console.log(resolve);
+      return resolve as RateInTime[];
+    }, error => {
+      console.log(error);
     });
   }
 

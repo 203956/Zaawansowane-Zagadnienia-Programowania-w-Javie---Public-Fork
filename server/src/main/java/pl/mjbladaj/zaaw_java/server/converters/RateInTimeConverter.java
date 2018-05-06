@@ -5,10 +5,7 @@ import lombok.val;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRateInTime;
 import pl.mjbladaj.zaaw_java.server.dto.RateInTime;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class RateInTimeConverter {
 
@@ -34,4 +31,25 @@ public abstract class RateInTimeConverter {
         }
         return result;
     }
+
+    public static List<CurrencyRateInTime> getCurrenciesRateInTime(List<RateInTime> rate, String key) {
+        List<CurrencyRateInTime> result = new ArrayList<>();
+        Collections.reverse(rate);
+        for (val el: rate) {
+            val map  =  el.getResults().get(key).getVal();
+            Iterator it = map.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+                CurrencyRateInTime currencyRate = new CurrencyRateInTime();
+                currencyRate.setRate((Double)pair.getValue());
+                currencyRate.setTime((String)pair.getKey());
+
+                result.add(currencyRate);
+                it.remove();
+            }
+        }
+
+        return result;
+    }
+
 }
