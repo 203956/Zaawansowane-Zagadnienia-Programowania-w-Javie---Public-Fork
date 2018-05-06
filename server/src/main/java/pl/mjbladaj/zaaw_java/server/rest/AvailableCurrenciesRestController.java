@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.mjbladaj.zaaw_java.server.dao.impl.CurrencyExchangeImpl;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 
@@ -15,6 +16,9 @@ public class AvailableCurrenciesRestController {
 
     @Autowired
     private AvailableCurrenciesService availableCurrenciesService;
+
+    @Autowired
+    private CurrencyExchangeImpl c;
 
     @GetMapping
     public ResponseEntity getAll() {
@@ -27,5 +31,11 @@ public class AvailableCurrenciesRestController {
         return ResponseEntity
                 .ok(availableCurrenciesService
                     .isAvailable(symbol));
+    }
+
+    @GetMapping("/a")
+    public ResponseEntity hs() {
+        return ResponseEntity
+                .ok(c.getActualExchangeRate());
     }
 }

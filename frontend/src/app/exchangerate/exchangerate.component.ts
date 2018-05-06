@@ -27,4 +27,8 @@ export class ExchangerateComponent implements OnInit {
     console.log(event.target.value);
   }
 
+  test() {
+    this.availableCurrencyService.test();
+  }
+
 }

@@ -16,4 +16,9 @@ export class AvailableCurrenciesService {
   getAvailableCurrency(): Observable<Currency[]> {
     return this.http.get<Currency[]>(this.availableCurrenciesPath);
   }
+  test() {
+    return this.http.get<number>(this.availableCurrenciesPath+"/a").toPromise().then(resolve=> {
+      console.log(resolve);
+    });
+  }
 }
