@@ -1,6 +1,1 @@
 language: java
-jdk: oraclejdk8
-script: 
-cd server
-mvn clean 
-mvn verify
