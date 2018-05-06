@@ -2,7 +2,9 @@ package pl.mjbladaj.zaaw_java.server.dao.impl;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,11 @@ import pl.mjbladaj.zaaw_java.server.ClassMatcher;
 import pl.mjbladaj.zaaw_java.server.RateGenerator;
 import pl.mjbladaj.zaaw_java.server.StringsMatcher;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
-import pl.mjbladaj.zaaw_java.server.models.Rate;
+import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
+import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
+import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -27,6 +33,9 @@ import static org.mockito.ArgumentMatchers.argThat;
 public class SelectedCurrencyRateDaoImplTest {
 
     private static String BASE_URL = "https://example.com/convert?q=";
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @MockBean
     private RestTemplate restTemplate;
@@ -51,8 +60,8 @@ public class SelectedCurrencyRateDaoImplTest {
     private String[] getInvalidUrl() {
         return new String[] {
             BASE_URL + "DOL_PLN",
-            BASE_URL + "EUR_DOL",
-            BASE_URL + "DOL_MVN",
+            BASE_URL + "PLN_DOL",
+            BASE_URL + "DOL_DCL",
         };
     }
     @Before
@@ -76,40 +85,44 @@ public class SelectedCurrencyRateDaoImplTest {
     }
 
     @Test
-    public void shouldReturnValidCurrencyRate() {
+    public void shouldReturnValidCurrencyRate() throws EntityNotFoundException {
         //given
         //when
-        System.out.println(getValidUrl());
-        Rate rate = selectedCurrencyRateDao.getRate("EUR", "PLN");
+        UniversalRate rate = selectedCurrencyRateDao.getRate("EUR", "PLN");
         //then
-        assertEquals(4.6522, (double) rate.getResults().get("EUR_PLN").get("val"), 0.00001);
+        assertEquals("EUR", rate.getSymbol());
+        assertEquals(4.6522, rate.getRate(), 0.00001);
+    }
+    @Test
+    public void shouldThrowEntityNotFoundWhenFirstCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
+        //given
+        //expect
+        expectedException.expect(EntityNotFoundException.class);
+        expectedException.expectMessage("Currency does not exists.");
+        //when
+        UniversalRate convertedRate = selectedCurrencyRateDao.getRate("DOL", "PLN");
+        //then
     }
 
     @Test
-    public void shouldReturnEmptyRateWhenFirstCurrencyIsNotProvidedByApi() {
+    public void shouldThrowEntityNotFoundWhenSecondCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
+        //expect
+        expectedException.expect(EntityNotFoundException.class);
+        expectedException.expectMessage("Currency does not exists.");
         //when
-        Rate rate = selectedCurrencyRateDao.getRate("DOL", "PLN");
+        UniversalRate convertedRate = selectedCurrencyRateDao.getRate("PLN", "DOL");
         //then
-        assertTrue(rate.getQuery().isEmpty());
-        assertTrue(rate.getResults().isEmpty());
     }
+
     @Test
-    public void shouldReturnEmptyRateWhenSecondCurrencyIsNotProvidedByApi() {
+    public void shouldThrowEntityNotFoundWhenBothCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
+        //expect
+        expectedException.expect(EntityNotFoundException.class);
+        expectedException.expectMessage("Currency does not exists.");
         //when
-        Rate rate = selectedCurrencyRateDao.getRate("EUR", "DOL");
+        UniversalRate convertedRate = selectedCurrencyRateDao.getRate("DOL", "DCL");
         //then
-        assertTrue(rate.getQuery().isEmpty());
-        assertTrue(rate.getResults().isEmpty());
-    }
-    @Test
-    public void shouldReturnEmptyRateWhenBothCurrencyIsNotProvidedByApi() {
-        //given
-        //when
-        Rate rate = selectedCurrencyRateDao.getRate("DOL", "MVN");
-        //then
-        assertTrue(rate.getQuery().isEmpty());
-        assertTrue(rate.getResults().isEmpty());
     }
 }

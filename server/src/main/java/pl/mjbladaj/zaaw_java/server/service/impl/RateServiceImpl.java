@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 import pl.mjbladaj.zaaw_java.server.converters.RateConverter;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
-import pl.mjbladaj.zaaw_java.server.models.Rate;
+import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
+import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
 
@@ -24,9 +25,8 @@ public class RateServiceImpl implements RateService {
     @Override
     public CurrencyRate getConvertedRate(String fromCurrency, String toCurrency) throws EntityNotFoundException, CurrencyNotAvailableException {
         checkAvability(fromCurrency, toCurrency);
-        Rate rate = selectedCurrencyRateDao.getRate(fromCurrency, toCurrency);
-        checkReuestsResults(rate);
-        return RateConverter.getCurrencyRate(rate, fromCurrency + "_" + toCurrency);
+        UniversalRate rate = selectedCurrencyRateDao.getRate(fromCurrency, toCurrency);
+        return RateConverter.getCurrencyRate(rate);
     }
 
     private void checkAvability(String fromCurrency, String toCurrency) throws CurrencyNotAvailableException {
@@ -36,8 +36,4 @@ public class RateServiceImpl implements RateService {
         }
     }
 
-    private void checkReuestsResults(Rate rate) throws EntityNotFoundException {
-        if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
-            throw new EntityNotFoundException("Currency does not exists.");
-    }
 }

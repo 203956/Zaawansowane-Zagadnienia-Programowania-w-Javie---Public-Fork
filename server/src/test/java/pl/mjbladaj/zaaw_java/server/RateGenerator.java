@@ -1,6 +1,6 @@
 package pl.mjbladaj.zaaw_java.server;
 
-import pl.mjbladaj.zaaw_java.server.models.Rate;
+import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
 
 import java.util.HashMap;
 import java.util.Map;

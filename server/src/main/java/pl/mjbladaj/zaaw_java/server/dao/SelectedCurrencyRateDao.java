@@ -1,8 +1,9 @@
 package pl.mjbladaj.zaaw_java.server.dao;
 
 
-import pl.mjbladaj.zaaw_java.server.models.Rate;
+import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
+import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
 public interface SelectedCurrencyRateDao {
-    Rate getRate(String fromCurrency, String toCurrency);
+    UniversalRate getRate(String fromCurrency, String toCurrency) throws EntityNotFoundException;
 }

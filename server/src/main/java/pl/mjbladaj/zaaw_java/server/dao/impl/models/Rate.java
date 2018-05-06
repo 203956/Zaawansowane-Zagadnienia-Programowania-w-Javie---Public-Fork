@@ -1,4 +1,4 @@
-package pl.mjbladaj.zaaw_java.server.models;
+package pl.mjbladaj.zaaw_java.server.dao.impl.models;
 
 import lombok.*;
 

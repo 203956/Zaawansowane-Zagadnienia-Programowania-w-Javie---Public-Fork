@@ -19,12 +19,10 @@ import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
-import pl.mjbladaj.zaaw_java.server.models.Rate;
+import pl.mjbladaj.zaaw_java.server.dao.impl.models.Rate;
+import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -52,23 +50,16 @@ public class RateServiceImplTest {
         }
     }
 
-    private Rate getRate() {
-        return RateGenerator.getRate();
-    }
-    private Rate getEmptyRate() {
-        return RateGenerator.getEmptyRate();
+    private UniversalRate getRate() {
+
+        return UniversalRate
+                .builder()
+                .symbol("EUR")
+                .rate(4.6522)
+                .build();
     }
 
-    private void setUpSelectedCurrencyRateDao() {
-        Mockito.when(selectedCurrencyRateDao.getRate("EUR", "PLN"))
-                .thenReturn(getRate());
 
-        Mockito.when(selectedCurrencyRateDao.getRate(
-                argThat(new StringsMatcher("DOL", "PLN")),
-                argThat(new StringsMatcher("PLN", "DOL", "DCL"))
-        ))
-                .thenReturn(getEmptyRate());
-    }
 
     private void setUpAvailableCurrenciesService() {
         Mockito.when(availableCurrenciesService.isAvailable(
@@ -90,6 +81,15 @@ public class RateServiceImplTest {
     @After
     public void tearDown() throws Exception {
         Mockito.reset(selectedCurrencyRateDao, availableCurrenciesService);
+    }
+
+    private void setUpSelectedCurrencyRateDao() throws EntityNotFoundException {
+        Mockito.when(selectedCurrencyRateDao.getRate("EUR", "PLN"))
+                .thenReturn(UniversalRate
+                        .builder()
+                        .symbol("EUR")
+                        .rate(4.6522)
+                        .build());
     }
 
     @Test
@@ -130,39 +130,6 @@ public class RateServiceImplTest {
         expectedException.expectMessage("Currency is not available.");
         //when
         CurrencyRate convertedRate = rateService.getConvertedRate("MVN", "JAV");
-        //then
-    }
-
-    @Test
-    public void shouldThrowEntityNotFoundWhenFirstCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
-        //given
-        //expect
-        expectedException.expect(EntityNotFoundException.class);
-        expectedException.expectMessage("Currency does not exists.");
-        //when
-        CurrencyRate convertedRate = rateService.getConvertedRate("DOL", "PLN");
-        //then
-    }
-
-    @Test
-    public void shouldThrowEntityNotFoundWhenSecondCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
-        //given
-        //expect
-        expectedException.expect(EntityNotFoundException.class);
-        expectedException.expectMessage("Currency does not exists.");
-        //when
-        CurrencyRate convertedRate = rateService.getConvertedRate("PLN", "DOL");
-        //then
-    }
-
-    @Test
-    public void shouldThrowEntityNotFoundWhenBothCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
-        //given
-        //expect
-        expectedException.expect(EntityNotFoundException.class);
-        expectedException.expectMessage("Currency does not exists.");
-        //when
-        CurrencyRate convertedRate = rateService.getConvertedRate("DOL", "DCL");
         //then
     }
 
