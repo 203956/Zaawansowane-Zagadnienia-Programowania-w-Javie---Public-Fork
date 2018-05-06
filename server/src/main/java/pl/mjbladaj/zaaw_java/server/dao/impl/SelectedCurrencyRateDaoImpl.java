@@ -22,6 +22,7 @@ public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
     public Rate getRate(String fromCurrency, String toCurrency) {
         ResponseEntity<Rate> response = restTemplate
                 .getForEntity( getUrl(fromCurrency, toCurrency), Rate.class);
+        System.out.println("BEFORE -------------------------");
         return response.getBody();
     }
 
@@ -32,7 +33,7 @@ public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
         stringBuilder.append(fromCurrency);
         stringBuilder.append("_");
         stringBuilder.append(toCurrency);
-
+        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 }

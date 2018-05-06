@@ -12,8 +12,8 @@ import java.util.Map;
 public class Rate {
 
     @Builder.Default
-    private Map<String, Number> query;
+    private Map<String, Number> query = new HashMap<>();
 
     @Builder.Default
-    private Map<String, HashMap<String, Object>> results;
+    private Map<String, HashMap<String, Object>> results = new HashMap<>();
 }

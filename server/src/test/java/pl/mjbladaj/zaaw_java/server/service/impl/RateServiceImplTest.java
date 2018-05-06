@@ -12,13 +12,11 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.mjbladaj.zaaw_java.server.RateGenerator;
 import pl.mjbladaj.zaaw_java.server.StringsMatcher;
-import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
-import pl.mjbladaj.zaaw_java.server.dao.impl.SelectedCurrencyRateDaoImpl;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
-import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.models.Rate;
@@ -27,9 +25,8 @@ import pl.mjbladaj.zaaw_java.server.service.RateService;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
@@ -55,32 +52,11 @@ public class RateServiceImplTest {
         }
     }
 
-    private Map<String, Number> getQueryMap() {
-        Map<String, Number> queryMap = new HashMap<>();
-        queryMap.put("query", 1);
-        return queryMap;
-    }
-    private Map<String, HashMap<String, Object>> getResultsMap() {
-        Map<String, HashMap<String, Object>> resultMap =
-                new HashMap<>();
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("val", 4.6522);
-        resultMap.put("EUR_PLN", result);
-        return resultMap;
-    }
     private Rate getRate() {
-        return Rate
-                .builder()
-                .query(getQueryMap())
-                .results(getResultsMap())
-                .build();
+        return RateGenerator.getRate();
     }
     private Rate getEmptyRate() {
-        return Rate
-                .builder()
-                .query(new HashMap<>())
-                .results(new HashMap<>())
-                .build();
+        return RateGenerator.getEmptyRate();
     }
 
     private void setUpSelectedCurrencyRateDao() {
@@ -113,7 +89,7 @@ public class RateServiceImplTest {
 
     @After
     public void tearDown() throws Exception {
-        Mockito.reset(selectedCurrencyRateDao);
+        Mockito.reset(selectedCurrencyRateDao, availableCurrenciesService);
     }
 
     @Test

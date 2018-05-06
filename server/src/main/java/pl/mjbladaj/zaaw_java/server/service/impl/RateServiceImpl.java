@@ -26,7 +26,7 @@ public class RateServiceImpl implements RateService {
         checkAvability(fromCurrency, toCurrency);
         Rate rate = selectedCurrencyRateDao.getRate(fromCurrency, toCurrency);
         checkReuestsResults(rate);
-        return  RateConverter.getCurrencyRate(rate, fromCurrency + "_" + toCurrency);
+        return RateConverter.getCurrencyRate(rate, fromCurrency + "_" + toCurrency);
     }
 
     private void checkAvability(String fromCurrency, String toCurrency) throws CurrencyNotAvailableException {
