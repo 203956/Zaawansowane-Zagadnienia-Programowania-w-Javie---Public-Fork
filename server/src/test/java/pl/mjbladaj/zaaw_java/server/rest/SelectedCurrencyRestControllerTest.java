@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,7 +38,7 @@ public class SelectedCurrencyRestControllerTest {
     }
 
     @Before
-    public void setUp() throws EntityNotFoundException {
+    public void setUp() throws EntityNotFoundException, CurrencyNotAvailableException {
         Mockito.when(rateService.getConvertedRate("EUR", "PLN"))
                 .thenReturn(getCurrencyRate());
     }

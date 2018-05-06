@@ -1,7 +1,7 @@
 package pl.mjbladaj.zaaw_java.server.converters;
 
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
-import pl.mjbladaj.zaaw_java.server.dto.Rate;
+import pl.mjbladaj.zaaw_java.server.models.Rate;
 
 
 public abstract class RateConverter {

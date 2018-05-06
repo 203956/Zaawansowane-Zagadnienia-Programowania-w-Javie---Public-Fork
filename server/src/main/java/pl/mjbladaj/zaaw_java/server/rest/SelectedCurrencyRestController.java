@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
 
@@ -34,7 +35,7 @@ public class SelectedCurrencyRestController {
     public ResponseEntity getConvertedRate(@ApiParam(value = "symbol of selected currency") @PathVariable String symbol) {
         try {
             return ResponseEntity.ok(rateService.getConvertedRate(symbol, "PLN"));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | CurrencyNotAvailableException e) {
             return ResponseEntity.status(404).build();
         }
     }
