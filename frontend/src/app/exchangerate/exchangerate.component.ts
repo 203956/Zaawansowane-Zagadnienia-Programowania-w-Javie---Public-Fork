@@ -19,6 +19,11 @@ export class ExchangerateComponent implements OnInit {
   endDate: string = "2018-03-22";
   startDate: string = "2018-03-12";
   result: RateInTime[] = [];
+
+  chosenCurrency1: Currency;
+  chosenCurrency2: Currency;
+  chosenCurrency3: Currency;
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private availableCurrencyService: AvailableCurrenciesService) {
@@ -33,18 +38,28 @@ export class ExchangerateComponent implements OnInit {
 
   chooseCurrency(event): void {
     this.getSelectedCurrencyRate(event.target.value);
+    this.chosenCurrency1 = event.target.value;
   }
 
-  test() {
-    this.availableCurrencyService.test(this.startDate, this.endDate).then(e=> {
-    e.map(elem =>
-    this.result.push(elem));
-      console.log(this.result);
-    }).catch(error=> console.log(error));
-      /*.map(e=>
-      this.result.push(e)
-    );*/
+   chooseCurrency2(event): void {
+   // this.getSelectedCurrencyRate(event.target.value);
+     this.chosenCurrency2 = event.target.value;
 
+   }
+  chooseCurrency3(event): void {
+   // this.getSelectedCurrencyRate(event.target.value);
+    this.chosenCurrency3 = event.target.value;
+
+  }
+
+  getDifferenceForChosenPeriodOfTime() {
+    this.availableCurrencyService.test(this.startDate, this.endDate, this.chosenCurrency1, this.chosenCurrency2)
+      .then(e=> {
+        e.map(elem =>
+        this.result.push(elem));
+        console.log(this.result);
+      })
+      .catch(error=> console.log(error));
   }
 
   getSelectedCurrencyRate(symbol: string) {

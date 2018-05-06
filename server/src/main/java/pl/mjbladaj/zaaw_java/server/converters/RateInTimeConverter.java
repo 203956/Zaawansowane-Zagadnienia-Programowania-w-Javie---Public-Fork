@@ -1,6 +1,5 @@
 package pl.mjbladaj.zaaw_java.server.converters;
 
-import lombok.experimental.var;
 import lombok.val;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRateInTime;
 import pl.mjbladaj.zaaw_java.server.dto.RateInTime;

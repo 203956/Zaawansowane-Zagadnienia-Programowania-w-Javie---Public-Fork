@@ -18,8 +18,8 @@ export class AvailableCurrenciesService {
     return this.http.get<Currency[]>(this.availableCurrenciesPath);
   }
 
-  test(startDate, endDate): Promise<RateInTime[]> {
-    let url = this.selectedCurrencyPath + "CHF/"+ startDate +"/" + endDate+ "/rate"
+  test(startDate, endDate, chosenCurrency1, chosenCurrency2): Promise<RateInTime[]> {
+    let url = this.selectedCurrencyPath + chosenCurrency1 +"/"+ startDate +"/" + endDate+ "/rate"
     console.log(url);
     return this.http.get<RateInTime[]>(url).toPromise(
     ).then(resolve=> {
