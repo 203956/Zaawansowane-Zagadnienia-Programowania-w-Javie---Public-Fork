@@ -20,7 +20,7 @@ public class RateServiceImpl implements RateService {
     public CurrencyRate getConvertedRate(String fromCurrency, String toCurrency) throws EntityNotFoundException {
         Rate rate = selectedCurrencyRateDao.getRate(fromCurrency, toCurrency);
 
-        if (rate == null)
+        if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
             throw new EntityNotFoundException("Currency does not exist.");
 
         return  RateConverter.getCurrencyRate(rate, fromCurrency + "_" + toCurrency);
