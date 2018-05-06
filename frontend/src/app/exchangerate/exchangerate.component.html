@@ -3,7 +3,7 @@
 
     <label for="currency">Waluta 1 :</label>
     <select class="form-control " id="currency" (change)="chooseCurrency($event)">
-      <option *ngFor="let currency of currencies; " value={{currency.id}} >{{currency.symbol}} - {{currency.name}}</option>
+      <option *ngFor="let currency of currencies; " value={{currency.symbol}} >{{currency.symbol}} - {{currency.name}}</option>
     </select>
   </div>
   <div class="col-md-4 col-sm-12">

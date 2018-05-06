@@ -38,4 +38,22 @@ public class SelectedCurrencyRestController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    @GetMapping("/{symbol}/{date}/rate")
+    public ResponseEntity getConvertedRateForGivenDay(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol, @PathVariable("date") String date) {
+        try {
+            return ResponseEntity.ok(rateService.getConvertedRateForGivenDay(symbol, "PLN", date));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @GetMapping("/{symbol}/{startDate}/{endDate}/rate")
+    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,@PathVariable("startDate") String startDate, @PathVariable("endDate")String endDate) {
+        try {
+            return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(404).build();
+        }
+    }
 }

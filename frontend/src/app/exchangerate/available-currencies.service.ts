@@ -17,7 +17,7 @@ export class AvailableCurrenciesService {
     return this.http.get<Currency[]>(this.availableCurrenciesPath);
   }
   test() {
-    return this.http.get<number>(this.availableCurrenciesPath+"/a").toPromise().then(resolve=> {
+    return this.http.get<number>(this.selectedCurrencyPath + "CHF/2018-03-25/2018-03-28/rate" ).toPromise().then(resolve=> {
       console.log(resolve);
     });
   }
