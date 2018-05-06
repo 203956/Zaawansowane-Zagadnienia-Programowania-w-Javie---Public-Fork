@@ -32,9 +32,10 @@ public class SelectedCurrencyRestControllerTest {
     private RateService rateService;
 
     private CurrencyRate getCurrencyRate() {
-        CurrencyRate currencyRate = new CurrencyRate();
-        currencyRate.setRate(3.4554);
-        return currencyRate;
+        return CurrencyRate
+                .builder()
+                .rate(3.4554)
+                .build();
     }
 
     @Before

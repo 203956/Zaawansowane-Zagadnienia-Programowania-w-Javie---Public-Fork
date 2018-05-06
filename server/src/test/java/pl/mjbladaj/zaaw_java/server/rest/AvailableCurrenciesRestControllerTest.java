@@ -32,6 +32,7 @@ public class AvailableCurrenciesRestControllerTest {
 
     @MockBean
     private AvailableCurrenciesService availableCurrenciesService;
+
     private List<AvailableCurrency> getAvailableCurrencies() {
         ArrayList<AvailableCurrency> currencies = new ArrayList<>();
         currencies.add(AvailableCurrency

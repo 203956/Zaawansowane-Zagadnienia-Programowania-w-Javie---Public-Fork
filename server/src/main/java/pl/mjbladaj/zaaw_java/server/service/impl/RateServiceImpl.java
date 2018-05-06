@@ -25,15 +25,17 @@ public class RateServiceImpl implements RateService {
     public CurrencyRate getConvertedRate(String fromCurrency, String toCurrency) throws EntityNotFoundException, CurrencyNotAvailableException {
         checkAvability(fromCurrency, toCurrency);
         Rate rate = selectedCurrencyRateDao.getRate(fromCurrency, toCurrency);
-        checkReuestsResults( rate);
+        checkReuestsResults(rate);
         return  RateConverter.getCurrencyRate(rate, fromCurrency + "_" + toCurrency);
     }
+
     private void checkAvability(String fromCurrency, String toCurrency) throws CurrencyNotAvailableException {
         if(!availableCurrenciesService.isAvailable(toCurrency).isAvailability() ||
                 !availableCurrenciesService.isAvailable(fromCurrency).isAvailability()) {
             throw new CurrencyNotAvailableException("Currency is not available.");
         }
     }
+
     private void checkReuestsResults(Rate rate) throws EntityNotFoundException {
         if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
             throw new EntityNotFoundException("Currency does not exist.");
