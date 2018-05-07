@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mjbladaj.zaaw_java.server.converters.RateConverter;
 import pl.mjbladaj.zaaw_java.server.converters.RateInTimeConverter;
+import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyHistoryRateDao;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRateInTime;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
@@ -24,6 +25,9 @@ public class RateServiceImpl implements RateService {
     @Autowired
     private SelectedCurrencyRateDao selectedCurrencyRateDao;
 
+    @Autowired
+    private SelectedCurrencyHistoryRateDao selectedCurrencyHistoryRateDao;
+
     @Override
     public CurrencyRate getConvertedRate(String fromCurrency, String toCurrency) throws EntityNotFoundException {
         Rate rate = selectedCurrencyRateDao.getRate(fromCurrency, toCurrency);
@@ -35,47 +39,44 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public CurrencyRateInTime getConvertedRateForGivenDay(String fromCurrency, String toCurrency, String date) throws TimePeriodNotAvailableException {
-        RateInTime rate = selectedCurrencyRateDao.getGivenDayRate(fromCurrency, toCurrency, date);
+    public CurrencyRateInTime getConvertedRateForGivenDay(String fromCurrency, String toCurrency, String date) throws TimePeriodNotAvailableException, EntityNotFoundException {
+        RateInTime rate = selectedCurrencyHistoryRateDao.getGivenDayRate(fromCurrency, toCurrency, date);
 
-       /* if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
-            throw new EntityNotFoundException("Currency does not exist.");*/
+        if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
+            throw new EntityNotFoundException("Currency does not exist.");
 
         return  RateInTimeConverter.getCurrencyRateInTime(rate, fromCurrency + "_" + toCurrency, date);
     }
 
     @Override
-    public List<CurrencyRateInTime> getConvertedRateForGivenPeriod(String fromCurrency, String toCurrency, String startDay, String endDay) throws TimePeriodNotAvailableException {
-        val rate = selectedCurrencyRateDao.getGivenPeriodRate(fromCurrency, toCurrency, startDay, endDay);
+    public List<CurrencyRateInTime> getConvertedRateForGivenPeriod(String fromCurrency, String toCurrency, String startDay, String endDay) throws TimePeriodNotAvailableException, EntityNotFoundException {
+        List<RateInTime>  rate = selectedCurrencyHistoryRateDao.getGivenPeriodRate(fromCurrency, toCurrency, startDay, endDay);
 
-        /*if (rate.getQuery().isEmpty() || rate.getResults().isEmpty())
-            throw new EntityNotFoundException("Currency does not exist.");*/
+        if (rate.isEmpty())
+            throw new EntityNotFoundException("Currency does not exist.");
 
         return  RateInTimeConverter.getCurrenciesRateInTime(rate, fromCurrency + "_" + toCurrency);
     }
 
     @Override
     public List<CurrencyRateInTime> getDifferenceInRatesRatesForGivenPeriod(String fromCurrency, String symbol1, String symbol2, String startDay, String endDay) throws TimePeriodNotAvailableException {
-        val rate = selectedCurrencyRateDao.getGivenPeriodRate(fromCurrency, symbol1, startDay, endDay);
-        List<CurrencyRateInTime> result1 = RateInTimeConverter.getCurrenciesRateInTime(rate, fromCurrency + "_" + symbol1);
+        List<RateInTime>  rateFirstCurrency = selectedCurrencyHistoryRateDao.getGivenPeriodRate(symbol1, fromCurrency, startDay, endDay);
+        List<CurrencyRateInTime> resultFirstCurrency = RateInTimeConverter.getCurrenciesRateInTime(rateFirstCurrency, fromCurrency + "_" + symbol1);
 
-        val rate2 = selectedCurrencyRateDao.getGivenPeriodRate(fromCurrency, symbol2, startDay, endDay);
-        List<CurrencyRateInTime> result2 = RateInTimeConverter.getCurrenciesRateInTime(rate2, fromCurrency + "_" + symbol2);
+        List<RateInTime>  rateSecondCurrency = selectedCurrencyHistoryRateDao.getGivenPeriodRate(symbol2, fromCurrency, startDay, endDay);
+        List<CurrencyRateInTime> resultSecondCurrency = RateInTimeConverter.getCurrenciesRateInTime(rateSecondCurrency, fromCurrency + "_" + symbol2);
 
-        return mergeResults(result1, result2);
+        return mergeResults(resultFirstCurrency, resultSecondCurrency);
     }
 
-    private List<CurrencyRateInTime> mergeResults(List<CurrencyRateInTime> result1, List<CurrencyRateInTime> result2) {
+    private List<CurrencyRateInTime> mergeResults(List<CurrencyRateInTime> resultFirstCurrency, List<CurrencyRateInTime> resultSecondCurrency) {
         List<CurrencyRateInTime> result = new ArrayList<>();
-        for (val elem: result1) {
+
+        for (int i = 0; i < resultFirstCurrency.size(); i++) {
             CurrencyRateInTime currencyRateInTime = new CurrencyRateInTime();
-            currencyRateInTime.setTime(elem.getTime());
-            int index = IntStream.range(0, result1.size())
-                    .filter(i -> elem.equals(result1.get(i)))
-                    .findFirst()
-                    .orElse(-100);
-            CurrencyRateInTime el = result2.get(index);
-            currencyRateInTime.setRate(elem.getRate() - el.getRate() );
+            currencyRateInTime.setTime(resultFirstCurrency.get(i).getTime());
+            CurrencyRateInTime el = resultSecondCurrency.get(i);
+            currencyRateInTime.setRate(resultFirstCurrency.get(i).getRate() - el.getRate() );
             result.add(currencyRateInTime);
         }
         return result;

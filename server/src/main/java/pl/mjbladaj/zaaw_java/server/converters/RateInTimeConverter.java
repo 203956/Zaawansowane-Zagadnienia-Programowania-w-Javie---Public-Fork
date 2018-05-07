@@ -14,28 +14,11 @@ public abstract class RateInTimeConverter {
         return currencyRateInTime;
     }
 
-    public static List<CurrencyRateInTime> getCurrenciesRateInTime(RateInTime rate, String key) {
-        List<CurrencyRateInTime> result = new ArrayList<>();
-        val map  =  rate.getResults().get(key).getVal();
-        Iterator it = map.entrySet().iterator();
-
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            CurrencyRateInTime currencyRateInTime = new CurrencyRateInTime();
-            currencyRateInTime.setRate((Double)pair.getValue());
-            currencyRateInTime.setTime((String)pair.getKey());
-            it.remove(); // avoids a ConcurrentModificationException
-
-            result.add(currencyRateInTime);
-        }
-        return result;
-    }
-
     public static List<CurrencyRateInTime> getCurrenciesRateInTime(List<RateInTime> rate, String key) {
         List<CurrencyRateInTime> result = new ArrayList<>();
         Collections.reverse(rate);
-        for (val el: rate) {
-            val map  =  el.getResults().get(key).getVal();
+        for (RateInTime el: rate) {
+            Map<String, Number> map  =  el.getResults().get(key).getVal();
             Iterator it = map.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry)it.next();

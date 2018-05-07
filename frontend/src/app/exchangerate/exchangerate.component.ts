@@ -54,7 +54,7 @@ export class ExchangerateComponent implements OnInit {
   }
 
   getDifferenceForChosenPeriodOfTime() {
-    this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1, this.chosenCurrency2)
+    this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency2, this.chosenCurrency1)
       .then(e=> {
         e.map(elem =>
         this.result1.push(elem));
@@ -62,7 +62,7 @@ export class ExchangerateComponent implements OnInit {
       })
       .catch(error=> console.log(error));
 
-    this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1, this.chosenCurrency3)
+    this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency3, this.chosenCurrency1)
       .then(e=> {
         e.map(elem =>
           this.result2.push(elem));
@@ -70,8 +70,8 @@ export class ExchangerateComponent implements OnInit {
       })
       .catch(error=> console.log(error));
 
-    this.averageDifference.getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1,
-                                                                                      this.chosenCurrency2, this.chosenCurrency3)
+    this.averageDifference.getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency2,
+                                                                                      this.chosenCurrency3, this.chosenCurrency1)
       .then(e=> {
         e.map(elem =>
           this.resultDifference.push(elem));
@@ -81,7 +81,7 @@ export class ExchangerateComponent implements OnInit {
   }
 
   getSelectedCurrencyRate(symbol: string) {
-    this.availableCurrencyService
+   /* this.availableCurrencyService
       .getRate(symbol).subscribe(
       result => {
         this.rate = result;
@@ -91,6 +91,6 @@ export class ExchangerateComponent implements OnInit {
         console.log(this.rate.rate);
         this.rateValue = this.rate.rate;
       }
-    );
+    );*/
   }
 }
