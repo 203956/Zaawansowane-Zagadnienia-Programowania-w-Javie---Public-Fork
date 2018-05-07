@@ -1,7 +1,8 @@
+INSERT INTO available_currencies(symbol, name) VALUES ('PLN', 'Złotówka polska');
 INSERT INTO available_currencies(symbol, name) VALUES ('GBP', 'Funt brytyjski');
 INSERT INTO available_currencies(symbol, name) VALUES ('EUR', 'Euro');
 INSERT INTO available_currencies(symbol, name) VALUES ('CAD', 'Dolar kanadyjski');
-INSERT INTO available_currencies(symbol, name) VALUES ('DOL', 'Dolar amerykański');
+INSERT INTO available_currencies(symbol, name) VALUES ('USD', 'Dolar amerykański');
 INSERT INTO available_currencies(symbol, name) VALUES ('AUD', 'Dolar australijski');
 INSERT INTO available_currencies(symbol, name) VALUES ('CHF', 'Frank szwajcarski');
 INSERT INTO available_currencies(symbol, name) VALUES ('SEK', 'Korona szwecka');
