@@ -1,3 +1,4 @@
+INSERT INTO available_currencies(symbol, name) VALUES ('PLN', 'Złotówka polska');
 INSERT INTO available_currencies(symbol, name) VALUES ('GBP', 'Funt brytyjski');
 INSERT INTO available_currencies(symbol, name) VALUES ('EUR', 'Euro');
 INSERT INTO available_currencies(symbol, name) VALUES ('CAD', 'Dolar kanadyjski');

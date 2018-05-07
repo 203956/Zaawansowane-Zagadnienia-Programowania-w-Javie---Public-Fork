@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 public class AvailableCurrenciesServiceImplTest {
     @TestConfiguration
-    static class EmployeeServiceImplTestContextConfiguration {
+    static class AvailableCurrenciesServiceImplTestContextConfiguration {
 
         @Bean
         public AvailableCurrenciesService currenciesService() {
