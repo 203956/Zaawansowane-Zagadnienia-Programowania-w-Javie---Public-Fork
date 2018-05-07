@@ -96,11 +96,11 @@ public class FreeCurrenciesComRateServiceImplTest {
         //when
         CurrencyRate convertedRate = rateService.getConvertedRate("EUR", "PLN");
         //then
-        assertEquals(4.6522, convertedRate.getRate(), 0.00001);
+        assertEquals(4.6522, convertedRate.getRate());
     }
 
     @Test
-    public void shouldThrowCurrencyNotAvailableWhenFirstCurrencyIsNotAbvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
+    public void shouldThrowCurrencyNotAvailableWhenFirstCurrencyIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
         //expect
         expectedException.expect(CurrencyNotAvailableException.class);

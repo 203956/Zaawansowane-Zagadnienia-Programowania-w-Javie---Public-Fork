@@ -7,5 +7,5 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class CurrencyRate {
-    private Double rate;
+    private Number rate;
 }
