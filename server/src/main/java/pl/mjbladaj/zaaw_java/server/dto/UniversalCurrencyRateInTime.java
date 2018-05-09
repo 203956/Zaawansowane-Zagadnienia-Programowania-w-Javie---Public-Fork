@@ -1,12 +1,13 @@
 package pl.mjbladaj.zaaw_java.server.dto;
 
 import lombok.*;
+import org.joda.time.DateTime;
 
 @Builder
 @Data
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class CurrencyRateInTime {
+public class UniversalCurrencyRateInTime {
     private Double rate;
-    private String time;
+    private DateTime time;
 }

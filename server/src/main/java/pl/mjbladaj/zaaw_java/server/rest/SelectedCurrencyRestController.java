@@ -37,33 +37,28 @@ public class SelectedCurrencyRestController {
         try {
             return ResponseEntity.ok(rateService.getConvertedRate(symbol, "PLN"));
         } catch (EntityNotFoundException | CurrencyNotAvailableException e) {
-            System.out.println(e);
             return ResponseEntity.status(404).build();
         }
     }
 
     @GetMapping("/{symbol}/{date}/rate")
     public ResponseEntity getConvertedRateForGivenDay(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,
-                                                      @PathVariable("date") String date) {
+                                                      @PathVariable("date") String date) throws TimePeriodNotAvailableException {
         try {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenDay(symbol, "PLN", date));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).build();
-        } catch (TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(403).build();
         }
     }
 
     @GetMapping("/{symbol}/{startDate}/{endDate}/rate")
     public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,
                                                          @PathVariable("startDate") String startDate,
-                                                         @PathVariable("endDate")String endDate) {
+                                                         @PathVariable("endDate")String endDate) throws TimePeriodNotAvailableException {
         try {
             return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).build();
-        }catch (TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(403).build();
         }
     }
 
@@ -81,6 +76,7 @@ public class SelectedCurrencyRestController {
         }
     }
 
+    //todo: ta metoda musi se zwracac wynik jednego zapytania, drugiego i roznice
     @GetMapping("{base}/{symbol1}/{symbol2}/{startDate}/{endDate}/rate")
     public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,
                                                          @PathVariable("symbol1") String symbol1,

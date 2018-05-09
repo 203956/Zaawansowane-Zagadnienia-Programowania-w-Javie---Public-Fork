@@ -31,13 +31,12 @@
       <label for="date2" class="col-md-2"> Data końcowa:</label>
       <input id="date2" class="col-md-2" type="text" value={{endDate}} placeholder="2018-01-30">
     </div>
-
   </div>
   <div class="row radio">
-    <button class=" btn-block" (click)="getDifferenceForChosenPeriodOfTime()">Wyświetl różnice kupna</button>
+    <button class="tn-block" (click)="getDifferenceForChosenPeriodOfTime()">Wyświetl różnice kupna</button>
   </div>
   <div class="break"> </div>
-
+<input type="date" (change)="getDate($event)">
   <table class="table table-striped">
     <thead>
       <tr>

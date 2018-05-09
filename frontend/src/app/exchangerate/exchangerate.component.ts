@@ -17,7 +17,7 @@ export class ExchangerateComponent implements OnInit {
   rate: CurrencyRate;
   rateValue: number;
   errorMessage: string;
-  endDate: string = "2018-03-22";
+  endDate: string = "2018-03-15";
   startDate: string = "2018-03-11";
   result1: RateInTime[] = [];
   result2: RateInTime[] = [];
@@ -53,9 +53,11 @@ export class ExchangerateComponent implements OnInit {
     this.chosenCurrency3 = event.target.value;
   }
 
+  //todo wysylac jeden request do liczenia róznicy
   getDifferenceForChosenPeriodOfTime() {
     this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency2, this.chosenCurrency1)
       .then(e=> {
+        this.result1 = [];
         e.map(elem =>
         this.result1.push(elem));
         console.log(this.result1);
@@ -64,15 +66,18 @@ export class ExchangerateComponent implements OnInit {
 
     this.averageDifference.getPriceOfCurrencyInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency3, this.chosenCurrency1)
       .then(e=> {
+        this.result2=[];
         e.map(elem =>
           this.result2.push(elem));
         console.log(this.result2);
       })
       .catch(error=> console.log(error));
 
-    this.averageDifference.getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency2,
-                                                                                      this.chosenCurrency3, this.chosenCurrency1)
+    this.averageDifference.getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(this.startDate, this.endDate, this.chosenCurrency1,
+                                                                                      this.chosenCurrency2,
+                                                                                      this.chosenCurrency3)
       .then(e=> {
+        this.resultDifference=[];
         e.map(elem =>
           this.resultDifference.push(elem));
         console.log(this.resultDifference);
@@ -81,7 +86,7 @@ export class ExchangerateComponent implements OnInit {
   }
 
   getSelectedCurrencyRate(symbol: string) {
-   /* this.availableCurrencyService
+    this.availableCurrencyService
       .getRate(symbol).subscribe(
       result => {
         this.rate = result;
@@ -91,6 +96,11 @@ export class ExchangerateComponent implements OnInit {
         console.log(this.rate.rate);
         this.rateValue = this.rate.rate;
       }
-    );*/
+    );
+  }
+
+  getDate(event) {
+    let x = event.target.value;
+    console.log(x);
   }
 }

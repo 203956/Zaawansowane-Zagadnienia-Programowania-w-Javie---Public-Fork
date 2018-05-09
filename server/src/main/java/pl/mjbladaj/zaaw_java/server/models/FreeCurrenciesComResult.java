@@ -1,4 +1,4 @@
-package pl.mjbladaj.zaaw_java.server.dto;
+package pl.mjbladaj.zaaw_java.server.models;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Builder
-public class result {
+public class FreeCurrenciesComResult {
     private String id;
     private String fr;
     private String to;
