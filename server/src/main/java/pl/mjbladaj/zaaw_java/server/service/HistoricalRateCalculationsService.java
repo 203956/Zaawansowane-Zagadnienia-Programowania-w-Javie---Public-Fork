@@ -1,6 +1,5 @@
 package pl.mjbladaj.zaaw_java.server.service;
 
-import org.springframework.stereotype.Service;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;

@@ -7,8 +7,8 @@ public class AvailabilityUtils {
 
     public static void checkAvailability(AvailableCurrenciesService availableCurrenciesService, String... currency) throws CurrencyNotAvailableException {
         for (String element: currency) {
-           if( availableCurrenciesService.isAvailable(element).isAvailability() ) {
-               throw new CurrencyNotAvailableException("Currency not found");
+           if(!availableCurrenciesService.isAvailable(element).isAvailability() ) {
+               throw new CurrencyNotAvailableException("Currency is not available.");
            }
         }
     }

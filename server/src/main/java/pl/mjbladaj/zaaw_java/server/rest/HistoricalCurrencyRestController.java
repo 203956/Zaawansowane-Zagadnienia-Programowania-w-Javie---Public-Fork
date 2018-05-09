@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.HistoricalRateCalculationsService;
@@ -34,6 +35,8 @@ public class HistoricalCurrencyRestController {
             return ResponseEntity.ok(historicalRateService.getConvertedRateForGivenDay(symbol, "PLN", date));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(404).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
         }
     }
 
@@ -43,7 +46,8 @@ public class HistoricalCurrencyRestController {
                                                          @PathVariable("endDate")String endDate) throws TimePeriodNotAvailableException {
         try {
             return ResponseEntity.ok(historicalRateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException
+                | CurrencyNotAvailableException e) {
             return ResponseEntity.status(404).build();
         }
     }
@@ -55,10 +59,9 @@ public class HistoricalCurrencyRestController {
                                                          @PathVariable("endDate")String endDate) {
         try {
             return ResponseEntity.ok(historicalRateService.getConvertedRateForGivenPeriod(base, symbol, startDate, endDate));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | TimePeriodNotAvailableException
+                | CurrencyNotAvailableException e) {
             return ResponseEntity.status(404).build();
-        } catch (TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(403).build();
         }
     }
 
@@ -70,10 +73,9 @@ public class HistoricalCurrencyRestController {
                                                          @PathVariable("endDate")String endDate) {
         try {
             return ResponseEntity.ok(historicalRateCalculationsService.getDifferenceInRatesRatesForGivenPeriod(base, symbol1, symbol2, startDate, endDate));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | TimePeriodNotAvailableException
+                | CurrencyNotAvailableException e) {
             return ResponseEntity.status(404).build();
-        }catch (TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(403).build();
         }
     }
 }

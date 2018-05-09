@@ -6,7 +6,7 @@ import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
 public abstract class UniversalRateConverter {
     public static UniversalRate getCurrencyRate(FreeCurrenciesComRate freeCurrenciesComRate, String fromCurrency, String toCurrency) throws EntityNotFoundException {
-        checkReuestsResults(freeCurrenciesComRate);
+        checkRequestResults(freeCurrenciesComRate);
 
         return UniversalRate
                 .builder()
@@ -24,7 +24,7 @@ public abstract class UniversalRateConverter {
 
         return stringBuilder.toString();
     }
-    private static void checkReuestsResults(FreeCurrenciesComRate freeCurrenciesComRate) throws EntityNotFoundException {
+    private static void checkRequestResults(FreeCurrenciesComRate freeCurrenciesComRate) throws EntityNotFoundException {
         if (freeCurrenciesComRate.getQuery().isEmpty() || freeCurrenciesComRate.getResults().isEmpty())
             throw new EntityNotFoundException("Currency does not exists.");
     }

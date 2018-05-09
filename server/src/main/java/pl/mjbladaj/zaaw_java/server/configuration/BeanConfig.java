@@ -18,7 +18,7 @@ public class BeanConfig {
         return new RestTemplate();
     }
 
-   @Bean
+    @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
