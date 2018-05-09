@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyHistoryRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.HistoricalRateCalculationsService;
+import pl.mjbladaj.zaaw_java.server.utils.AvailabilityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +20,13 @@ public class HistoricalRateCalculationsImpl implements HistoricalRateCalculation
     @Autowired
     private SelectedCurrencyHistoryRateDao selectedCurrencyHistoryRateDao;
 
+    @Autowired
+    private AvailableCurrenciesService availableCurrenciesService;
+
     @Override
-    public List<UniversalCurrencyRateInTime> getDifferenceInRatesRatesForGivenPeriod(String fromCurrency, String symbol1, String symbol2, String startDay, String endDay) throws TimePeriodNotAvailableException, EntityNotFoundException {
+    public List<UniversalCurrencyRateInTime> getDifferenceInRatesRatesForGivenPeriod(String fromCurrency, String symbol1, String symbol2, String startDay, String endDay) throws TimePeriodNotAvailableException, EntityNotFoundException, CurrencyNotAvailableException {
+        AvailabilityUtils.checkAvailability(availableCurrenciesService, fromCurrency, symbol1, symbol2);
+
         List<UniversalCurrencyRateInTime>  rateFirstCurrency = selectedCurrencyHistoryRateDao.getGivenPeriodRate(symbol1, fromCurrency, startDay, endDay);
         List<UniversalCurrencyRateInTime>  rateSecondCurrency = selectedCurrencyHistoryRateDao.getGivenPeriodRate(symbol2, fromCurrency, startDay, endDay);
 
