@@ -8,6 +8,8 @@ import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.service.HistoricalRateCalculationsService;
+import pl.mjbladaj.zaaw_java.server.service.HistoricalRateService;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
 
 
@@ -21,6 +23,7 @@ public class SelectedCurrencyRestController {
 
     @Autowired
     private RateService rateService;
+
 
     @ApiOperation(value = "Returns selected currency rate.",
             notes = "If currency with given symbol does not exists, 404 will be returned.",
@@ -41,54 +44,4 @@ public class SelectedCurrencyRestController {
         }
     }
 
-    @GetMapping("/{symbol}/{date}/rate")
-    public ResponseEntity getConvertedRateForGivenDay(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,
-                                                      @PathVariable("date") String date) throws TimePeriodNotAvailableException {
-        try {
-            return ResponseEntity.ok(rateService.getConvertedRateForGivenDay(symbol, "PLN", date));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        }
-    }
-
-    @GetMapping("/{symbol}/{startDate}/{endDate}/rate")
-    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("symbol") String symbol,
-                                                         @PathVariable("startDate") String startDate,
-                                                         @PathVariable("endDate")String endDate) throws TimePeriodNotAvailableException {
-        try {
-            return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        }
-    }
-
-    @GetMapping("{base}/{symbol}/{startDate}/{endDate}/rate")
-    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,
-                                                         @PathVariable("symbol") String symbol,
-                                                         @PathVariable("startDate") String startDate,
-                                                         @PathVariable("endDate")String endDate) {
-        try {
-            return ResponseEntity.ok(rateService.getConvertedRateForGivenPeriod(base, symbol, startDate, endDate));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        } catch (TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(403).build();
-        }
-    }
-
-    //todo: ta metoda musi se zwracac wynik jednego zapytania, drugiego i roznice
-    @GetMapping("{base}/{symbol1}/{symbol2}/{startDate}/{endDate}/rate")
-    public ResponseEntity getConvertedRateForGivenPeriod(@ApiParam(value = "symbol of selected currency") @PathVariable("base") String base,
-                                                         @PathVariable("symbol1") String symbol1,
-                                                         @PathVariable("symbol2") String symbol2,
-                                                         @PathVariable("startDate") String startDate,
-                                                         @PathVariable("endDate")String endDate) {
-        try {
-            return ResponseEntity.ok(rateService.getDifferenceInRatesRatesForGivenPeriod(base, symbol1, symbol2, startDate, endDate));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        }catch (TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(403).build();
-        }
-    }
 }
