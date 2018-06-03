@@ -12,6 +12,8 @@ import org.springframework.core.env.Environment;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
+import java.util.Set;
+
 @Service
 public class SelectedCurrencyRateDaoImpl implements SelectedCurrencyRateDao {
 
