@@ -30,11 +30,12 @@ public class SelectedCurrencyHistoryRateDaoImpl implements SelectedCurrencyHisto
     private Environment env;
 
     @Override
-    public UniversalCurrencyRateInTime getGivenDayRate(String fromCurrency, String toCurrency, String date) throws EntityNotFoundException {
+    public UniversalCurrencyRateInTime getGivenDayRate(String fromCurrency, String toCurrency, String date) throws EntityNotFoundException, TimePeriodNotAvailableException {
+        DateTime formattedDate = TimeConverter.convertStringToDateTime(date);
+        checkPeriod(formattedDate);
         ResponseEntity<FreeCurrenciesComRateInTime> response = restTemplate
                 .getForEntity(env.getProperty("exchange.currency.base.url") + fromCurrency + "_" +
                         toCurrency + "&date=" + date, FreeCurrenciesComRateInTime.class);
-
         FreeCurrenciesComRateInTime freeCurrenciesComRate = response.getBody();
         if (freeCurrenciesComRate.getQuery().isEmpty() || freeCurrenciesComRate.getResults().isEmpty())
             throw new EntityNotFoundException("Currency does not exist.");
@@ -80,6 +81,7 @@ public class SelectedCurrencyHistoryRateDaoImpl implements SelectedCurrencyHisto
     private FreeCurrenciesComRateInTime sendRequest(String fromCurrency, String toCurrency, DateTime startDate, DateTime endDate) {
         ResponseEntity<FreeCurrenciesComRateInTime> response = restTemplate
                 .getForEntity(getUrl(fromCurrency, toCurrency, startDate, endDate), FreeCurrenciesComRateInTime.class);
+        String a = getUrl(fromCurrency, toCurrency, startDate, endDate);
         return response.getBody();
     }
 

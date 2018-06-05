@@ -1,5 +1,7 @@
 package pl.mjbladaj.zaaw_java.server;
 
+import org.joda.time.DateTime;
+import pl.mjbladaj.zaaw_java.server.converters.TimeConverter;
 import pl.mjbladaj.zaaw_java.server.models.FreeCurrenciesComRateInTime;
 import pl.mjbladaj.zaaw_java.server.models.FreeCurrenciesComResult;
 
@@ -20,7 +22,9 @@ public abstract class RateInTimeGenerator {
         return "2018-01-20";
     }
 
-    private static Map<String, FreeCurrenciesComResult> getResults() {
+    private static String getValidDtae() { return TimeConverter.convertDateToString(new DateTime()); }
+
+    private static Map<String, FreeCurrenciesComResult> getResults(int amount) {
         Map<String, FreeCurrenciesComResult> resultMap =
                 new HashMap<>();
         FreeCurrenciesComResult result = new FreeCurrenciesComResult();
@@ -28,31 +32,32 @@ public abstract class RateInTimeGenerator {
         result.setFr("PLN");
         result.setTo("USD");
         Map<String, Number> vals = new HashMap<>();
-        vals.put("2018-01-20", 4.1582);
+        for (int i = 0; i < amount ; i++) {
+            vals.put(getValidDtae(), 4.1582);
+        }
+
         result.setVal(vals);
         resultMap.put("PLN_USD", result);
         return resultMap;
     }
 
-    public static FreeCurrenciesComRateInTime getRateInTime() {
+
+    public static FreeCurrenciesComRateInTime getRateInTime(int amount) {
         return FreeCurrenciesComRateInTime
                 .builder()
                 .query(getQueryMap())
                 .date(getDate())
                 .endDate(endDate())
-                .results(getResults())
+                .results(getResults(amount))
                 .build();
     }
-    public static FreeCurrenciesComRateInTime getEmptyRate() {
+    public static FreeCurrenciesComRateInTime getEmptyRateInTime() {
         return FreeCurrenciesComRateInTime
                 .builder()
                 .query(new HashMap<>())
+                .date("")
                 .results(new HashMap<>())
                 .build();
     }
 
-    public static FreeCurrenciesComRateInTime getBody() {
-        return getRateInTime();
-
-    }
 }

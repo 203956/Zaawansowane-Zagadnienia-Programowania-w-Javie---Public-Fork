@@ -48,16 +48,6 @@ public class FreeCurrenciesComRateServiceImplTest {
         }
     }
 
-    private UniversalRate getRate() {
-
-        return UniversalRate
-                .builder()
-                .symbol("EUR")
-                .rate(4.6522)
-                .build();
-    }
-
-
 
     private void setUpAvailableCurrenciesService() {
         Mockito.when(availableCurrenciesService.isAvailable(
@@ -99,36 +89,5 @@ public class FreeCurrenciesComRateServiceImplTest {
         assertEquals(4.6522, convertedRate.getRate(), 0.00001);
     }
 
-    @Test
-    public void shouldThrowCurrencyNotAvailableWhenFirstCurrencyIsNotAbvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
-        //given
-        //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
-        expectedException.expectMessage("Currency is not available.");
-        //when
-        CurrencyRate convertedRate = rateService.getConvertedRate("MVN", "PLN");
-        //then
-    }
-    @Test
-    public void shouldThrowCurrencyNotAvailableWhenSecondCurrencyIsNotAbvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
-        //given
-        //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
-        expectedException.expectMessage("Currency is not available.");
-        //when
-        CurrencyRate convertedRate = rateService.getConvertedRate("EUR", "MVN");
-        //then
-    }
-
-    @Test
-    public void shouldThrowCurrencyNotAvailableWhenBothCurrenciesIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
-        //given
-        //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
-        expectedException.expectMessage("Currency is not available.");
-        //when
-        CurrencyRate convertedRate = rateService.getConvertedRate("MVN", "JAV");
-        //then
-    }
 
 }

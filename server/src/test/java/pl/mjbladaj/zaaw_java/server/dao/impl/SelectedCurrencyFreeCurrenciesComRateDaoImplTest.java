@@ -68,6 +68,9 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         Mockito.when(environment.getProperty("exchange.currency.base.url"))
                 .thenReturn(BASE_URL);
 
+        Mockito.when(environment.getProperty("exchange.currency.base.url"))
+                .thenReturn(BASE_URL);
+
         Mockito.when(restTemplate
                 .getForEntity(getValidUrl(), FreeCurrenciesComRate.class))
                 .thenReturn(ResponseEntity.ok(RateGenerator.getRate()));
@@ -120,7 +123,7 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         //expect
         expectedException.expect(EntityNotFoundException.class);
         expectedException.expectMessage("Currency does not exists.");
-        //when
+        //whenF
         UniversalRate convertedRate = selectedCurrencyRateDao.getRate("DOL", "DCL");
         //then
     }
