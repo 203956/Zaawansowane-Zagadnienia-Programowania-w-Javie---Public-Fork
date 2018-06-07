@@ -158,9 +158,7 @@ public class SelectedCurrencyHistoryRateDaoTest {
         UniversalCurrencyRateInTime rateInTime = selectedCurrencyHistoryRateDao.getGivenDayRate(fromCurrency, toCurrency, date);
         //then
     }
-    /* UniversalCurrencyRateInTime getGivenDayRate(String fromCurrency, String toCurrency, String date) throws TimePeriodNotAvailableException, EntityNotFoundException;
-    List<UniversalCurrencyRateInTime> getGivenPeriodRate(String fromCurrency, String toCurrency, String startDate, String endDate) throws TimePeriodNotAvailableException, EntityNotFoundException;
-*/
+
     @Test
     public void shouldThrowEntityNotFoundExceptionWhenBothCurrenciesDoesNotExists() throws TimePeriodNotAvailableException, EntityNotFoundException {
 
@@ -211,6 +209,19 @@ public class SelectedCurrencyHistoryRateDaoTest {
         List<UniversalCurrencyRateInTime> ratesInTime = selectedCurrencyHistoryRateDao.getGivenPeriodRate(fromCurrency, toCurrency, date, endDate);
         //then
         assertEquals(4.1582, ratesInTime.get(0).getRate(), 0.00001);
+    }
+
+    @Test
+    public void shouldReturnGivenSizeListResult() throws TimePeriodNotAvailableException, EntityNotFoundException {
+        //given
+        String fromCurrency = "PLN";
+        String toCurrency = "USD";
+        String date = getValidDate();
+        String endDate = getValidFutureDate();
+        //when
+        List<UniversalCurrencyRateInTime> ratesInTime = selectedCurrencyHistoryRateDao.getGivenPeriodRate(fromCurrency, toCurrency, date, endDate);
+        //then
+        assertEquals(4, ratesInTime.size(), 0.01);
     }
 
     @Test

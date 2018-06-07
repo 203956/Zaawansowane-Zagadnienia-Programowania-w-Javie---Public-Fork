@@ -33,7 +33,7 @@ public class HistoricalCurrencyRestController {
                                                       @PathVariable("date") String date) throws TimePeriodNotAvailableException {
         try {
             return ResponseEntity.ok(historicalRateService.getConvertedRateForGivenDay(symbol, "PLN", date));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
             return ResponseEntity.status(404).build();
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -47,7 +47,7 @@ public class HistoricalCurrencyRestController {
         try {
             return ResponseEntity.ok(historicalRateService.getConvertedRateForGivenPeriod(symbol, "PLN", startDate, endDate));
         } catch (EntityNotFoundException
-                | CurrencyNotAvailableException e) {
+                | CurrencyNotAvailableException  | TimePeriodNotAvailableException e) {
             return ResponseEntity.status(404).build();
         }
     }
