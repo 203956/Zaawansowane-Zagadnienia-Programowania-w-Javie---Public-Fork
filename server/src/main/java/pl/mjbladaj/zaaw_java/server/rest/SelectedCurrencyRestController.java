@@ -57,7 +57,7 @@ public class SelectedCurrencyRestController {
     public ResponseEntity getAmountOfAnotherCurrency(
             @ApiParam(value = "currency out") @RequestParam(name = "out", required = false) String outCurrency,
             @ApiParam(value = "currencies in symbols") @RequestParam(name = "currencies", required = false) ArrayList<String> inCurrencies,
-            @ApiParam(value = "currencies in amount") @RequestParam(name = "amount", required = false) ArrayList<Integer> amountOfInCurrencies) {
+            @ApiParam(value = "currencies in amount") @RequestParam(name = "amount", required = false) ArrayList<Number> amountOfInCurrencies) {
         try {
             return ResponseEntity.ok(rateService.getAmountOfAnotherCurrency(amountOfInCurrencies, inCurrencies, outCurrency));
         } catch (SameCurrenciesConvertException | EntityNotFoundException | CurrencyNotAvailableException | NullPointerException | IndexOutOfBoundsException e) {

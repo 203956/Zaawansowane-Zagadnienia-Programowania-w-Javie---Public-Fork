@@ -31,7 +31,7 @@ public class RateServiceImpl implements RateService {
         return RateConverter.getCurrencyRate(rate);
     }
 
-    public CurrencyRate getAmountOfAnotherCurrency(ArrayList<Integer> amountOfInCurrencies, ArrayList<String> inCurrencies, String outCurrency) throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
+    public CurrencyRate getAmountOfAnotherCurrency(ArrayList<Number> amountOfInCurrencies, ArrayList<String> inCurrencies, String outCurrency) throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
         checkAvability(inCurrencies, outCurrency);
         checkIfSameCurrencies(inCurrencies, outCurrency);
 
@@ -39,7 +39,7 @@ public class RateServiceImpl implements RateService {
         rate.setSymbol(outCurrency);
         rate.setRate(0.0);
         for (int i = 0; i < inCurrencies.size(); i++) {
-            rate.setRate(rate.getRate() + selectedCurrencyRateDao.getRate(inCurrencies.get(i), outCurrency).getRate() * amountOfInCurrencies.get(i));
+            rate.setRate((rate.getRate()).doubleValue() + (selectedCurrencyRateDao.getRate(inCurrencies.get(i), outCurrency).getRate()).doubleValue() * (amountOfInCurrencies.get(i)).doubleValue());
         }
         return RateConverter.getCurrencyRate(rate);
     }
