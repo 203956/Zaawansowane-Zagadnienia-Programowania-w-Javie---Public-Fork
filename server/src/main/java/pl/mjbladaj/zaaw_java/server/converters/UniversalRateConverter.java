@@ -11,7 +11,7 @@ public abstract class UniversalRateConverter {
         return UniversalRate
                 .builder()
                 .symbol(fromCurrency)
-                .rate((double) freeCurrenciesComRate.getResults().
+                .rate((Number) freeCurrenciesComRate.getResults().
                         get(getKey(fromCurrency, toCurrency) ).get("val"))
                 .build();
     }
