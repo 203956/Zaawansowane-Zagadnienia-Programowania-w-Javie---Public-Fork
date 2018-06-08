@@ -11,9 +11,9 @@ import pl.mjbladaj.zaaw_java.server.service.RateService;
 
 
 @RestController
-@RequestMapping("/api/currencies")
+@RequestMapping("/api/public/currencies")
 @Api(value = "Selected currency rate",
-        basePath = "/api/currencies",
+        basePath = "/api/public/currencies",
         produces = "application/json",
         description = "Selected currency rate")
 public class SelectedCurrencyRestController {

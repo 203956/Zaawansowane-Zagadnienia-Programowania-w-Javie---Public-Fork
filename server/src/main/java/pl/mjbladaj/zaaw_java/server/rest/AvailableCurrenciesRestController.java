@@ -12,9 +12,9 @@ import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 
 @RestController
-@RequestMapping("/api/currencies/available")
+@RequestMapping("/api/public/currencies/available")
 @Api(value = "Selected currency rate",
-        basePath = "/api/currencies/available",
+        basePath = "/api/public/currencies/available",
         produces = "application/json",
         description = "Available currencies.")
 public class AvailableCurrenciesRestController {

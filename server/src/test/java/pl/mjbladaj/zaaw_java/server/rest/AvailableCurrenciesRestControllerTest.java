@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
@@ -26,6 +27,7 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AvailableCurrenciesRestController.class)
+@WithMockUser
 public class AvailableCurrenciesRestControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -66,7 +68,7 @@ public class AvailableCurrenciesRestControllerTest {
     }
     @Test
     public void shouldReturnListOfAvailableCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/available")
+        mvc.perform(get("/api/public/currencies/available")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -75,14 +77,14 @@ public class AvailableCurrenciesRestControllerTest {
     }
     @Test
     public void shouldReturnTrueWhenAskForAvailableCurrency() throws Exception {
-        mvc.perform(get("/api/currencies/available/PLN")
+        mvc.perform(get("/api/public/currencies/available/PLN")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.availability", is(true)));
     }
     @Test
     public void shouldReturnFalseWhenAskForNonAvailableCurrency() throws Exception {
-        mvc.perform(get("/api/currencies/available/MVN")
+        mvc.perform(get("/api/public/currencies/available/MVN")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.availability", is(false)));
