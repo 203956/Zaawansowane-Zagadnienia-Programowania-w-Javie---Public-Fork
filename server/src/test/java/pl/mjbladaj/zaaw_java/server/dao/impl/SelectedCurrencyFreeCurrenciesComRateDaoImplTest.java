@@ -90,7 +90,7 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         UniversalRate rate = selectedCurrencyRateDao.getRate("EUR", "PLN");
         //then
         assertEquals("EUR", rate.getSymbol());
-        assertEquals(4.6522, rate.getRate(), 0.00001);
+        assertEquals(4.6522, rate.getRate());
     }
     @Test
     public void shouldThrowEntityNotFoundWhenFirstCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
