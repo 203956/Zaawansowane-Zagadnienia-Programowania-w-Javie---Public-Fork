@@ -109,7 +109,7 @@ public class FreeCurrenciesComRateServiceImplTest {
         //when
         CurrencyRate convertedRate = rateService.getConvertedRate("EUR", "PLN");
         //then
-        assertEquals(4.6522, convertedRate.getRate());
+        assertEquals(4.6522, convertedRate.getRate().doubleValue(), 0.0001);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class FreeCurrenciesComRateServiceImplTest {
                 getAmountOfAnotherCurrency(10.0, 5.0, 20.0),
                 getInCurrencies("USD", "EUR", "GBP"), "PLN");
         //then
-        assertEquals(162.827, convertedRate.getRate());
+        assertEquals(162.827, convertedRate.getRate().doubleValue(), 0.0001);
     }
 
     @Test

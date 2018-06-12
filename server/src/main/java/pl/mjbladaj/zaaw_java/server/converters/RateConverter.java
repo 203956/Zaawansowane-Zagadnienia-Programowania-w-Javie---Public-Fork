@@ -10,7 +10,7 @@ public abstract class RateConverter {
          return
                  CurrencyRate
                          .builder()
-                         .rate(rate.getRate())
+                         .rate(rate.getRate().doubleValue())
                          .build();
     }
 }
