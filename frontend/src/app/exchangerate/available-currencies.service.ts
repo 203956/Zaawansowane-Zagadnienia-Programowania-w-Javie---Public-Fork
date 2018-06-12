@@ -7,8 +7,8 @@ import {CurrencyRate} from './models/currencyRate';
 @Injectable()
 export class AvailableCurrenciesService {
 
-  availableCurrenciesPath = '/api/currencies/available';
-  selectedCurrencyPath = '/api/currencies/';
+  availableCurrenciesPath = '/api/public/currencies/available';
+  selectedCurrencyPath = '/api/public/currencies/';
 
   constructor(
     private http: HttpClient) {}
