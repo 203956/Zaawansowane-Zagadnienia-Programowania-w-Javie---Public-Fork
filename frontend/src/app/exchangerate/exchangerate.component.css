@@ -7,3 +7,21 @@
 .break {
   min-height: 40px;
 }
+
+.custom-input {
+  width: 50px;
+}
+
+.button-position {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.button-position-outerDiv {
+  position: relative;
+}
+
+.display-block {
+  display: block;
+}

@@ -13,9 +13,14 @@ import {AverageDifferenceService} from "./average-difference.service";
 })
 export class ExchangerateComponent implements OnInit {
 
-  currencies: Array<Currency>;
+  currencies = [];
+  selectedCurrencies = [];
+  currenciesAmount = [];
   rate: CurrencyRate;
+  rateForSelectedCurrencies: CurrencyRate;
+  currency = 'PLN';
   rateValue: number;
+  rateValueForSelectedCurrencies: number;
   errorMessage: string;
   endDate: string = "2018-03-15";
   startDate: string = "2018-03-11";
@@ -26,6 +31,7 @@ export class ExchangerateComponent implements OnInit {
   chosenCurrency1: Currency;
   chosenCurrency2: Currency;
   chosenCurrency3: Currency;
+
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -85,6 +91,23 @@ export class ExchangerateComponent implements OnInit {
       .catch(error=> console.log(error));
   }
 
+  calculateCurrenciesRate(): void {
+    this.getSelectedCurrenciesAmountOfOtherCurrency();
+  }
+
+  getSelectedCurrenciesAmountOfOtherCurrency(): void {
+    this.availableCurrencyService
+      .getSelectedCurrenciesAmountOfOtherCurrency(this.currenciesAmount, this.selectedCurrencies, this.currency)
+      .subscribe(
+        result => {
+          this.rateForSelectedCurrencies = result;
+        },
+        error => this.errorMessage = error,
+        () => {
+          this.rateValueForSelectedCurrencies = this.rateForSelectedCurrencies.rate;
+        });
+  }
+
   getSelectedCurrencyRate(symbol: string) {
     this.availableCurrencyService
       .getRate(symbol).subscribe(
@@ -97,6 +120,18 @@ export class ExchangerateComponent implements OnInit {
         this.rateValue = this.rate.rate;
       }
     );
+  }
+
+  setArrayWithCheckboxValues(event, item) {
+    if ( !event.target.checked ) {
+      const index: number = this.selectedCurrencies.indexOf(item.symbol);
+      if (index !== -1) {
+        this.selectedCurrencies.splice(index, 1);
+        this.currenciesAmount.splice(index, 1);
+      }
+    } else {
+      this.selectedCurrencies.push(item.symbol);
+    }
   }
 
   getDate(event) {

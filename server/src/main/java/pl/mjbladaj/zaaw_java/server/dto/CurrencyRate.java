@@ -1,4 +1,5 @@
 package pl.mjbladaj.zaaw_java.server.dto;
+
 import lombok.*;
 
 @Builder
@@ -8,4 +9,3 @@ import lombok.*;
 public class CurrencyRate {
     private Double rate;
 }
-

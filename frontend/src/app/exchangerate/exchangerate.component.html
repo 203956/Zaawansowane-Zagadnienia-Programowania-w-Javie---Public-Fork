@@ -1,4 +1,9 @@
 <div class="container">
+  <label for="currency">Waluta:</label>
+  <select class="form-control" id="currency" (change)="chooseCurrency($event)" [(ngModel)]="currency">
+    <option *ngFor="let currency of currencies; " value={{currency.symbol}} >{{currency.symbol}} - {{currency.name}}</option>
+  </select>
+<div>{{rateValue}}</div>
   <div class="row">
     <div class="col-md-4 col-sm-12">
       <label for="currency">Waluta podstawowa:</label>
@@ -62,4 +67,27 @@
 
 
 
+</div>
+
+
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-body button-position-outerDiv">
+      <div><b>Waluty in:</b></div>
+      <label *ngFor="let currency of currencies">
+        <input class="custom-input" (change)="setArrayWithCheckboxValues($event, currency)" type="checkbox">
+        <span>{{currency.symbol}}</span>
+      </label>
+      <div *ngIf="selectedCurrencies">
+        <div *ngFor="let currency of selectedCurrencies;let i = index">
+          <div>
+            <div class="col-sm-1">{{currency}}</div>
+            <div class="col-sm-7"><input [(ngModel)]="currenciesAmount[i]" class="form-control" placeholder="ilość"/></div>
+          </div>
+        </div>
+      </div>
+      <div><button type="submit" class="button-position btn btn-primary" (click)="calculateCurrenciesRate()">Oblicz</button></div>
+      <div>{{rateValueForSelectedCurrencies}}</div>
+    </div>
+  </div>
 </div>

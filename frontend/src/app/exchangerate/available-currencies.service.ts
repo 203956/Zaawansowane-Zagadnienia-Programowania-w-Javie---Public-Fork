@@ -10,9 +10,10 @@ export class AvailableCurrenciesService {
 
   availableCurrenciesPath = '/api/currencies/available';
   selectedCurrencyPath = '/api/currencies/';
+  selectedCurrenciesAmountOfOtherCurrencyPath = '/api/currencies/';
 
-  constructor(
-    private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getAvailableCurrency(): Observable<Currency[]> {
     return this.http.get<Currency[]>(this.availableCurrenciesPath);
@@ -20,5 +21,12 @@ export class AvailableCurrenciesService {
 
   getRate(symbol: string): Observable<CurrencyRate> {
     return this.http.get<CurrencyRate>(this.selectedCurrencyPath + symbol + '/rate');
+  }
+
+  getSelectedCurrenciesAmountOfOtherCurrency(amountOfInCurrencies: number[], inCurrencies: string[], outCurrency: string): Observable<CurrencyRate> {
+    let endpoint = this.selectedCurrenciesAmountOfOtherCurrencyPath + '?out=' + outCurrency;
+    inCurrencies.forEach(c => endpoint += `&currencies=${c}`);
+    amountOfInCurrencies.forEach(a => endpoint += `&amount=${a}`);
+    return this.http.get<CurrencyRate>(endpoint);
   }
 }

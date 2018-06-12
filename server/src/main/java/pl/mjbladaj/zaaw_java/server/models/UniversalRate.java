@@ -9,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class UniversalRate {
     private String symbol;
-    private double rate;
+    private Number rate;
 }
