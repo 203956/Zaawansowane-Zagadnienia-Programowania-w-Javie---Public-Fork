@@ -31,12 +31,9 @@ public abstract class RateInTimeConverter {
                     currencyRate.setTime(TimeConverter.convertStringToDateTime((String)pair.getKey()));
 
                     result.add(currencyRate);
-                    it.remove();
                 }
 
-
         }
-
         return result;
     }
 

@@ -122,7 +122,7 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         //expect
         expectedException.expect(EntityNotFoundException.class);
         expectedException.expectMessage("Currency does not exists.");
-        //whenF
+        //when
         UniversalRate convertedRate = selectedCurrencyRateDao.getRate("DOL", "DCL");
         //then
     }

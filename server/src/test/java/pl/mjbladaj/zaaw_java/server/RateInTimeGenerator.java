@@ -22,7 +22,7 @@ public abstract class RateInTimeGenerator {
         return "2018-01-20";
     }
 
-    private static String getValidDtae(int param) { return TimeConverter.convertDateToString(new DateTime(System.currentTimeMillis() + param*24*60*60*1000)); }
+    private static String getValidDate(int param) { return TimeConverter.convertDateToString(new DateTime(System.currentTimeMillis() + param*24*60*60*1000)); }
 
     private static Map<String, FreeCurrenciesComResult> getResults(int amount) {
         Map<String, FreeCurrenciesComResult> resultMap =
@@ -33,8 +33,7 @@ public abstract class RateInTimeGenerator {
         result.setTo("USD");
         Map<String, Number> vals = new HashMap<>();
         for (int i = 0; i < amount ; i++) {
-           // String x = getValidDtae(i);
-            vals.put(getValidDtae(i), 4.1582);
+            vals.put(getValidDate(i), 4.1582);
         }
 
         result.setVal(vals);

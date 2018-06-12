@@ -17,21 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import pl.mjbladaj.zaaw_java.server.ClassMatcher;
-import pl.mjbladaj.zaaw_java.server.RateGenerator;
 import pl.mjbladaj.zaaw_java.server.RateInTimeGenerator;
 import pl.mjbladaj.zaaw_java.server.StringsMatcher;
-import pl.mjbladaj.zaaw_java.server.converters.RateInTimeConverter;
 import pl.mjbladaj.zaaw_java.server.converters.TimeConverter;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyHistoryRateDao;
-import pl.mjbladaj.zaaw_java.server.dao.impl.SelectedCurrencyHistoryRateDaoImpl;
-import pl.mjbladaj.zaaw_java.server.dao.impl.SelectedCurrencyRateDaoImpl;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
-import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
-import pl.mjbladaj.zaaw_java.server.models.FreeCurrenciesComRate;
 import pl.mjbladaj.zaaw_java.server.models.FreeCurrenciesComRateInTime;
-import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
 import java.util.List;
 

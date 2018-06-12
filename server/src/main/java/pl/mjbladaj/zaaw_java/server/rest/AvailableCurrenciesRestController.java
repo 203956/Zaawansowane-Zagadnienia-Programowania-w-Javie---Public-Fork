@@ -25,7 +25,7 @@ public class AvailableCurrenciesRestController {
     @ApiOperation(value = "Returns list of available currencies.",
             response = AvailableCurrency.class, responseContainer = "List")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Currencies founded."),
+            @ApiResponse(code = 200, message = "Currencies found."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
             @ApiResponse(code = 403, message = "You are forbidden to access this resource."),
             @ApiResponse(code = 404, message = "Currencies not found."),
