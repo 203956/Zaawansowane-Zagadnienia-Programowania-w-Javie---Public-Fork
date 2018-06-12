@@ -24,7 +24,6 @@ import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.RateService;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,6 +60,14 @@ public class FreeCurrenciesComRateServiceImplTest {
                 .symbol("EUR")
                 .rate(4.6522)
                 .build();
+    }
+
+    private ArrayList<String> getInCurrencies(String... currencies) {
+        return Stream.of(currencies).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private ArrayList<Double> getAmountOfAnotherCurrency(Double... currenciesAmount) {
+        return Stream.of(currenciesAmount).collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void setUpAvailableCurrenciesService() {
@@ -106,30 +113,6 @@ public class FreeCurrenciesComRateServiceImplTest {
     }
 
     @Test
-    public void shouldReturnValidOtherCurrencyRate() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
-        //given
-        ArrayList<String> inCurrencies = Stream.of("USD", "EUR", "GBP").collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<Double> getAmountOfAnotherCurrency = Stream.of(10.0, 5.0, 20.0).collect(Collectors.toCollection(ArrayList::new));
-        //when
-        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(getAmountOfAnotherCurrency, inCurrencies, "PLN");
-        //then
-        assertEquals(162.827, convertedRate.getRate());
-    }
-
-    @Test
-    public void shouldThrowCurrencyNotAvailableWhenOuTCurrencyIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
-        //given
-        ArrayList<String> inCurrencies = Stream.of("USD", "EUR", "GBP").collect(Collectors.toCollection(ArrayList::new));
-        ArrayList<Double> getAmountOfAnotherCurrency = Stream.of(10.0, 5.0, 20.0).collect(Collectors.toCollection(ArrayList::new));
-        //expect
-        expectedException.expect(CurrencyNotAvailableException.class);
-        expectedException.expectMessage("Currency is not available.");
-        //when
-        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(getAmountOfAnotherCurrency, inCurrencies, "MVN");
-        //then
-    }
-
-    @Test
     public void shouldThrowCurrencyNotAvailableWhenFirstCurrencyIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
         //expect
@@ -139,6 +122,7 @@ public class FreeCurrenciesComRateServiceImplTest {
         CurrencyRate convertedRate = rateService.getConvertedRate("MVN", "PLN");
         //then
     }
+
     @Test
     public void shouldThrowCurrencyNotAvailableWhenSecondCurrencyIsNotAbvailable() throws CurrencyNotAvailableException, EntityNotFoundException {
         //given
@@ -161,4 +145,66 @@ public class FreeCurrenciesComRateServiceImplTest {
         //then
     }
 
+    @Test
+    public void shouldReturnValidOtherCurrencyRate() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
+        //given
+        //when
+        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(
+                getAmountOfAnotherCurrency(10.0, 5.0, 20.0),
+                getInCurrencies("USD", "EUR", "GBP"), "PLN");
+        //then
+        assertEquals(162.827, convertedRate.getRate());
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableWhenOuTCurrencyIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
+        //given
+        //expect
+        expectedException.expect(CurrencyNotAvailableException.class);
+        expectedException.expectMessage("Currency is not available.");
+        //when
+        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(
+                getAmountOfAnotherCurrency(10.0, 5.0, 20.0),
+                getInCurrencies("USD", "EUR", "GBP"), "MVN");
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableWhenInCurrencyIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
+        //given
+        //expect
+        expectedException.expect(CurrencyNotAvailableException.class);
+        expectedException.expectMessage("Currency is not available.");
+        //when
+        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(
+                getAmountOfAnotherCurrency(10.0, 5.0, 20.0),
+                getInCurrencies("USD", "EUR", "MVN"), "PLN");
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableWhenInAndOutCurrenciesAreNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
+        //given
+        //expect
+        expectedException.expect(CurrencyNotAvailableException.class);
+        expectedException.expectMessage("Currency is not available.");
+        //when
+        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(
+                getAmountOfAnotherCurrency(10.0, 5.0, 20.0),
+                getInCurrencies("USD", "EUR", "MVN"), "JAV");
+        //then
+    }
+
+    @Test
+    public void shouldThrowSameCurrenciesConvertExceptionWhenOuTCurrencyIsNotAvailable() throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException {
+        //given
+        //expect
+        expectedException.expect(SameCurrenciesConvertException.class);
+        expectedException.expectMessage("Currencies are the same.");
+        //when
+        CurrencyRate convertedRate = rateService.getAmountOfAnotherCurrency(
+                getAmountOfAnotherCurrency(10.0, 5.0, 20.0),
+                getInCurrencies("PLN", "EUR", "GBP"), "PLN");
+        //then
+    }
 }

@@ -25,7 +25,6 @@ import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
@@ -124,6 +123,4 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         UniversalRate convertedRate = selectedCurrencyRateDao.getRate("DOL", "DCL");
         //then
     }
-
-
 }
