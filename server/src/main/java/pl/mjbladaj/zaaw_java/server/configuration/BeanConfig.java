@@ -17,13 +17,4 @@ public class BeanConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
-   @Bean
-    public Docket productApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("pl.mjbladaj.zaaw_java.server.rest"))
-                .paths(PathSelectors.any())
-                .build();
-    }
 }
