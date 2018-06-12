@@ -124,4 +124,6 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         UniversalRate convertedRate = selectedCurrencyRateDao.getRate("DOL", "DCL");
         //then
     }
+
+
 }

@@ -9,5 +9,5 @@ import java.util.ArrayList;
 
 public interface RateService {
     CurrencyRate getConvertedRate(String fromCurrency, String toCurrency) throws EntityNotFoundException, CurrencyNotAvailableException;
-    CurrencyRate getAmountOfAnotherCurrency(ArrayList<Number> amountOfInCurrencies, ArrayList<String> inCurrencies, String outCurrency) throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException;
+    CurrencyRate getAmountOfAnotherCurrency(ArrayList<Double> amountOfInCurrencies, ArrayList<String> inCurrencies, String outCurrency) throws CurrencyNotAvailableException, EntityNotFoundException, SameCurrenciesConvertException;
 }

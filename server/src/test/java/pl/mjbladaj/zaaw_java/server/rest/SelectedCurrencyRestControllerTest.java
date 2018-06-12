@@ -37,7 +37,14 @@ public class SelectedCurrencyRestControllerTest {
                 .rate(3.4554)
                 .build();
     }
-
+/*
+    private CurrencyRate getOtherCurrencyRate() {
+        return CurrencyRate
+                .builder()
+                .rate(154.4067)
+                .build();
+    }
+*/
     @Before
     public void setUp() throws EntityNotFoundException, CurrencyNotAvailableException {
         Mockito.when(rateService.getConvertedRate("EUR", "PLN"))
