@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AvailableCurrenciesService} from './available-currencies.service';
-import {Currency} from './models/currency';
-import {CurrencyRate} from "./models/currencyRate";
+import {CurrencyRate} from './models/currencyRate';
 
 @Component({
   selector: 'app-exchangerate',
@@ -11,10 +10,16 @@ import {CurrencyRate} from "./models/currencyRate";
 })
 export class ExchangerateComponent implements OnInit {
 
-  currencies: Array<Currency>;
+  currencies = [];
+  selectedCurrencies = [];
+  currenciesAmount = [];
   rate: CurrencyRate;
+  rateForSelectedCurrencies: CurrencyRate;
+  currency = 'PLN';
   rateValue: number;
+  rateValueForSelectedCurrencies: number;
   errorMessage: string;
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private availableCurrencyService: AvailableCurrenciesService) {
@@ -31,6 +36,23 @@ export class ExchangerateComponent implements OnInit {
     this.getSelectedCurrencyRate(event.target.value);
   }
 
+  calculateCurrenciesRate(): void {
+    this.getSelectedCurrenciesAmountOfOtherCurrency();
+  }
+
+  getSelectedCurrenciesAmountOfOtherCurrency(): void {
+    this.availableCurrencyService
+      .getSelectedCurrenciesAmountOfOtherCurrency(this.currenciesAmount, this.selectedCurrencies, this.currency)
+      .subscribe(
+        result => {
+          this.rateForSelectedCurrencies = result;
+        },
+        error => this.errorMessage = error,
+        () => {
+          this.rateValueForSelectedCurrencies = this.rateForSelectedCurrencies.rate;
+        });
+  }
+
   getSelectedCurrencyRate(symbol: string) {
     this.availableCurrencyService
       .getRate(symbol).subscribe(
@@ -43,5 +65,17 @@ export class ExchangerateComponent implements OnInit {
         this.rateValue = this.rate.rate;
       }
     );
+  }
+
+  setArrayWithCheckboxValues(event, item) {
+    if ( !event.target.checked ) {
+      const index: number = this.selectedCurrencies.indexOf(item.symbol);
+      if (index !== -1) {
+        this.selectedCurrencies.splice(index, 1);
+        this.currenciesAmount.splice(index, 1);
+      }
+    } else {
+      this.selectedCurrencies.push(item.symbol);
+    }
   }
 }
