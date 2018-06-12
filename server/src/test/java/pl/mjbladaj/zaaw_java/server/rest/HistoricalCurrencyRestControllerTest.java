@@ -59,6 +59,19 @@ public class HistoricalCurrencyRestControllerTest {
         }
         return result;
     }
+
+    private List<UniversalCurrencyRateInTime> getCurrencyListRateInTimeForThreeSymbol() {
+        List<UniversalCurrencyRateInTime> result = new ArrayList<>();
+        for (int i = 0; i < 4 ; i++) {
+            result.add(UniversalCurrencyRateInTime
+                    .builder()
+                    .rate(3.4554)
+                    .time(TimeConverter.convertStringToDateTime(getValidDate()))
+                    .build());
+        }
+        return result;
+    }
+
     private String getValidDate() {return TimeConverter.convertDateToString(new DateTime()); }
 
     private String getValidFutureDate() {
@@ -79,8 +92,17 @@ public class HistoricalCurrencyRestControllerTest {
         Mockito.when(historicalRateService.getConvertedRateForGivenPeriod("EUR", "PLN", getValidDate(), getValidFutureDate()))
                 .thenReturn(getCurrencyListRateInTime());
 
+        Mockito.when(historicalRateCalculationsService.getDifferenceInRatesRatesForGivenPeriod("EUR", "PLN","USD", getValidDate(), getValidFutureDate()))
+                .thenReturn(getCurrencyListRateInTime());
+
         Mockito.when(historicalRateService.getConvertedRateForGivenPeriod("DOL", "PLN", getValidDate(), getValidFutureDate()))
                 .thenThrow(new CurrencyNotAvailableException());
+
+        Mockito.when(historicalRateCalculationsService.getDifferenceInRatesRatesForGivenPeriod("DOL", "PLN","USD", getValidDate(), getValidFutureDate()))
+                .thenThrow(new CurrencyNotAvailableException());
+
+        Mockito.when(historicalRateCalculationsService.getDifferenceInRatesRatesForGivenPeriod("GBP", "PLN","USD", getValidDate(), getValidFutureDate()))
+                .thenThrow(new EntityNotFoundException());
 
         Mockito.when(historicalRateService.getConvertedRateForGivenPeriod("GBP", "PLN", getValidDate(), getValidFutureDate()))
                 .thenThrow(new EntityNotFoundException());
@@ -89,6 +111,9 @@ public class HistoricalCurrencyRestControllerTest {
                 .thenThrow(new TimePeriodNotAvailableException());
 
         Mockito.when(historicalRateService.getConvertedRateForGivenPeriod("GBP", "PLN", getValidDate(), getInValidFutureDate()))
+                .thenThrow(new TimePeriodNotAvailableException());
+
+        Mockito.when(historicalRateCalculationsService.getDifferenceInRatesRatesForGivenPeriod("EUR", "PLN","USD", getValidDate(), getInValidFutureDate()))
                 .thenThrow(new TimePeriodNotAvailableException());
     }
 
@@ -124,11 +149,21 @@ public class HistoricalCurrencyRestControllerTest {
     }
 
     @Test
+    public void shouldReturnCurrencyRateInTimeForGivenThreeCurrencies() throws Exception {
+
+        mvc.perform(get("/api/currencies/EUR/PLN/USD/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].rate", is(3.4554)));
+    }
+
+    @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenDay() throws Exception {
         mvc.perform(get("/api/currencies/DOL/" + getValidDate() + "rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
+
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyForGivenTwoCurrenciesAndStartAndEndDate() throws Exception {
         mvc.perform(get("/api/currencies/DOL/PLN/" + getValidDate() + "rate")
@@ -142,6 +177,14 @@ public class HistoricalCurrencyRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
+
+    @Test
+    public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenTreeCurrencies() throws Exception {
+        mvc.perform(get("/api/currencies/DOL/PLN/USD/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
+
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenPeriodAndGivenTwoCurrencies() throws Exception {
         mvc.perform(get("/api/currencies/DOL/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
@@ -171,11 +214,27 @@ public class HistoricalCurrencyRestControllerTest {
     }
 
     @Test
+    public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenPeriodAndGivenThreeCurrencies() throws Exception {
+        mvc.perform(get("/api/currencies/GBP/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
+
+    @Test
+    public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenTreeCurrencies() throws Exception {
+        mvc.perform(get("/api/currencies/GBP/PLN/USD/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
+
+    @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenDay() throws Exception {
         mvc.perform(get("/api/currencies/GBP/" + getInValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
+
+
 
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriod() throws Exception {
@@ -187,6 +246,12 @@ public class HistoricalCurrencyRestControllerTest {
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriodAndGivenTwoCurrencies() throws Exception {
         mvc.perform(get("/api/currencies/GBP/PLN/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
+    }
+    @Test
+    public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriodAndGivenThreeCurrencies() throws Exception {
+        mvc.perform(get("/api/currencies/EUR/PLN/USD/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
