@@ -84,6 +84,7 @@ public class FreeCurrenciesComHistoricalRateServiceImplTest {
         ))
                 .thenReturn(Availability.builder().availability(false).build());
     }
+
     @Test
     public void shouldReturnValidHistoricalCurrencyRate() throws EntityNotFoundException, CurrencyNotAvailableException, TimePeriodNotAvailableException {
         //given

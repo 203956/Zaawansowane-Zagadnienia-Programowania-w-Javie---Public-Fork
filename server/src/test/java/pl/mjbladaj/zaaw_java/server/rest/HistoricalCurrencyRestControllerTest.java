@@ -60,18 +60,6 @@ public class HistoricalCurrencyRestControllerTest {
         return result;
     }
 
-    private List<UniversalCurrencyRateInTime> getCurrencyListRateInTimeForThreeSymbol() {
-        List<UniversalCurrencyRateInTime> result = new ArrayList<>();
-        for (int i = 0; i < 4 ; i++) {
-            result.add(UniversalCurrencyRateInTime
-                    .builder()
-                    .rate(3.4554)
-                    .time(TimeConverter.convertStringToDateTime(getValidDate()))
-                    .build());
-        }
-        return result;
-    }
-
     private String getValidDate() {return TimeConverter.convertDateToString(new DateTime()); }
 
     private String getValidFutureDate() {
@@ -233,8 +221,6 @@ public class HistoricalCurrencyRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
-
-
 
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriod() throws Exception {

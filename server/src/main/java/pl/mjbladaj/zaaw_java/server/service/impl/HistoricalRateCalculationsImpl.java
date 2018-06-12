@@ -40,7 +40,7 @@ public class HistoricalRateCalculationsImpl implements HistoricalRateCalculation
             UniversalCurrencyRateInTime universalCurrencyRateInTime = new UniversalCurrencyRateInTime();
             universalCurrencyRateInTime.setTime(resultFirstCurrency.get(i).getTime());
             UniversalCurrencyRateInTime el = resultSecondCurrency.get(i);
-            universalCurrencyRateInTime.setRate(resultFirstCurrency.get(i).getRate() - el.getRate() );
+            universalCurrencyRateInTime.setRate( Math.abs(resultFirstCurrency.get(i).getRate() - el.getRate() ));
             result.add(universalCurrencyRateInTime);
         }
         return result;
