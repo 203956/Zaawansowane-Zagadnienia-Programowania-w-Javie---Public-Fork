@@ -25,7 +25,6 @@ import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
@@ -68,6 +67,9 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         Mockito.when(environment.getProperty("exchange.currency.base.url"))
                 .thenReturn(BASE_URL);
 
+        Mockito.when(environment.getProperty("exchange.currency.base.url"))
+                .thenReturn(BASE_URL);
+
         Mockito.when(restTemplate
                 .getForEntity(getValidUrl(), FreeCurrenciesComRate.class))
                 .thenReturn(ResponseEntity.ok(RateGenerator.getRate()));
@@ -90,7 +92,7 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         UniversalRate rate = selectedCurrencyRateDao.getRate("EUR", "PLN");
         //then
         assertEquals("EUR", rate.getSymbol());
-        assertEquals(4.6522, rate.getRate(), 0.00001);
+        assertEquals(4.6522, rate.getRate());
     }
     @Test
     public void shouldThrowEntityNotFoundWhenFirstCurrencyIsNotProvidedByApi() throws CurrencyNotAvailableException, EntityNotFoundException {
