@@ -27,7 +27,7 @@ public class SelectedCurrencyRestController {
             notes = "If currency with given symbol does not exists, 404 will be returned.",
             response = CurrencyRate.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Currency founded."),
+            @ApiResponse(code = 200, message = "Currency found."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
             @ApiResponse(code = 403, message = "You are forbidden to access this resource."),
             @ApiResponse(code = 404, message = "Currency not found."),

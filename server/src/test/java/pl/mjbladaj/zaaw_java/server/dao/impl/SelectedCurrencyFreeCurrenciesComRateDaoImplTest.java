@@ -67,6 +67,9 @@ public class SelectedCurrencyFreeCurrenciesComRateDaoImplTest {
         Mockito.when(environment.getProperty("exchange.currency.base.url"))
                 .thenReturn(BASE_URL);
 
+        Mockito.when(environment.getProperty("exchange.currency.base.url"))
+                .thenReturn(BASE_URL);
+
         Mockito.when(restTemplate
                 .getForEntity(getValidUrl(), FreeCurrenciesComRate.class))
                 .thenReturn(ResponseEntity.ok(RateGenerator.getRate()));

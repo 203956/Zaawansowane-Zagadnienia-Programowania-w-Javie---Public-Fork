@@ -4,9 +4,10 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ExchangerateComponent } from './exchangerate/exchangerate.component';
-import {AppRoutingModule} from './app-routing.module';
-import {AvailableCurrenciesService} from './exchangerate/available-currencies.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {AppRoutingModule} from "./app-routing.module";
+import {AvailableCurrenciesService} from "./exchangerate/available-currencies.service";
+import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {AverageDifferenceService} from "./exchangerate/average-difference.service";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
@@ -24,7 +25,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   ],
   providers: [
     AvailableCurrenciesService,
-    HttpClient
+    HttpClient,
+    AverageDifferenceService
   ],
   bootstrap: [AppComponent]
 })

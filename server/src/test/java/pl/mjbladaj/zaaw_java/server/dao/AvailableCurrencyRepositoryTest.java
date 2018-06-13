@@ -39,18 +39,18 @@ public class AvailableCurrencyRepositoryTest {
         entityManager.persist(currency);
         entityManager.flush();
         //when
-        Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("MVN");
+        Optional<AvailableCurrency> found = availableCurrencyRepository.findBySymbol("MVN");
         //then
-        assertTrue(founded.isPresent());
-        assertEquals("Maven dollar", founded.get().getName());
-        assertEquals("MVN", founded.get().getSymbol());
+        assertTrue(found.isPresent());
+        assertEquals("Maven dollar", found.get().getName());
+        assertEquals("MVN", found.get().getSymbol());
     }
     @Test
     public void shouldNotFindCurrency() {
         //given
         //when
-        Optional<AvailableCurrency> founded = availableCurrencyRepository.findBySymbol("MVN");
+        Optional<AvailableCurrency> found = availableCurrencyRepository.findBySymbol("MVN");
         //then
-        assertFalse(founded.isPresent());
+        assertFalse(found.isPresent());
     }
 }
