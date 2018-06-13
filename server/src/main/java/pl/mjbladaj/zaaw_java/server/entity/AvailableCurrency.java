@@ -2,7 +2,6 @@ package pl.mjbladaj.zaaw_java.server.entity;
 
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
