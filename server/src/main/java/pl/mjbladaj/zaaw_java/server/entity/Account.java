@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Builder
 @Data
@@ -18,20 +19,16 @@ public class Account {
     private Integer id;
 
     @NotBlank
-    private String name;
-
-    @NotBlank
-    private String surname;
-
-    @NotBlank
     @Size(min = 3)
     @Column(unique = true)
     private String login;
 
     @NotBlank
     @Size(min = 3)
-    @Column(unique = true)
     private String password;
 
     private String mail;
+
+    @OneToMany(mappedBy = "account")
+    private List<AccountState> accountStates;
 }

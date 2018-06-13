@@ -10,3 +10,29 @@ INSERT INTO available_currencies(symbol, name) VALUES ('NOK', 'Korona norweska')
 INSERT INTO available_currencies(symbol, name) VALUES ('HUF', 'Forint węgierski');
 INSERT INTO available_currencies(symbol, name) VALUES ('JPY', 'Jen japoński');
 INSERT INTO available_currencies(symbol, name) VALUES ('RUB', 'Rubel rosyjski');
+
+INSERT INTO account(login, mail, password) VALUES ('kowalj', 'kowalj@gmail.com',  '{noop}kow123' );
+INSERT INTO account(login, mail, password) VALUES ('nowakj', 'nowakj@gmail.com', '{noop}nowak123');
+INSERT INTO account(login, mail, password) VALUES ('ziels', 'ziel@gmail.com', '{noop}ziel123');
+INSERT INTO account(login, mail, password) VALUES ('mila78', 'mila78@gmail.com', '{noop}mila123' );
+INSERT INTO account(login, mail, password) VALUES ('nowakala', 'nowakala5@gmail.com', '{noop}nowakala123');
+INSERT INTO account(login, mail, password) VALUES ('monika7', 'monika7@gmail.com', '{noop}monika123');
+INSERT INTO account(login, mail, password) VALUES ('janiszewska74', 'janiszewska74@gmail.com', '{noop}janisz123');
+INSERT INTO account(login, mail, password) VALUES ('magsza5', 'magsza5@gmail.com', '{noop}magsza123');
+INSERT INTO account(login, mail, password) VALUES ('justynazieba7', 'justynazieba7@gmail.com', '{noop}justy123');
+INSERT INTO account(login, mail, password) VALUES ('januszn7', 'januszn7@gmail.com', '{noop}janusz123');
+INSERT INTO account(login, mail, password) VALUES ('lubicz54', 'lubicz54@gmail.com', '{noop}lubicz123');
+INSERT INTO account(login, mail, password) VALUES ('wisnia78', 'wisnia78@gmail.com', '{noop}wisnia123');
+
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (3.21, 1, 2);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (12.3, 2, 3);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (42.1, 3, 1);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (1.2, 4, 4);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (234.23, 5, 3);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (12.7, 6, 8);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (76.6, 7, 9);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (14.89, 8, 10);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (8.6, 9, 4);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (24.6, 10, 6);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (33.4, 11, 5);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (237.5, 12, 12);
