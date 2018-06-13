@@ -1,5 +1,6 @@
 package pl.mjbladaj.zaaw_java.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,5 +28,6 @@ public class AvailableCurrency {
     private String name;
 
     @OneToMany(mappedBy = "availableCurrency")
+    @JsonIgnore
     private List<AccountState> accountStates;
 }

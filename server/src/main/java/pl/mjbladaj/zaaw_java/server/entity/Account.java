@@ -1,5 +1,6 @@
 package pl.mjbladaj.zaaw_java.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,5 +31,6 @@ public class Account {
     private String mail;
 
     @OneToMany(mappedBy = "account")
+    @JsonIgnore
     private List<AccountState> accountStates;
 }
