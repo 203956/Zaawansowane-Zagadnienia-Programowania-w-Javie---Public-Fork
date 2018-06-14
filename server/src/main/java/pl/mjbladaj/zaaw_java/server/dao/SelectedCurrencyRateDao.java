@@ -7,3 +7,4 @@ import pl.mjbladaj.zaaw_java.server.models.UniversalRate;
 public interface SelectedCurrencyRateDao {
     UniversalRate getRate(String fromCurrency, String toCurrency) throws EntityNotFoundException;
 }
+
