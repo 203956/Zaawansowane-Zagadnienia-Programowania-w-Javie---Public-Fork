@@ -10,6 +10,8 @@ import java.util.List;
 
 @Builder
 @Data
+@EqualsAndHashCode(exclude = "accountStates")
+@ToString(exclude = "accountStates")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
@@ -30,7 +32,7 @@ public class Account {
 
     private String mail;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
     @JsonIgnore
     private List<AccountState> accountStates;
 }

@@ -59,10 +59,5 @@ public class SecruityAdapter extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new ApplicationAuthenticationEntryPoint());
 
     }
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user").password("{noop}user").roles("NONE");
-    }
 
 }
