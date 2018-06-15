@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
+import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
+import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
 
 @RestController
@@ -37,9 +39,8 @@ public class AverageCurrencyRestController {
                                                                       @ApiParam(value = "end date")     @PathVariable("endDate") String endDate) {
        try {
            return ResponseEntity.ok(averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod(base, goalCurrency, startDate, endDate));
-           // return ResponseEntity.ok(historicalRateService.getConvertedRateForGivenDay(symbol, "PLN", date));
-        /*} catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
-            return ResponseEntity.status(404).build();*/
+        } catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(404).build();
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
