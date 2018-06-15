@@ -51,6 +51,7 @@ public class AvailableCurrenciesRestControllerTest {
                 .build());
         return currencies;
     }
+
     @Before
     public void setUp() {
         Mockito.when(availableCurrenciesService.getAll())
