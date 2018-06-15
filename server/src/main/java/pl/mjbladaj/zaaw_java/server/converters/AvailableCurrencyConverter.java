@@ -3,11 +3,11 @@ package pl.mjbladaj.zaaw_java.server.converters;
 import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class AvailableCurrencyConverter {
-    public static AvailableCurrencyDto getAvaiableCurrencyDto(
+public abstract class AvailableCurrencyConverter {
+    public static AvailableCurrencyDto getAvailableCurrencyDto(
             AvailableCurrency availableCurrency) {
         return AvailableCurrencyDto
                 .builder()
@@ -16,15 +16,11 @@ public class AvailableCurrencyConverter {
                 .symbol(availableCurrency.getSymbol())
                 .build();
     }
-    public static List<AvailableCurrencyDto> getAvaiableCurrencyDto(
+    public static List<AvailableCurrencyDto> getAvailableCurrencyDto(
             List<AvailableCurrency> availableCurrencies) {
-        List<AvailableCurrencyDto> result
-                = new ArrayList<>(availableCurrencies.size());
-
-        availableCurrencies.forEach(
-                item -> result.add(getAvaiableCurrencyDto(item))
-        );
-
-        return result;
+        return availableCurrencies
+                .stream()
+                .map(item -> getAvailableCurrencyDto(item))
+                .collect(Collectors.toList());
     }
 }
