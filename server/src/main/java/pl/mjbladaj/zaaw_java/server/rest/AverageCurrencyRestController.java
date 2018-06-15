@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.mjbladaj.zaaw_java.server.dto.RateInWeek;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
 
 @RestController
-@RequestMapping("/api/currencies/average")
+@RequestMapping("/api/public/currencies/average")
 @Api(value = "Average currency for given period",
-        basePath = "/api/currencies/average",
+        basePath = "/api/public/currencies/average",
         produces = "application/json",
         description = "Average currency for given period")
 public class AverageCurrencyRestController {
@@ -24,7 +25,7 @@ public class AverageCurrencyRestController {
     private AverageCurrencyRateService averageCurrencyRateService;
 
     @ApiOperation(value = "Returns average currency for given period - by day of week",
-            response = UniversalCurrencyRateInTime.class)
+            response = RateInWeek.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Currencies found."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
@@ -33,10 +34,10 @@ public class AverageCurrencyRestController {
             @ApiResponse(code = 500, message = "Unknown error.")
     })
     @GetMapping("/{base}/{goalCurrency}/{startDate}/{endDate}")
-    public ResponseEntity getAverageCurrencyForGivenPeriodByDayOfWeek(@ApiParam(value = "base")         @PathVariable("base") String base,
-                                                                      @ApiParam(value = "goalCurrency") @PathVariable("goalCurrency") String goalCurrency,
-                                                                      @ApiParam(value = "start date")   @PathVariable("startDate") String startDate,
-                                                                      @ApiParam(value = "end date")     @PathVariable("endDate") String endDate) {
+    public ResponseEntity getAverageCurrencyForGivenPeriodByDayOfWeek(@ApiParam(value = "base")                     @PathVariable("base") String base,
+                                                                      @ApiParam(value = "goalCurrency")             @PathVariable("goalCurrency") String goalCurrency,
+                                                                      @ApiParam(value = "start date (yyyy-mm-dd)")  @PathVariable("startDate") String startDate,
+                                                                      @ApiParam(value = "end date (yyyy-mm-dd)")    @PathVariable("endDate") String endDate) {
        try {
            return ResponseEntity.ok(averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod(base, goalCurrency, startDate, endDate));
         } catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
