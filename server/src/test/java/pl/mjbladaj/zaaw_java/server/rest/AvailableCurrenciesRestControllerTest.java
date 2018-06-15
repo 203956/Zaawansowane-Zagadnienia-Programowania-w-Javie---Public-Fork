@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
+import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
@@ -35,15 +36,15 @@ public class AvailableCurrenciesRestControllerTest {
     @MockBean
     private AvailableCurrenciesService availableCurrenciesService;
 
-    private List<AvailableCurrency> getAvailableCurrencies() {
-        ArrayList<AvailableCurrency> currencies = new ArrayList<>();
-        currencies.add(AvailableCurrency
+    private List<AvailableCurrencyDto> getAvailableCurrencies() {
+        ArrayList<AvailableCurrencyDto> currencies = new ArrayList<>();
+        currencies.add(AvailableCurrencyDto
                 .builder()
                 .id(1)
                 .symbol("AUD")
                 .build());
 
-        currencies.add(AvailableCurrency
+        currencies.add(AvailableCurrencyDto
                 .builder()
                 .id(2)
                 .symbol("CHF")
