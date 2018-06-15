@@ -8,9 +8,9 @@ import {RateInTime} from "./models/RateInTime";
 @Injectable()
 export class AvailableCurrenciesService {
 
-  availableCurrenciesPath = '/api/currencies/available';
-  selectedCurrencyPath = '/api/currencies/';
-  selectedCurrenciesAmountOfOtherCurrencyPath = '/api/currencies/';
+  availableCurrenciesPath = '/api/public/currencies/available';
+  selectedCurrencyPath = '/api/public/currencies/';
+  selectedCurrenciesAmountOfOtherCurrencyPath = '/api/public/currencies/';
 
   constructor(private http: HttpClient) {
   }

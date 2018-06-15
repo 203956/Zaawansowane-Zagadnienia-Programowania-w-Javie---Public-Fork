@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 @Builder
 @Data
+@EqualsAndHashCode(exclude = {"account", "availableCurrency"})
+@ToString(exclude = {"account", "availableCurrency"})
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.mjbladaj.zaaw_java.server.converters.TimeConverter;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(HistoricalCurrencyRestController.class)
+@WithMockUser
 public class HistoricalCurrencyRestControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -112,7 +114,7 @@ public class HistoricalCurrencyRestControllerTest {
 
     @Test
     public void shouldReturnCurrencyRateInTime() throws Exception {
-        mvc.perform(get("/api/currencies/EUR/" + getValidDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/EUR/" + getValidDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rate", is(3.4554)));
@@ -121,7 +123,7 @@ public class HistoricalCurrencyRestControllerTest {
     @Test
     public void shouldReturnCurrencyRateInTimeForGivenTwoCurrencies() throws Exception {
 
-        mvc.perform(get("/api/currencies/EUR/PLN/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/EUR/PLN/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].rate", is(3.4554)));
@@ -130,7 +132,7 @@ public class HistoricalCurrencyRestControllerTest {
     @Test
     public void shouldReturnCurrencyRateInTimeForGivenTwoCurrenciesAndStartAndEndDate() throws Exception {
 
-        mvc.perform(get("/api/currencies/EUR/PLN/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/EUR/PLN/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].rate", is(3.4554)));
@@ -139,7 +141,7 @@ public class HistoricalCurrencyRestControllerTest {
     @Test
     public void shouldReturnCurrencyRateInTimeForGivenThreeCurrencies() throws Exception {
 
-        mvc.perform(get("/api/currencies/EUR/PLN/USD/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/EUR/PLN/USD/" + getValidDate() + "/" + getValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].rate", is(3.4554)));
@@ -147,97 +149,97 @@ public class HistoricalCurrencyRestControllerTest {
 
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenDay() throws Exception {
-        mvc.perform(get("/api/currencies/DOL/" + getValidDate() + "rate")
+        mvc.perform(get("/api/public/currencies/DOL/" + getValidDate() + "rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyForGivenTwoCurrenciesAndStartAndEndDate() throws Exception {
-        mvc.perform(get("/api/currencies/DOL/PLN/" + getValidDate() + "rate")
+        mvc.perform(get("/api/public/currencies/DOL/PLN/" + getValidDate() + "rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenPeriod() throws Exception {
-        mvc.perform(get("/api/currencies/DOL/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/DOL/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenTreeCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/DOL/PLN/USD/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/DOL/PLN/USD/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrencyAndGivenPeriodAndGivenTwoCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/DOL/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/DOL/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenDay() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/" + getValidDate() + "rate")
+        mvc.perform(get("/api/public/currencies/GBP/" + getValidDate() + "rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenPeriod() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenPeriodAndGivenTwoCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenPeriodAndGivenThreeCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/PLN/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailableAndGivenTreeCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/PLN/USD/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/PLN/USD/" + getValidDate() +"/" +getValidFutureDate() + "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenDay() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/" + getInValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/" + getInValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriod() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriodAndGivenTwoCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/PLN/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/GBP/PLN/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
     @Test
     public void shouldReturn404WhenTimePeriodNotAvailableAndGivenPeriodAndGivenThreeCurrencies() throws Exception {
-        mvc.perform(get("/api/currencies/EUR/PLN/USD/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
+        mvc.perform(get("/api/public/currencies/EUR/PLN/USD/" + getValidDate() +"/"  + getInValidFutureDate()+ "/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }

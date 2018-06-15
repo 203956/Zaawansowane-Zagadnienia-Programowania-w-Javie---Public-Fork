@@ -1,6 +1,5 @@
 package pl.mjbladaj.zaaw_java.server.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,6 +9,8 @@ import java.util.List;
 
 @Builder
 @Data
+@EqualsAndHashCode(exclude = "accountStates")
+@ToString(exclude = "accountStates")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
@@ -27,7 +28,6 @@ public class AvailableCurrency {
     @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "availableCurrency")
-    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "availableCurrency")
     private List<AccountState> accountStates;
 }
