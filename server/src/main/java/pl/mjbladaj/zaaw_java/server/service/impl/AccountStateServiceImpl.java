@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Service
 @Transactional(isolation = Isolation.SERIALIZABLE)
-public class AccountStateImpl implements AccountStateService {
+public class AccountStateServiceImpl implements AccountStateService {
 
     @Autowired
     private AvailableCurrenciesService availableCurrenciesService;
