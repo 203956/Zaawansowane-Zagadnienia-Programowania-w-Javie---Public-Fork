@@ -33,8 +33,8 @@ public class AverageCurrencyRateServiceImpl implements AverageCurrencyRateServic
         return  rateInWeek;
     }
 
-    private double calculateAverageForGivenDayOfWeek(int param, List<UniversalCurrencyRateInTime> rates ) {
-        return rates.stream().filter(e -> e.getTime().getDayOfWeek() == param)
+    private double calculateAverageForGivenDayOfWeek(int dayOfWeek, List<UniversalCurrencyRateInTime> rates ) {
+        return rates.stream().filter(e -> e.getTime().getDayOfWeek() == dayOfWeek)
                 .mapToDouble(UniversalCurrencyRateInTime::getRate)
                 .average()
                 .orElse(0);

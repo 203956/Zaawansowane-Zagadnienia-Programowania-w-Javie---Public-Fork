@@ -15,7 +15,7 @@ export class AverageDifferenceService {
     private http: HttpClient) {}
 
   mainCurrencyPath = '/api/public/currencies/';
-  averageOeriodMainOath ='/api/public/currencies/average/';
+  averagePeriodMainPath ='/api/public/currencies/average/';
 
 
   getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(startDate, endDate, chosenCurrency1, chosenCurrency2, chosenCurrency3): Promise<RateInTime[]> {
@@ -46,7 +46,7 @@ export class AverageDifferenceService {
 
   test() {
 
-    return this.http.get<RateInTime[]>(this.averageOeriodMainOath + "PLN/EUR/2018-01-30/2018-03-30" ).toPromise()
+    return this.http.get<RateInTime[]>(this.averagePeriodMainPath + "PLN/EUR/2018-01-30/2018-03-30" ).toPromise()
       .then(resolve=> {
         return resolve as RateInTime[];
       }, error => {
