@@ -49,8 +49,7 @@ public class TokenAuthenticationUtils {
     }
 
 
-    public static Authentication getAuthentication(HttpServletRequest request,
-                                            HttpServletResponse response) {
+    public static Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
             Claims claims = Jwts.parser()
