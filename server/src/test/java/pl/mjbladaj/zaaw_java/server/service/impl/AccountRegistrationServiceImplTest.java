@@ -14,13 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.mjbladaj.zaaw_java.server.converters.UserDataConverter;
 import pl.mjbladaj.zaaw_java.server.dao.AccountRepository;
-import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dto.UserRegistrationData;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
-import pl.mjbladaj.zaaw_java.server.exceptions.InvalidCredentialsExeption;
+import pl.mjbladaj.zaaw_java.server.exceptions.InvalidCredentialsException;
 import pl.mjbladaj.zaaw_java.server.exceptions.UsernameOccupiedException;
 import pl.mjbladaj.zaaw_java.server.service.AccountRegistrationService;
-import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 import java.util.Optional;
 
@@ -69,7 +67,7 @@ public class AccountRegistrationServiceImplTest {
     }
 
     @Test
-    public void shouldRegisterNewUser() throws UsernameOccupiedException, InvalidCredentialsExeption {
+    public void shouldRegisterNewUser() throws UsernameOccupiedException, InvalidCredentialsException {
         //given
         UserRegistrationData userRegistrationData = UserRegistrationData
                 .builder()
@@ -88,7 +86,7 @@ public class AccountRegistrationServiceImplTest {
         assertEquals("encoded", registrationData.getPassword());
     }
     @Test
-    public void shouldThrowUsernameOccupiedExceptionWhenUsernameIsTaken() throws UsernameOccupiedException, InvalidCredentialsExeption {
+    public void shouldThrowUsernameOccupiedExceptionWhenUsernameIsTaken() throws UsernameOccupiedException, InvalidCredentialsException {
         //given
         UserRegistrationData userRegistrationData = UserRegistrationData
                 .builder()
@@ -105,7 +103,7 @@ public class AccountRegistrationServiceImplTest {
     }
 
     @Test
-    public void shouldThrowUsernameInvalidCredentialsExceptionWhenUsernameIsTooShort() throws UsernameOccupiedException, InvalidCredentialsExeption {
+    public void shouldThrowUsernameInvalidCredentialsExceptionWhenUsernameIsTooShort() throws UsernameOccupiedException, InvalidCredentialsException {
         //given
         UserRegistrationData userRegistrationData = UserRegistrationData
                 .builder()
@@ -114,14 +112,14 @@ public class AccountRegistrationServiceImplTest {
                 .mail("new@domain.com")
                 .build();
         //exception
-        expectedException.expect(InvalidCredentialsExeption.class);
+        expectedException.expect(InvalidCredentialsException.class);
         expectedException.expectMessage("Username is too short.");
         //when
         accountRegistrationService.register(userRegistrationData);
         //then
     }
     @Test
-    public void shouldThrowUsernameInvalidCredentialsExceptionWhenPasswordIsTooShort() throws UsernameOccupiedException, InvalidCredentialsExeption {
+    public void shouldThrowUsernameInvalidCredentialsExceptionWhenPasswordIsTooShort() throws UsernameOccupiedException, InvalidCredentialsException {
         //given
         UserRegistrationData userRegistrationData = UserRegistrationData
                 .builder()
@@ -130,14 +128,14 @@ public class AccountRegistrationServiceImplTest {
                 .mail("new@domain.com")
                 .build();
         //exception
-        expectedException.expect(InvalidCredentialsExeption.class);
+        expectedException.expect(InvalidCredentialsException.class);
         expectedException.expectMessage("Password is too short.");
         //when
         accountRegistrationService.register(userRegistrationData);
         //then
     }
     @Test
-    public void shouldThrowUsernameInvalidCredentialsExceptionWhenUsernameAndPasswordAreTooShort() throws UsernameOccupiedException, InvalidCredentialsExeption {
+    public void shouldThrowUsernameInvalidCredentialsExceptionWhenUsernameAndPasswordAreTooShort() throws UsernameOccupiedException, InvalidCredentialsException {
         //given
         UserRegistrationData userRegistrationData = UserRegistrationData
                 .builder()
@@ -146,7 +144,7 @@ public class AccountRegistrationServiceImplTest {
                 .mail("new@domain.com")
                 .build();
         //exception
-        expectedException.expect(InvalidCredentialsExeption.class);
+        expectedException.expect(InvalidCredentialsException.class);
         expectedException.expectMessage("Username is too short.");
         //when
         accountRegistrationService.register(userRegistrationData);

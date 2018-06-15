@@ -4,10 +4,9 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
+import pl.mjbladaj.zaaw_java.server.dto.ApiError;
 import pl.mjbladaj.zaaw_java.server.dto.UserRegistrationData;
-import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
-import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.exceptions.InvalidCredentialsException;
 import pl.mjbladaj.zaaw_java.server.exceptions.UsernameOccupiedException;
 import pl.mjbladaj.zaaw_java.server.service.AccountRegistrationService;
 
@@ -39,10 +38,10 @@ public class RegistrationRestController {
             return ResponseEntity.ok(
             accountRegistrationService
                     .register(userRegistrationData));
-        } catch (UsernameOccupiedException e) {
-            return ResponseEntity.status(401).body(e.getMessage());
+        } catch (UsernameOccupiedException | InvalidCredentialsException e) {
+            return ResponseEntity.status(401).body(new ApiError(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(500).body(new ApiError(e.getMessage()));
         }
     }
 }
