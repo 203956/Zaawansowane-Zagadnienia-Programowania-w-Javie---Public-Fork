@@ -12,6 +12,7 @@ import pl.mjbladaj.zaaw_java.server.dto.AverageAndDeviations;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
+import pl.mjbladaj.zaaw_java.server.service.impl.ComplexStatisticsServiceImpl;
 
 @RestController
 @RequestMapping("/api/public/statistics")
@@ -22,7 +23,7 @@ import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
 public class ComplexStatisticsRestController {
 
     @Autowired
-    private AverageCurrencyRateService averageCurrencyRateService;
+    private ComplexStatisticsServiceImpl complexStatisticsService;
 
     @ApiOperation(value = "Returns average for given period and deviations of each day",
             response = AverageAndDeviations.class)
@@ -39,7 +40,7 @@ public class ComplexStatisticsRestController {
                                                                 @ApiParam(value = "start date (yyyy-mm-dd)")  @PathVariable("startDate") String startDate,
                                                                 @ApiParam(value = "end date (yyyy-mm-dd)")    @PathVariable("endDate") String endDate) {
         try {
-            return ResponseEntity.ok(averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod(base, goalCurrency, startDate, endDate));
+            return ResponseEntity.ok(complexStatisticsService.getAverageAndDeviations(base, goalCurrency, startDate, endDate));
         } catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
             return ResponseEntity.status(404).build();
         } catch (Exception e) {
