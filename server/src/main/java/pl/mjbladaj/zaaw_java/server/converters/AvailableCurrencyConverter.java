@@ -6,7 +6,7 @@ import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailableCurrencyConverter {
+public abstract class AvailableCurrencyConverter {
     public static AvailableCurrencyDto getAvaiableCurrencyDto(
             AvailableCurrency availableCurrency) {
         return AvailableCurrencyDto
