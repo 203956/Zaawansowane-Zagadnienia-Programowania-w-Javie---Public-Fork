@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
+import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
@@ -79,7 +80,7 @@ public class AvailableCurrenciesServiceImplTest {
     public void shouldReturnListOfAvailableCurrencies() {
         //given
         //when
-        List<AvailableCurrency> available = currenciesService.getAll();
+        List<AvailableCurrencyDto> available = currenciesService.getAll();
         //then
         assertEquals(3, available.size());
 
@@ -92,7 +93,7 @@ public class AvailableCurrenciesServiceImplTest {
         //given
         Mockito.reset(availableCurrencyRepository);
         //when
-        List<AvailableCurrency> available = currenciesService.getAll();
+        List<AvailableCurrencyDto> available = currenciesService.getAll();
         //then
         assertEquals(0, available.size());
     }

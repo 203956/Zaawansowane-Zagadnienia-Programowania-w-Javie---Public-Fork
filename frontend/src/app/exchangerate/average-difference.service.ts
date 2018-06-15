@@ -7,11 +7,15 @@ import {RateInTime} from "./models/RateInTime";
 @Injectable()
 export class AverageDifferenceService {
 
+  averageDifferencePath: string = '/api/';
+
+  private handleError: string;
+
   constructor(
     private http: HttpClient) {}
 
-  mainCurrencyPath = '/api/currencies/';
-  averageOeriodMainOath ='/api/currencies/average/';
+  mainCurrencyPath = '/api/public/currencies/';
+  averageOeriodMainOath ='/api/public/currencies/average/';
 
 
   getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(startDate, endDate, chosenCurrency1, chosenCurrency2, chosenCurrency3): Promise<RateInTime[]> {

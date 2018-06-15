@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
@@ -29,6 +30,7 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SelectedCurrencyRestController.class)
+@WithMockUser
 public class SelectedCurrencyRestControllerTest {
     @Autowired
     private MockMvc mvc;
@@ -123,29 +125,29 @@ public class SelectedCurrencyRestControllerTest {
 
     @Test
     public void shouldReturnCurrencyRate() throws Exception {
-        mvc.perform(get("/api/currencies/EUR/rate")
+        mvc.perform(get("/api/public/currencies/EUR/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rate", is(3.4554)));
     }
 
     @Test
-    public void shouldReturn404WhenApiDontProvidesCurrency() throws Exception {
-        mvc.perform(get("/api/currencies/GBP/rate")
+    public void shouldReturn404WhenApiDoNotProvidesCurrency() throws Exception {
+        mvc.perform(get("/api/public/currencies/DOL/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailable() throws Exception {
-        mvc.perform(get("/api/currencies/DOL/rate")
+        mvc.perform(get("/api/public/currencies/GBP/rate")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturnOtherCurrencyRate() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&currencies=USD&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
+        mvc.perform(get("/api/public/currencies/?out=PLN&currencies=USD&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rate", is(155.2752)));
@@ -153,49 +155,49 @@ public class SelectedCurrencyRestControllerTest {
 
     @Test
     public void shouldReturn404WhenInCurrencyIsNotAvailable() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&currencies=DOL&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
+        mvc.perform(get("/api/public/currencies/?out=PLN&currencies=DOL&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenApiDontProvidesCurrencyf() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&currencies=MVN&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
+        mvc.perform(get("/api/public/currencies/?out=PLN&currencies=MVN&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrenciesAreTheSameIsNotAvailable() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&currencies=PLN&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
+        mvc.perform(get("/api/public/currencies/?out=PLN&currencies=PLN&currencies=EUR&currencies=GBP&amount=10&amount=5&amount=20")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenNotAllCurrenciesAmountNotSpecified() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&currencies=USD&currencies=EUR&currencies=GBP&amount=10&amount=5")
+        mvc.perform(get("/api/public/currencies/?out=PLN&currencies=USD&currencies=EUR&currencies=GBP&amount=10&amount=5")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenInCurrenciesNotSpecified() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&amount=10&amount=5")
+        mvc.perform(get("/api/public/currencies/?out=PLN&amount=10&amount=5")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrenciesAmountNotSpecified() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN&currencies=PLN&currencies=EUR&currencies=GBP")
+        mvc.perform(get("/api/public/currencies/?out=PLN&currencies=PLN&currencies=EUR&currencies=GBP")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrenciesAndAmountNotSpecified() throws Exception {
-        mvc.perform(get("/api/currencies/?out=PLN")
+        mvc.perform(get("/api/public/currencies/?out=PLN")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
