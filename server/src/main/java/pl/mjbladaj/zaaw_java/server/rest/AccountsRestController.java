@@ -1,22 +1,19 @@
 package pl.mjbladaj.zaaw_java.server.rest;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
+import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
 import pl.mjbladaj.zaaw_java.server.service.AccountService;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 
 @RestController
-@RequestMapping("/api/public/accounts")
+@RequestMapping("/api/payment")
 @Api(value = "Add currency amount to account.",
-        basePath = "/api/public/accounts",
+        basePath = "/api/payment",
         produces = "application/json",
         description = "Add currency amount to account.")
 public class AccountsRestController {
@@ -35,11 +32,17 @@ public class AccountsRestController {
             @ApiResponse(code = 404, message = "Account  doesn't exist."),
             @ApiResponse(code = 500, message = "Unknown error.")
     })
-    @RequestMapping(value = "/{login}/{amount}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateAccount(@PathVariable("login") String login, @PathVariable("amount") Double amount, @RequestBody AccountState accountState) {
 
-        Integer accountId = accountService.getAccountId(login);
-        accountStateService.updateAccountState(accountId, amount);
-        return ResponseEntity.noContent().build();
+    @ApiImplicitParam(name = "Authorization", value = "Authorization token",
+            required = true, dataType = "string", paramType = "header")
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateAccount(
+        @RequestBody AccountState accountState,
+        @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
+            String login = TokenAuthenticationUtils.getUserLogin(token);
+            Integer accountId = accountService.getAccountId(login);
+            accountStateService.updateAccountState(accountId);
+
+            return ResponseEntity.noContent().build();
     }
 }
