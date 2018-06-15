@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
+import pl.mjbladaj.zaaw_java.server.dto.ExchangeStatus;
 import pl.mjbladaj.zaaw_java.server.exceptions.AccountStateException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
 import pl.mjbladaj.zaaw_java.server.service.CurrencyExchangeService;
 
@@ -39,14 +41,17 @@ public class CurrencyExchangeRestController {
             @PathVariable("amount") double amount
     ) {
         //TODO:
-        //Return result
         //Handle exceptions
         try {
-            currencyExchangeService.exchange(TokenAuthenticationUtils.getUserLogin(username),
+            ExchangeStatus status = currencyExchangeService.exchange(TokenAuthenticationUtils.getUserLogin(username),
                     from, to, amount);
+            return ResponseEntity
+                    .ok(status);
         } catch (CurrencyNotAvailableException e) {
             e.printStackTrace();
         } catch (AccountStateException e) {
+            e.printStackTrace();
+        } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
         return ResponseEntity
