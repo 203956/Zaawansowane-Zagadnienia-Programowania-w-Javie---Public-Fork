@@ -28,7 +28,7 @@ public class AccountAuthenticationService implements UserDetailsService  {
                     .roles("USER")
                     .build();
         } else {
-            throw new UsernameNotFoundException("Could not find the user "
+            throw new UsernameNotFoundException("Could not find user "
                     + username);
         }
     }
