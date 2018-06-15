@@ -37,3 +37,5 @@ INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (8.6
 INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (24.6, 10, 6);
 INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (33.4, 11, 5);
 INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (32.4, 12, 5);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (32.4, 1, 5);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (3.9, 1, 7);

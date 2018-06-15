@@ -5,15 +5,17 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mjbladaj.zaaw_java.server.dto.AccountStateDto;
+import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
 import pl.mjbladaj.zaaw_java.server.service.AccountService;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api")
 @Api(value = "Add currency amount to account.",
-        basePath = "/api/payment",
+        basePath = "/api",
         produces = "application/json",
         description = "Add currency amount to account.")
 public class AccountsRestController {
@@ -24,7 +26,7 @@ public class AccountsRestController {
     @Autowired
     private AccountStateService accountStateService;
 
-    @ApiOperation(value = "Add currency amount to account.")
+    @ApiOperation(value = "Return account state.", response = AccountStateDto.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Account exists."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
@@ -35,14 +37,12 @@ public class AccountsRestController {
 
     @ApiImplicitParam(name = "Authorization", value = "Authorization token",
             required = true, dataType = "string", paramType = "header")
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateAccount(
-        @RequestBody AccountState accountState,
-        @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
-            String login = TokenAuthenticationUtils.getUserLogin(token);
-            Integer accountId = accountService.getAccountId(login);
-            accountStateService.updateAccountState(accountId);
+    @RequestMapping(value = "/state", method = RequestMethod.GET)
+    public ResponseEntity getConvertedAccountState(
+            @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
 
-            return ResponseEntity.noContent().build();
+        String login = TokenAuthenticationUtils.getUserLogin(token);
+        Integer accountId = accountService.getAccountId(login);
+        return ResponseEntity.ok(accountStateService.getAllUserAccountState(accountId));
     }
 }

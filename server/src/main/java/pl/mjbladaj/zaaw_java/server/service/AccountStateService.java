@@ -1,5 +1,7 @@
 package pl.mjbladaj.zaaw_java.server.service;
 
+import java.util.Map;
+
 public interface AccountStateService {
-    void updateAccountState(Integer accountId);
+    Map<String, Double> getAllUserAccountState(Integer accountId);
 }
