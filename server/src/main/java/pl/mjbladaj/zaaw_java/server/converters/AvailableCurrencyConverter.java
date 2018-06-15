@@ -5,6 +5,7 @@ import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AvailableCurrencyConverter {
     public static AvailableCurrencyDto getAvaiableCurrencyDto(
@@ -18,13 +19,9 @@ public abstract class AvailableCurrencyConverter {
     }
     public static List<AvailableCurrencyDto> getAvaiableCurrencyDto(
             List<AvailableCurrency> availableCurrencies) {
-        List<AvailableCurrencyDto> result
-                = new ArrayList<>(availableCurrencies.size());
-
-        availableCurrencies.forEach(
-                item -> result.add(getAvaiableCurrencyDto(item))
-        );
-
-        return result;
+        return availableCurrencies
+                .stream()
+                .map(item -> getAvaiableCurrencyDto(item))
+                .collect(Collectors.toList());
     }
 }
