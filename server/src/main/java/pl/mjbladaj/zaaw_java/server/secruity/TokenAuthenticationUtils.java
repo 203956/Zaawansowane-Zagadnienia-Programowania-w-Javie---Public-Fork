@@ -19,7 +19,7 @@ public class TokenAuthenticationUtils {
     static final String TOKEN_PREFIX = "Bearer";
     public static final String HEADER_STRING = "Authorization";
 
-    static String getAuthoritiesSeparatedByComa(Collection<? extends GrantedAuthority> grantedAuthorities) {
+    public static String getAuthoritiesSeparatedByComa(Collection<? extends GrantedAuthority> grantedAuthorities) {
         String notSeparated = grantedAuthorities.toString();
         return notSeparated.substring(1, notSeparated.length() - 1);
     }
@@ -33,23 +33,23 @@ public class TokenAuthenticationUtils {
         return claims.getSubject();
     }
 
-    static String buildToken(String name) {
+    public static String buildToken(String name) {
         return Jwts.builder()
                 .setSubject(name)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
-    static void addAuthentication(HttpServletResponse res, Authentication auth) throws IOException {
+    public static void addAuthentication(HttpServletResponse res, Authentication auth) throws IOException {
         String JWT = buildToken(auth.getName());
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
     }
-    static String getUser(Claims claims) {
+    public static String getUser(Claims claims) {
         return claims.getSubject();
     }
 
 
-    static Authentication getAuthentication(HttpServletRequest request,
+    public static Authentication getAuthentication(HttpServletRequest request,
                                             HttpServletResponse response) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {

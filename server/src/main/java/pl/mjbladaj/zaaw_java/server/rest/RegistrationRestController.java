@@ -8,7 +8,11 @@ import pl.mjbladaj.zaaw_java.server.dto.ApiError;
 import pl.mjbladaj.zaaw_java.server.dto.UserRegistrationData;
 import pl.mjbladaj.zaaw_java.server.exceptions.InvalidCredentialsException;
 import pl.mjbladaj.zaaw_java.server.exceptions.UsernameOccupiedException;
+import pl.mjbladaj.zaaw_java.server.secruity.JWTAuthenticationFilter;
+import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
 import pl.mjbladaj.zaaw_java.server.service.AccountRegistrationService;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/public/register")
@@ -32,12 +36,18 @@ public class RegistrationRestController {
     })
     @PostMapping("")
     public ResponseEntity register(
-            @RequestBody UserRegistrationData userRegistrationData
+            @RequestBody UserRegistrationData userRegistrationData,
+            HttpServletResponse response
             ) {
         try {
-            return ResponseEntity.ok(
-            accountRegistrationService
-                    .register(userRegistrationData));
+            UserRegistrationData registrationData =
+                    accountRegistrationService
+                            .register(userRegistrationData);
+            response.addHeader("Authorization",
+                    TokenAuthenticationUtils.buildToken(
+                            userRegistrationData.getUsername()
+                    ));
+            return ResponseEntity.ok(registrationData);
         } catch (UsernameOccupiedException | InvalidCredentialsException e) {
             return ResponseEntity.status(401).body(new ApiError(e.getMessage()));
         } catch (Exception e) {

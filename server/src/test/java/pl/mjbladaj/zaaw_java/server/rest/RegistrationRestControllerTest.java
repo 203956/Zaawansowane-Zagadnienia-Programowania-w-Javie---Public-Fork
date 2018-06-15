@@ -23,6 +23,7 @@ import pl.mjbladaj.zaaw_java.server.service.AccountRegistrationService;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,7 +95,8 @@ public class RegistrationRestControllerTest {
                         getUserData("login", "pass", "mail"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.password", is("encoded")));
+                .andExpect(jsonPath("$.password", is("encoded")))
+                .andExpect(header().exists("Authorization"));
     }
     @Test
     public void shouldReturn401WhenUsernameIsOccupied() throws Exception {
@@ -107,7 +109,8 @@ public class RegistrationRestControllerTest {
                 .content(JsonUtils.asJson(
                         getUserData("exist", "pass", "mail"))))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.errorMessage", is("Username is occupied.")));
+                .andExpect(jsonPath("$.errorMessage", is("Username is occupied.")))
+                .andExpect(header().doesNotExist("Authorization"));
     }
     @Test
     public void shouldReturn401WhenUsernameIsTooShort() throws Exception {
@@ -120,7 +123,8 @@ public class RegistrationRestControllerTest {
                 .content(JsonUtils.asJson(
                         getUserData("a", "pass", "mail"))))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.errorMessage", is("Username is too short.")));
+                .andExpect(jsonPath("$.errorMessage", is("Username is too short.")))
+                .andExpect(header().doesNotExist("Authorization"));
     }
     @Test
     public void shouldReturn401WhenPasswordIsToShort() throws Exception {
@@ -133,7 +137,8 @@ public class RegistrationRestControllerTest {
                 .content(JsonUtils.asJson(
                         getUserData("login", "a", "mail"))))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.errorMessage", is("Password is too short.")));
+                .andExpect(jsonPath("$.errorMessage", is("Password is too short.")))
+                .andExpect(header().doesNotExist("Authorization"));
     }
     @Test
     public void shouldReturn401WhenUsernameAndPasswordAreTooShort() throws Exception {
@@ -146,6 +151,7 @@ public class RegistrationRestControllerTest {
                 .content(JsonUtils.asJson(
                         getUserData("a", "a", "mail"))))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.errorMessage", is("Username is too short.")));
+                .andExpect(jsonPath("$.errorMessage", is("Username is too short.")))
+                .andExpect(header().doesNotExist("Authorization"));
     }
 }
