@@ -43,9 +43,6 @@ public class TokenAuthenticationUtils {
     static void addAuthentication(HttpServletResponse res, Authentication auth) throws IOException {
         String JWT = buildToken(auth.getName());
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
-        //TODO: add login data
-        //buildBody(res, auth.getName());
-
     }
     static String getUser(Claims claims) {
         return claims.getSubject();
@@ -67,12 +64,6 @@ public class TokenAuthenticationUtils {
                     null;
         }
         return null;
-    }
-
-    private static void buildBody(HttpServletResponse res,
-                                  String username) throws IOException {
-
-        //TODO: login rest
     }
 }
 
