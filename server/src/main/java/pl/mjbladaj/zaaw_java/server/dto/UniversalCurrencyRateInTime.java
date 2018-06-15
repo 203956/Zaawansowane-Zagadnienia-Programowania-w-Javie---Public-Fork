@@ -10,4 +10,8 @@ import org.joda.time.DateTime;
 public class UniversalCurrencyRateInTime {
     private Double rate;
     private DateTime time;
+
+public Double getRate() {
+    return this.rate;
+}
 }

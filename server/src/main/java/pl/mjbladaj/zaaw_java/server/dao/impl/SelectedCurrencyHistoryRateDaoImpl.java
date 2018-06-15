@@ -44,6 +44,8 @@ public class SelectedCurrencyHistoryRateDaoImpl implements SelectedCurrencyHisto
         return rate;
     }
 
+
+
     @Override
     public List<UniversalCurrencyRateInTime> getGivenPeriodRate(String fromCurrency, String toCurrency, String startDate, String endDate) throws TimePeriodNotAvailableException, EntityNotFoundException {
         DateTime start = TimeConverter.convertStringToDateTime(startDate);
