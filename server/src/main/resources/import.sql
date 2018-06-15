@@ -35,4 +35,4 @@ INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (14.
 INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (8.6, 9, 4);
 INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (24.6, 10, 6);
 INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (33.4, 11, 5);
-INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (237.5, 12, 12);
+INSERT INTO account_state(amount, account_id, available_currency_id) VALUES (null, 12, 5);
