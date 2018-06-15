@@ -14,7 +14,7 @@ export class AverageDifferenceService {
   constructor(
     private http: HttpClient) {}
 
-  mainCurrencyPath = '/api/currencies/';
+  mainCurrencyPath = '/api/public/currencies/';
 
   getDifferenceBetweenBuyingTwoCurrenciesInGivenPeriodOfTime(startDate, endDate, chosenCurrency1, chosenCurrency2, chosenCurrency3): Promise<RateInTime[]> {
 
