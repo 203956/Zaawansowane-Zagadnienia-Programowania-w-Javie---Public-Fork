@@ -7,6 +7,8 @@ import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 
 import java.util.Optional;
 
+import java.util.List;
+
 public interface AccountStateRepository extends JpaRepository<AccountState, Integer> {
 
     @Query("SELECT accSt FROM AccountState accSt " +
@@ -15,4 +17,7 @@ public interface AccountStateRepository extends JpaRepository<AccountState, Inte
     Optional<AccountState> findByLoginAndSymbol(
             @Param("login") String login,
             @Param("symbol") String symbol);
+
+    @Query("SELECT a FROM AccountState a JOIN a.account ac WHERE ac.login = :login")
+    List<AccountState> getAllUserAccountState(@Param("login") String login);
 }
