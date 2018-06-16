@@ -26,7 +26,8 @@ public class CurrencyExchangeRestController {
     @Autowired
     private CurrencyExchangeService currencyExchangeService;
 
-    @ApiOperation(value = "Returns list of available currencies.")
+    @ApiOperation(value = "Returns list of available currencies.",
+    response = ExchangeStatus.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Currencies availability status found."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
