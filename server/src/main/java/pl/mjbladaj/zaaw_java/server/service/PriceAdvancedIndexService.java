@@ -9,5 +9,5 @@ import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import java.util.List;
 
 public interface PriceAdvancedIndexService {
-    Index getCurrencyPriceAmountAdvancedIndex(String currencySymbol, String startDate, String endDate, List<UniversalCurrencyRateInTime> firstListOfCurrencyPrices, List<UniversalCurrencyRateInTime> secondListOfCurrencyPrices, List<Double> firstListOfCurrencyAmounts, List<Double> secondListOfCurrencyAmounts, KindOfIndex kind)  throws TimePeriodNotAvailableException, EntityNotFoundException;
+    Index getCurrencyPriceAmountAdvancedIndex(String currencySymbol, String startDate, String endDate, List<UniversalCurrencyRateInTime> firstListOfCurrencyPrices, List<UniversalCurrencyRateInTime> secondListOfCurrencyPrices, List<Double> firstListOfCurrencyAmounts, List<Double> secondListOfCurrencyAmounts)  throws TimePeriodNotAvailableException, EntityNotFoundException;
 }
