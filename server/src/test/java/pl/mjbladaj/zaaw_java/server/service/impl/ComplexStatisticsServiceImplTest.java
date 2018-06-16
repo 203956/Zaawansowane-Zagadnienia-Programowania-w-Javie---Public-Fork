@@ -69,7 +69,7 @@ public class ComplexStatisticsServiceImplTest {
         long date = System.currentTimeMillis() + day *24*60*60*1000;
         return TimeConverter.convertDateToString(new DateTime(date) );
     }
-    
+
     private void setUpAvailableCurrenciesService() {
         Mockito.when(availableCurrenciesService.isAvailable(
                 argThat(new StringsMatcher("PLN", "EUR", "DCL"))

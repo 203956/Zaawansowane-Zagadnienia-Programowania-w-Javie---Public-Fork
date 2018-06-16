@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mjbladaj.zaaw_java.server.dto.AverageAndDeviations;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
@@ -41,7 +42,7 @@ public class ComplexStatisticsRestController {
                                                                 @ApiParam(value = "end date (yyyy-mm-dd)")    @PathVariable("endDate") String endDate) {
         try {
             return ResponseEntity.ok(complexStatisticsService.getAverageAndDeviations(base, goalCurrency, startDate, endDate));
-        } catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
+        } catch (EntityNotFoundException | TimePeriodNotAvailableException | CurrencyNotAvailableException e ) {
             return ResponseEntity.status(404).build();
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
