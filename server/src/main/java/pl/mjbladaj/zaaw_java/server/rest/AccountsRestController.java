@@ -55,4 +55,25 @@ public class AccountsRestController {
             return ResponseEntity.status(404).build();
         }
     }
+
+        @ApiOperation(value = "Return account state.")
+        @ApiResponses(value = {
+                @ApiResponse(code = 200, message = "Account exists."),
+                @ApiResponse(code = 401, message = "You are unauthorized."),
+                @ApiResponse(code = 403, message = "You are forbidden to access this resource."),
+                @ApiResponse(code = 404, message = "Account  doesn't exist."),
+                @ApiResponse(code = 500, message = "Unknown error.")
+        })
+    @RequestMapping(value = "/account/state", method = RequestMethod.GET)
+    public ResponseEntity getConvertedAccountState(
+            @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
+        String login = TokenAuthenticationUtils.getUserLogin(token);
+            try {
+                Account account = accountService.getAccount(login);
+                return ResponseEntity.ok(
+                        accountStateService.getAllUserAccountState(account.getId()));
+            } catch (AccountNotFoundException e) {
+                return ResponseEntity.status(404).build();
+            }
+    }
 }

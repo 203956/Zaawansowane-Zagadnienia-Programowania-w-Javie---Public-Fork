@@ -11,6 +11,7 @@ import pl.mjbladaj.zaaw_java.server.entity.Account;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -76,5 +77,59 @@ public class AccountStateRepositoryTest {
                         .findByLoginAndSymbol("login", "MVN" );
         //then
         assertFalse(accountStates.isPresent());
+    }
+
+    @Test
+    public void shouldGetAllUserAccountState() {
+        //given
+        Account account = Account
+                .builder()
+                .login("login")
+                .password("{noop}pass")
+                .build();
+
+        AvailableCurrency currency = AvailableCurrency
+                .builder()
+                .symbol("MVN")
+                .name("Maven dollar")
+                .build();
+
+        AccountState accountState = AccountState
+                .builder()
+                .account(account)
+                .amount(3.21)
+                .availableCurrency(currency)
+                .build();
+        entityManager.persist(currency);
+        entityManager.persist(account);
+        entityManager.persist(accountState);
+        entityManager.flush();
+        //when
+        List<AccountState> accountStates =
+                accountStateRepository
+                        .getAllUserAccountState(account.getId());
+        //then
+        assertEquals(1, accountStates.size());
+        assertEquals(3.21, accountStates.get(0).getAmount(), 0.000001);
+        assertEquals("Maven dollar", accountStates.get(0).getAvailableCurrency().getName());
+        assertEquals("MVN", accountStates.get(0).getAvailableCurrency().getSymbol());
+    }
+
+    @Test
+    public void shouldNotGetAllUserAccountState() {
+        //given
+        Account account = Account
+                .builder()
+                .login("login")
+                .password("{noop}pass")
+                .build();
+        entityManager.persist(account);
+        entityManager.flush();
+        //when
+        List<AccountState> accountStates =
+                accountStateRepository
+                        .getAllUserAccountState(account.getId());
+        //then
+        assertEquals(0, accountStates.size());
     }
 }

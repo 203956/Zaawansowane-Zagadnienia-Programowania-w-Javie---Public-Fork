@@ -2,19 +2,22 @@ package pl.mjbladaj.zaaw_java.server.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.mjbladaj.zaaw_java.server.converters.AccountStateConverter;
 import pl.mjbladaj.zaaw_java.server.dao.AccountStateRepository;
+import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mjbladaj.zaaw_java.server.dao.AccountRepository;
 import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
-import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.utils.AvailabilityUtils;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -39,8 +42,8 @@ public class AccountStateServiceImpl implements AccountStateService {
 
         Optional<AccountState> accountState =
                 accountStateRepository
-                .findByLoginAndSymbol(username, currency);
-        if(accountState.isPresent()) {
+                        .findByLoginAndSymbol(username, currency);
+        if (accountState.isPresent()) {
             accountState.get().setAmount(
                     accountState.get().getAmount() + amount
             );
@@ -49,6 +52,11 @@ public class AccountStateServiceImpl implements AccountStateService {
         }
 
         accountStateRepository.save(accountState.get());
+    }
+
+    public Map<String, Double> getAllUserAccountState(Integer accountId) {
+        List<AccountState> accountStates = accountStateRepository.getAllUserAccountState(accountId);
+        return AccountStateConverter.getAccountStateDto(accountStates);
     }
 
     private Optional<AccountState> getNewAccountState(String username, String currency, double amount) {
