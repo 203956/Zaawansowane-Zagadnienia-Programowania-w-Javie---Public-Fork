@@ -1,6 +1,5 @@
 package pl.mjbladaj.zaaw_java.server.service;
 
-import pl.mjbladaj.zaaw_java.server.exceptions.AccountNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 
 import java.util.Map;

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Transactional(isolation = Isolation.SERIALIZABLE)
+@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
 public class AccountStateServiceImpl implements AccountStateService {
 
     @Autowired

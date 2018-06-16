@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mjbladaj.zaaw_java.server.dto.AccountStateData;
-import pl.mjbladaj.zaaw_java.server.entity.Account;
-import pl.mjbladaj.zaaw_java.server.exceptions.AccountNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
-import pl.mjbladaj.zaaw_java.server.service.AccountService;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 
 @RestController

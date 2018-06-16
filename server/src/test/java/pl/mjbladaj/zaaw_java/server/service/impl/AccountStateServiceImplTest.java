@@ -21,7 +21,6 @@ import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
-import pl.mjbladaj.zaaw_java.server.exceptions.AccountNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
@@ -31,7 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
@@ -203,7 +203,7 @@ public class AccountStateServiceImplTest {
     }
 
     @Test
-    public void shouldGetAllUserAccountState() throws AccountNotFoundException {
+    public void shouldGetAllUserAccountState() {
         //given
         //when
         Map<String, Double> allStates = accountStateService.getUserAccountState("exist");

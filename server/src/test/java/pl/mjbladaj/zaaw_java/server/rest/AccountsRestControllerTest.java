@@ -13,28 +13,21 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
 import pl.mjbladaj.zaaw_java.server.JsonUtils;
 import pl.mjbladaj.zaaw_java.server.dto.AccountStateData;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
-import pl.mjbladaj.zaaw_java.server.entity.AccountState;
-import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
-import pl.mjbladaj.zaaw_java.server.exceptions.AccountNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
-import pl.mjbladaj.zaaw_java.server.service.AccountService;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 
 import java.util.Map;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.BDDMockito.given;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(AccountsRestController.class)
