@@ -1,6 +1,5 @@
 package pl.mjbladaj.zaaw_java.server.service.impl;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -22,6 +21,7 @@ import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
+import pl.mjbladaj.zaaw_java.server.exceptions.AccountNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
@@ -120,7 +120,6 @@ public class AccountStateServiceImplTest {
     private void setUpAccountStateRepository() {
         Account existingAccount = Account
                 .builder()
-                .id(1)
                 .login("exist")
                 .password("{noop}pass")
                 .build();
@@ -151,11 +150,11 @@ public class AccountStateServiceImplTest {
                 .thenReturn(Optional.empty());
 
         Mockito.when(accountStateRepository
-                .getAllUserAccountState(1))
+                .getAllUserAccountState("exist"))
                 .thenReturn(getAllUserState());
 
         Mockito.when(accountStateRepository
-                .getAllUserAccountState(0))
+                .getAllUserAccountState("new"))
                 .thenReturn(new ArrayList<>());
     }
 
@@ -204,10 +203,10 @@ public class AccountStateServiceImplTest {
     }
 
     @Test
-    public void shouldGetAllUserAccountState() {
+    public void shouldGetAllUserAccountState() throws AccountNotFoundException {
         //given
         //when
-        Map<String, Double> allStates = accountStateService.getAllUserAccountState(1);
+        Map<String, Double> allStates = accountStateService.getUserAccountState("exist");
         //then
         assertEquals(2, allStates.size());
         assertEquals("PLN", allStates.keySet().toArray()[0]);
@@ -220,7 +219,7 @@ public class AccountStateServiceImplTest {
     public void shouldNotGetAllUserAccountState() {
         //given
         //when
-        Map<String, Double> allStates = accountStateService.getAllUserAccountState(0);
+        Map<String, Double> allStates = accountStateService.getUserAccountState("new");
         //then
         assertEquals(0, allStates.size());
     }

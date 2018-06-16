@@ -54,8 +54,9 @@ public class AccountStateServiceImpl implements AccountStateService {
         accountStateRepository.save(accountState.get());
     }
 
-    public Map<String, Double> getAllUserAccountState(Integer accountId) {
-        List<AccountState> accountStates = accountStateRepository.getAllUserAccountState(accountId);
+    public Map<String, Double> getUserAccountState(String username) {
+        List<AccountState> accountStates = accountStateRepository
+                .getAllUserAccountState(username);
         return AccountStateConverter.getAccountStateDto(accountStates);
     }
 

@@ -18,6 +18,6 @@ public interface AccountStateRepository extends JpaRepository<AccountState, Inte
             @Param("login") String login,
             @Param("symbol") String symbol);
 
-    @Query("SELECT a FROM AccountState a JOIN a.account ac WHERE ac.id = :accountId")
-    List<AccountState> getAllUserAccountState(@Param("accountId") Integer accountId);
+    @Query("SELECT a FROM AccountState a JOIN a.account ac WHERE ac.login = :login")
+    List<AccountState> getAllUserAccountState(@Param("login") String login);
 }

@@ -107,7 +107,7 @@ public class AccountStateRepositoryTest {
         //when
         List<AccountState> accountStates =
                 accountStateRepository
-                        .getAllUserAccountState(account.getId());
+                        .getAllUserAccountState(account.getLogin());
         //then
         assertEquals(1, accountStates.size());
         assertEquals(3.21, accountStates.get(0).getAmount(), 0.000001);
@@ -128,7 +128,7 @@ public class AccountStateRepositoryTest {
         //when
         List<AccountState> accountStates =
                 accountStateRepository
-                        .getAllUserAccountState(account.getId());
+                        .getAllUserAccountState(account.getLogin());
         //then
         assertEquals(0, accountStates.size());
     }
