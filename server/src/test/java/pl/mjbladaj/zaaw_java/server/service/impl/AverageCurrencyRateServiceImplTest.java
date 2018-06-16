@@ -17,6 +17,7 @@ import pl.mjbladaj.zaaw_java.server.converters.TimeConverter;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyHistoryRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.RateInWeek;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
@@ -92,7 +93,7 @@ public class AverageCurrencyRateServiceImplTest {
     }
 
     @Test
-    public void shouldReturnValidAverageRateForEveryDayOfWeek() throws EntityNotFoundException, TimePeriodNotAvailableException {
+    public void shouldReturnValidAverageRateForEveryDayOfWeek() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
         //given
         //when
         RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("EUR", "PLN", getValidDate(), getValidFutureDate() );
@@ -107,7 +108,7 @@ public class AverageCurrencyRateServiceImplTest {
     }
 
     @Test
-    public void shouldThrowEntityNotFound() throws EntityNotFoundException, TimePeriodNotAvailableException {
+    public void shouldThrowEntityNotFound() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
         //given
         //when
         expectedException.expect(EntityNotFoundException.class);
