@@ -5,11 +5,16 @@ import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 public class AvailabilityUtils {
 
-    public static void checkAvailability(AvailableCurrenciesService availableCurrenciesService, String... currency) throws CurrencyNotAvailableException {
+    public static void checkAvailability(AvailableCurrenciesService availableCurrenciesService,
+                                          String... currency) throws CurrencyNotAvailableException {
         for (String element: currency) {
-           if(!availableCurrenciesService.isAvailable(element).isAvailability() ) {
-               throw new CurrencyNotAvailableException("Currency is not available.");
-           }
+            checkAvailability(availableCurrenciesService, element);
+        }
+    }
+    public static void checkAvailability(AvailableCurrenciesService availableCurrenciesService,
+                                         String currency) throws CurrencyNotAvailableException {
+        if(!availableCurrenciesService.isAvailable(currency).isAvailability() ) {
+            throw new CurrencyNotAvailableException("Currency is not available.");
         }
     }
 }

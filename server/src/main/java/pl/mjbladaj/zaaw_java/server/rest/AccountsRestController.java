@@ -5,7 +5,9 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.mjbladaj.zaaw_java.server.entity.AccountState;
+import pl.mjbladaj.zaaw_java.server.dto.AccountStateData;
+import pl.mjbladaj.zaaw_java.server.entity.Account;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
 import pl.mjbladaj.zaaw_java.server.service.AccountService;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
@@ -24,7 +26,8 @@ public class AccountsRestController {
     @Autowired
     private AccountStateService accountStateService;
 
-    @ApiOperation(value = "Add currency amount to account.")
+    @ApiOperation(value = "Add currency amount to account.",
+            response = AccountStateData.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Account exists."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
@@ -35,14 +38,20 @@ public class AccountsRestController {
 
     @ApiImplicitParam(name = "Authorization", value = "Authorization token",
             required = true, dataType = "string", paramType = "header")
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateAccount(
-        @RequestBody AccountState accountState,
+    @PostMapping("")
+    public ResponseEntity updateAccount(
+        @RequestBody AccountStateData accountStateData,
         @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
-            String login = TokenAuthenticationUtils.getUserLogin(token);
-            Integer accountId = accountService.getAccountId(login);
-            accountStateService.updateAccountState(accountId);
-
+        String login = TokenAuthenticationUtils.getUserLogin(token);
+        Account account = accountService.getAccount(login);
+        try {
+           accountStateService.addMoneyToAccount(
+                    account.getLogin(),
+                    accountStateData.getSymbol(),
+                    accountStateData.getAmount());
             return ResponseEntity.noContent().build();
+        } catch (CurrencyNotAvailableException e) {
+            return ResponseEntity.status(404).build();
+        }
     }
 }

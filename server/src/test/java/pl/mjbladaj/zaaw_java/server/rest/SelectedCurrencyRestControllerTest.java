@@ -125,7 +125,7 @@ public class SelectedCurrencyRestControllerTest {
 
     @Test
     public void shouldReturnCurrencyRate() throws Exception {
-        mvc.perform(get("/api/public/currencies/EUR/rate")
+        mvc.perform(get("/api/public/currencies/EUR/PLN")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rate", is(3.4554)));
@@ -133,14 +133,14 @@ public class SelectedCurrencyRestControllerTest {
 
     @Test
     public void shouldReturn404WhenApiDoNotProvidesCurrency() throws Exception {
-        mvc.perform(get("/api/public/currencies/DOL/rate")
+        mvc.perform(get("/api/public/currencies/DOL/PLN")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
     public void shouldReturn404WhenCurrencyIsNotAvailable() throws Exception {
-        mvc.perform(get("/api/public/currencies/GBP/rate")
+        mvc.perform(get("/api/public/currencies/GBP/PLN")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
