@@ -7,6 +7,7 @@ import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.ComplexStatisticsService;
 import pl.mjbladaj.zaaw_java.server.service.HistoricalRateService;
 
@@ -21,6 +22,7 @@ public class ComplexStatisticsServiceImpl implements ComplexStatisticsService {
 
     @Override
     public AverageAndDeviations getAverageAndDeviations(String baseCurrency, String goalCurrency, String startDay, String endDay) throws EntityNotFoundException, CurrencyNotAvailableException, TimePeriodNotAvailableException {
+
         List<UniversalCurrencyRateInTime> rates = historicalRateService.getConvertedRateForGivenPeriod(baseCurrency, goalCurrency, startDay, endDay);
 
         AverageAndDeviations result = new AverageAndDeviations();
