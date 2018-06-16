@@ -19,7 +19,7 @@ import pl.mjbladaj.zaaw_java.server.utils.AvailabilityUtils;
 import java.util.Optional;
 
 @Service
-@Transactional(isolation = Isolation.SERIALIZABLE)
+@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
 public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
 
     @Autowired
@@ -44,14 +44,22 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
         accountStateFrom
                 .get()
                 .setAmount(
-                        accountStateFrom.get().getAmount() - amount
-                );
+                    safeSub(accountStateFrom.get().getAmount(), amount));
+
         double rate = getRate(fromCurrency, toCurrency);
-        double exchangedAmount = exchange(rate, amount);
+        double exchangedAmount = safeMul(amount, rate);
         accountStateService.addMoneyToAccount(
                 username, toCurrency, exchangedAmount
         );
         return getExchangeStatus(fromCurrency, amount, toCurrency, exchangedAmount);
+    }
+    private double safeSub(double a, double b) {
+        return ((int)(100 * a) - (int)(100 * b)) / 100.0;
+    }
+    private double safeMul(double amount, double rate) {
+        return roundCurrencyAmount(
+                ((int)(100 * amount) * (int)(1000000 * rate))
+                / 100000000.0);
     }
     private ExchangeStatus getExchangeStatus(String fromCurrency, double fromCurrencyAmount,
                                    String toCurrency, double toCurrencyAmount) {
@@ -74,19 +82,17 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
                 .getRate()
                 .doubleValue();
     }
-    private double exchange(double rate, double amount) {
-        double exchangedAmount =rate * amount;
-        return ((int)(exchangedAmount * 100)) / 100.0;
+    private double roundCurrencyAmount(double amount) {
+        return ((int)(amount * 100)) / 100.0;
     }
-
     private void checkAccountState(String username, String fromCurrency, double amount) throws AccountStateException {
         Optional<AccountState> accountState = accountStateRepository
                 .findByLoginAndSymbol(username, fromCurrency);
         if(accountState.isPresent()) {
             if(accountState.get().getAmount() < amount)
-                throw new AccountStateException("Not enough money");
+                throw new AccountStateException("Not enough money.");
         } else {
-            throw new AccountStateException("Not enough money");
+            throw new AccountStateException("Not enough money.");
         }
     }
 }

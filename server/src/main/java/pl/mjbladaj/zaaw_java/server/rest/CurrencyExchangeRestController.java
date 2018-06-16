@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.mjbladaj.zaaw_java.server.dto.ApiError;
 import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
 import pl.mjbladaj.zaaw_java.server.dto.ExchangeStatus;
 import pl.mjbladaj.zaaw_java.server.exceptions.AccountStateException;
@@ -25,7 +26,8 @@ public class CurrencyExchangeRestController {
     @Autowired
     private CurrencyExchangeService currencyExchangeService;
 
-    @ApiOperation(value = "Returns list of available currencies.")
+    @ApiOperation(value = "Returns list of available currencies.",
+    response = ExchangeStatus.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Currencies availability status found."),
             @ApiResponse(code = 401, message = "You are unauthorized."),
@@ -40,22 +42,18 @@ public class CurrencyExchangeRestController {
             @PathVariable("toCurrency") String to,
             @PathVariable("amount") double amount
     ) {
-        //TODO:
-        //Handle exceptions
         try {
-            ExchangeStatus status = currencyExchangeService.exchange(TokenAuthenticationUtils.getUserLogin(username),
-                    from, to, amount);
             return ResponseEntity
-                    .ok(status);
-        } catch (CurrencyNotAvailableException e) {
-            e.printStackTrace();
+                    .ok(currencyExchangeService
+                            .exchange(TokenAuthenticationUtils.getUserLogin(username),
+                            from, to, amount));
+        } catch (CurrencyNotAvailableException | EntityNotFoundException e) {
+            return ResponseEntity.status(404).body(new ApiError(e.getMessage()));
         } catch (AccountStateException e) {
-            e.printStackTrace();
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
+            return ResponseEntity.status(409).body(new ApiError(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new ApiError(e.getMessage()));
         }
-        return ResponseEntity
-                .ok("ok");
     }
 
 

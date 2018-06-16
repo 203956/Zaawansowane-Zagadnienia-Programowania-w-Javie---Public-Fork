@@ -45,7 +45,7 @@ public class AccountStateServiceImpl implements AccountStateService {
                         .findByLoginAndSymbol(username, currency);
         if (accountState.isPresent()) {
             accountState.get().setAmount(
-                    accountState.get().getAmount() + amount
+                    safeAdd(accountState.get().getAmount(), amount)
             );
         } else {
             accountState = getNewAccountState(username, currency, amount);
@@ -60,6 +60,9 @@ public class AccountStateServiceImpl implements AccountStateService {
         return AccountStateConverter.getAccountStateDto(accountStates);
     }
 
+    private double safeAdd(double a, double b) {
+        return ((int)(100 * a) + (int)(100 * b)) / 100.0;
+    }
     private Optional<AccountState> getNewAccountState(String username, String currency, double amount) {
         Account account = accountRepository.findByLogin(username).get();
         AvailableCurrency availableCurrency = availableCurrencyRepository.findBySymbol(currency).get();
