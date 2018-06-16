@@ -18,10 +18,11 @@ import java.math.BigDecimal;
 public class BasicPriceCurrencyIndexServiceImpl implements BasicPriceCurrencyIndexService {
 
     @Autowired
-    private SelectedCurrencyHistoryRateDao selectedCurrencyHistoryRateDao;
+    private BasicPriceCurrencyIndexService basicPriceCurrencyIndexService;
 
     @Autowired
-    private BasicPriceCurrencyIndexService basicPriceCurrencyIndexService;
+    private SelectedCurrencyHistoryRateDao selectedCurrencyHistoryRateDao;
+
     @Autowired
     private Environment environment;
 
