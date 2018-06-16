@@ -10,6 +10,7 @@ import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
+import pl.mjbladaj.zaaw_java.server.utils.AvailabilityUtils;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class AverageCurrencyRateServiceImpl implements AverageCurrencyRateServic
 
     @Override
     public RateInWeek getAverageCurrencyRateInWeekForGivenPeriod(String baseCurrency, String goalCurrency, String startDay, String endDay) throws TimePeriodNotAvailableException, EntityNotFoundException, CurrencyNotAvailableException {
-        checkAvailability(baseCurrency, goalCurrency);
+       AvailabilityUtils.checkAvailability(availableCurrenciesService, baseCurrency, goalCurrency);
 
        List<UniversalCurrencyRateInTime> rates = selectedCurrencyHistoryRateDao.getGivenPeriodRate(baseCurrency, goalCurrency, startDay, endDay);
        RateInWeek rateInWeek = new RateInWeek();
@@ -45,12 +46,5 @@ public class AverageCurrencyRateServiceImpl implements AverageCurrencyRateServic
                 .mapToDouble(UniversalCurrencyRateInTime::getRate)
                 .average()
                 .orElse(0);
-    }
-
-    private void checkAvailability(String fromCurrency, String toCurrency) throws CurrencyNotAvailableException {
-        if(!availableCurrenciesService.isAvailable(toCurrency).isAvailability() ||
-                !availableCurrenciesService.isAvailable(fromCurrency).isAvailability()) {
-            throw new CurrencyNotAvailableException("Currency is not available.");
-        }
     }
 }

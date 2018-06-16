@@ -137,11 +137,29 @@ public class AverageCurrencyRateServiceImplTest {
     }
 
     @Test
-    public void shouldThrowCurrencyNotAvailableException() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
+    public void shouldThrowCurrencyNotAvailableExceptionWhenFirstCurrencyIsNotAvailable() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
+        //given
+        //when
+        expectedException.expect(CurrencyNotAvailableException.class);
+        RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("DOL", "EUR", getValidDate(), getValidFutureDate() );
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableExceptionWhenSecondCurrencyIsNotAvailable() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
         //given
         //when
         expectedException.expect(CurrencyNotAvailableException.class);
         RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("EUR", "DOL", getValidDate(), getValidFutureDate() );
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableExceptionWhenBothCurrenciesAreNotAvailable() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
+        //given
+        //when
+        expectedException.expect(CurrencyNotAvailableException.class);
+        RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("MVN", "DOL", getValidDate(), getValidFutureDate() );
         //then
     }
 }
