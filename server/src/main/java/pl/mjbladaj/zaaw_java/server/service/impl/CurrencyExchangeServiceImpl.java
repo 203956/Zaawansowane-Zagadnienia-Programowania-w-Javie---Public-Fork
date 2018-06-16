@@ -19,7 +19,7 @@ import pl.mjbladaj.zaaw_java.server.utils.AvailabilityUtils;
 import java.util.Optional;
 
 @Service
-@Transactional(isolation = Isolation.SERIALIZABLE)
+@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
 public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
 
     @Autowired
@@ -46,6 +46,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
                 .setAmount(
                     safeSub(accountStateFrom.get().getAmount(), amount)
                 );
+
         double rate = getRate(fromCurrency, toCurrency);
         double exchangedAmount = safeMul(amount, rate);
         accountStateService.addMoneyToAccount(
