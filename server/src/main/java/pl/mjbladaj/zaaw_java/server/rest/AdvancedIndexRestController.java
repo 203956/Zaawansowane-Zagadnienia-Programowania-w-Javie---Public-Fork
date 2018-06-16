@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -71,7 +70,7 @@ public class AdvancedIndexRestController {
             @ApiResponse(code = 404, message = "Currencies not found."),
             @ApiResponse(code = 500, message = "Unknown error.")
     })
-    @RequestMapping(method = POST, path = "/{symbol}/{kindOfIndex}/price/Paasche")
+    @RequestMapping(method = POST, path = "/{symbol}/price/Paasche")
     public ResponseEntity getAdvancePriceIndexPaasche(
             @ApiParam(value= "Symbol of currency")               @PathVariable("symbol") String symbol,
             @RequestBody InformationAboutQuantities informationAboutQuantities)
@@ -133,7 +132,7 @@ public class AdvancedIndexRestController {
             @ApiResponse(code = 404, message = "Currencies not found."),
             @ApiResponse(code = 500, message = "Unknown error.")
     })
-    @RequestMapping(method = POST, path = "/{symbol}/{kindOfIndex}/price/Laspeyres")
+    @RequestMapping(method = POST, path = "/{symbol}/price/Laspeyres")
     public ResponseEntity getAdvancePriceIndexLaspeyres(
             @ApiParam(value= "Symbol of currency")               @PathVariable("symbol") String symbol,
             @RequestBody InformationAboutQuantities informationAboutQuantities)
