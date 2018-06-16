@@ -42,16 +42,17 @@ public class AccountsRestController {
     @PostMapping("/payment")
     public ResponseEntity updateAccount(
         @RequestBody AccountStateData accountStateData,
-        @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) throws AccountNotFoundException {
+        @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token)  {
         String login = TokenAuthenticationUtils.getUserLogin(token);
-        Account account = accountService.getAccount(login);
+
         try {
-           accountStateService.addMoneyToAccount(
+            Account account = accountService.getAccount(login);
+            accountStateService.addMoneyToAccount(
                     account.getLogin(),
                     accountStateData.getSymbol(),
                     accountStateData.getAmount());
             return ResponseEntity.noContent().build();
-        } catch (CurrencyNotAvailableException e) {
+        } catch (CurrencyNotAvailableException  | AccountNotFoundException e) {
             return ResponseEntity.status(404).build();
         }
     }

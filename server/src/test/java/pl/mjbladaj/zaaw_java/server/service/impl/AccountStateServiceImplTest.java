@@ -1,5 +1,6 @@
 package pl.mjbladaj.zaaw_java.server.service.impl;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,15 +19,16 @@ import pl.mjbladaj.zaaw_java.server.dao.AccountStateRepository;
 import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dto.AccountStateData;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
-import pl.mjbladaj.zaaw_java.server.dto.CurrencyRate;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
-import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -67,6 +69,43 @@ public class AccountStateServiceImplTest {
     @MockBean
     private AccountStateRepository accountStateRepository;
 
+    private List<AccountState> getAllUserState() {
+        Account existingAccount = Account
+                .builder()
+                .id(1)
+                .login("exist")
+                .password("{noop}pass")
+                .build();
+
+        AvailableCurrency currency = AvailableCurrency
+                .builder()
+                .symbol("PLN")
+                .name("Złotówka polska")
+                .build();
+
+        AvailableCurrency currency1 = AvailableCurrency
+                .builder()
+                .symbol("USD")
+                .name("Dolar amerykański")
+                .build();
+
+        ArrayList<AccountState> accountStates = new ArrayList<>();
+        accountStates.add(AccountState
+                .builder()
+                .account(existingAccount)
+                .amount(3.0)
+                .availableCurrency(currency)
+                .build());
+
+        accountStates.add(AccountState
+                .builder()
+                .account(existingAccount)
+                .amount(40.5)
+                .availableCurrency(currency1)
+                .build());
+
+        return accountStates;
+    }
     private void setUpAvailableCurrenciesService() {
         Mockito.when(availableCurrenciesService.isAvailable(
                 argThat(new StringsMatcher("PLN"))
@@ -81,6 +120,7 @@ public class AccountStateServiceImplTest {
     private void setUpAccountStateRepository() {
         Account existingAccount = Account
                 .builder()
+                .id(1)
                 .login("exist")
                 .password("{noop}pass")
                 .build();
@@ -98,6 +138,10 @@ public class AccountStateServiceImplTest {
                 .availableCurrency(currency)
                 .build();
 
+        Mockito.when(accountRepository
+                .findByLogin("exist"))
+                .thenReturn(Optional.of(existingAccount));
+
         Mockito.when(accountStateRepository
                 .findByLoginAndSymbol("exist", "PLN"))
                 .thenReturn(Optional.of(accountState));
@@ -105,6 +149,14 @@ public class AccountStateServiceImplTest {
         Mockito.when(accountStateRepository
                 .findByLoginAndSymbol("new", "MVN"))
                 .thenReturn(Optional.empty());
+
+        Mockito.when(accountStateRepository
+                .getAllUserAccountState(1))
+                .thenReturn(getAllUserState());
+
+        Mockito.when(accountStateRepository
+                .getAllUserAccountState(0))
+                .thenReturn(new ArrayList<>());
     }
 
     @Before
@@ -149,5 +201,27 @@ public class AccountStateServiceImplTest {
         //when
         accountStateService.addMoneyToAccount("new", accountStateData.getSymbol(), accountStateData.getAmount());
         //then
+    }
+
+    @Test
+    public void shouldGetAllUserAccountState() {
+        //given
+        //when
+        Map<String, Double> allStates = accountStateService.getAllUserAccountState(1);
+        //then
+        assertEquals(2, allStates.size());
+        assertEquals("PLN", allStates.keySet().toArray()[0]);
+        assertEquals( "USD", allStates.keySet().toArray()[1]);
+        assertEquals( 3.0, allStates.get("PLN"), 0.00001);
+        assertEquals( 40.5, allStates.get("USD"), 0.00001);
+    }
+
+    @Test
+    public void shouldNotGetAllUserAccountState() {
+        //given
+        //when
+        Map<String, Double> allStates = accountStateService.getAllUserAccountState(0);
+        //then
+        assertEquals(0, allStates.size());
     }
 }
