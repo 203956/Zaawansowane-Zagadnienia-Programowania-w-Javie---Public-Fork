@@ -10,6 +10,7 @@ import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.ComplexStatisticsService;
 import pl.mjbladaj.zaaw_java.server.service.HistoricalRateService;
+import pl.mjbladaj.zaaw_java.server.utils.AvailabilityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,15 @@ import java.util.List;
 public class ComplexStatisticsServiceImpl implements ComplexStatisticsService {
 
     @Autowired
+    private AvailableCurrenciesService availableCurrenciesService;
+
+    @Autowired
     private HistoricalRateService historicalRateService;
 
     @Override
     public AverageAndDeviations getAverageAndDeviations(String baseCurrency, String goalCurrency, String startDay, String endDay) throws EntityNotFoundException, CurrencyNotAvailableException, TimePeriodNotAvailableException {
+
+        AvailabilityUtils.checkAvailability(availableCurrenciesService, baseCurrency, goalCurrency);
 
         List<UniversalCurrencyRateInTime> rates = historicalRateService.getConvertedRateForGivenPeriod(baseCurrency, goalCurrency, startDay, endDay);
 
