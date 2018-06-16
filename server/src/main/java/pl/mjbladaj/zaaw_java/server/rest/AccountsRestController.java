@@ -65,6 +65,8 @@ public class AccountsRestController {
                 @ApiResponse(code = 404, message = "Account  doesn't exist."),
                 @ApiResponse(code = 500, message = "Unknown error.")
         })
+        @ApiImplicitParam(name = "Authorization", value = "Authorization token",
+                required = true, dataType = "string", paramType = "header")
     @RequestMapping(value = "/account/state", method = RequestMethod.GET)
     public ResponseEntity getConvertedAccountState(
             @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
