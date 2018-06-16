@@ -20,7 +20,7 @@ export class AvailableCurrenciesService {
   }
 
   getRate(symbol: string): Observable<CurrencyRate> {
-    return this.http.get<CurrencyRate>(this.selectedCurrencyPath + symbol + '/rate');
+    return this.http.get<CurrencyRate>(this.selectedCurrencyPath + symbol + '/PLN');
   }
 
   getSelectedCurrenciesAmountOfOtherCurrency(amountOfInCurrencies: number[], inCurrencies: string[], outCurrency: string): Observable<CurrencyRate> {

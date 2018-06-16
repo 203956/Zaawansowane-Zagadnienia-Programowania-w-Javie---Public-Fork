@@ -33,10 +33,12 @@ public class SelectedCurrencyRestController {
             @ApiResponse(code = 404, message = "Currency not found."),
             @ApiResponse(code = 500, message = "Unknown error.")
     })
-    @GetMapping("/{symbol}/rate")
-    public ResponseEntity getConvertedRate(@ApiParam(value = "symbol of selected currency") @PathVariable String symbol) {
+    @GetMapping("/{fromCurrency}/{toCurrency}")
+    public ResponseEntity getConvertedRate(
+            @ApiParam(value = "symbol of first currency") @PathVariable String fromCurrency,
+            @ApiParam(value = "symbol of second currency") @PathVariable String toCurrency) {
         try {
-            return ResponseEntity.ok(rateService.getConvertedRate(symbol, "PLN"));
+            return ResponseEntity.ok(rateService.getConvertedRate(fromCurrency, toCurrency));
         } catch (EntityNotFoundException | CurrencyNotAvailableException e) {
             System.out.println(e);
             return ResponseEntity.status(404).build();
