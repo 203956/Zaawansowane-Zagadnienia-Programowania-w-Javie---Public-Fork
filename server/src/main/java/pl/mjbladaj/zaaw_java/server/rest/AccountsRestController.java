@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mjbladaj.zaaw_java.server.dto.AccountStateData;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
+import pl.mjbladaj.zaaw_java.server.exceptions.AccountNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.secruity.TokenAuthenticationUtils;
 import pl.mjbladaj.zaaw_java.server.service.AccountService;
@@ -41,7 +42,7 @@ public class AccountsRestController {
     @PostMapping("/payment")
     public ResponseEntity updateAccount(
         @RequestBody AccountStateData accountStateData,
-        @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
+        @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) throws AccountNotFoundException {
         String login = TokenAuthenticationUtils.getUserLogin(token);
         Account account = accountService.getAccount(login);
         try {
