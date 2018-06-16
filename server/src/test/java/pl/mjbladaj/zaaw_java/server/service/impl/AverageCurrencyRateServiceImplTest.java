@@ -13,18 +13,24 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.mjbladaj.zaaw_java.server.StringsMatcher;
 import pl.mjbladaj.zaaw_java.server.converters.TimeConverter;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyHistoryRateDao;
+import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.dto.RateInWeek;
 import pl.mjbladaj.zaaw_java.server.dto.UniversalCurrencyRateInTime;
+import pl.mjbladaj.zaaw_java.server.exceptions.CurrencyNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
+import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 import pl.mjbladaj.zaaw_java.server.service.AverageCurrencyRateService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+
+import static org.mockito.ArgumentMatchers.argThat;
 
 @RunWith(SpringRunner.class)
 public class AverageCurrencyRateServiceImplTest {
@@ -33,10 +39,13 @@ public class AverageCurrencyRateServiceImplTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @MockBean
-    SelectedCurrencyHistoryRateDao selectedCurrencyHistoryRateDao;
+    private SelectedCurrencyHistoryRateDao selectedCurrencyHistoryRateDao;
+
+    @MockBean
+    private AvailableCurrenciesService availableCurrenciesService;
 
     @Autowired
-    AverageCurrencyRateService averageCurrencyRateService;
+    private AverageCurrencyRateService averageCurrencyRateService;
 
     @TestConfiguration
     static class AverageCurrencyRateServiceImplTestContextConfiguration {
@@ -49,11 +58,12 @@ public class AverageCurrencyRateServiceImplTest {
     @Before
     public void setUp() throws Exception {
         setUpSelectedCurrencyRateDao();
+        setUpAvailableCurrenciesService();
     }
 
     @After
-    public void tearDown() {
-        Mockito.reset(selectedCurrencyHistoryRateDao);
+    public void tearDown() throws Exception {
+        Mockito.reset(selectedCurrencyHistoryRateDao, availableCurrenciesService);
     }
     private String getValidDate() {return TimeConverter.convertDateToString(new DateTime()); }
 
@@ -79,6 +89,18 @@ public class AverageCurrencyRateServiceImplTest {
                 .thenThrow(new EntityNotFoundException());
     }
 
+    private void setUpAvailableCurrenciesService() {
+        Mockito.when(availableCurrenciesService.isAvailable(
+                argThat(new StringsMatcher("PLN", "EUR", "DCL", "USD"))
+        ))
+                .thenReturn(Availability.builder().availability(true).build());
+
+        Mockito.when(availableCurrenciesService.isAvailable(
+                argThat(new StringsMatcher("DOL", "MVN"))
+        ))
+                .thenReturn(Availability.builder().availability(false).build());
+    }
+
     private List<UniversalCurrencyRateInTime> getCurrencyListRateInTime2() {
         List<UniversalCurrencyRateInTime> result = new ArrayList<>();
         for (int i = 0; i < 8 ; i++) {
@@ -92,7 +114,7 @@ public class AverageCurrencyRateServiceImplTest {
     }
 
     @Test
-    public void shouldReturnValidAverageRateForEveryDayOfWeek() throws EntityNotFoundException, TimePeriodNotAvailableException {
+    public void shouldReturnValidAverageRateForEveryDayOfWeek() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
         //given
         //when
         RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("EUR", "PLN", getValidDate(), getValidFutureDate() );
@@ -107,11 +129,38 @@ public class AverageCurrencyRateServiceImplTest {
     }
 
     @Test
-    public void shouldThrowEntityNotFound() throws EntityNotFoundException, TimePeriodNotAvailableException {
+    public void shouldThrowEntityNotFound() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
         //given
         //when
         expectedException.expect(EntityNotFoundException.class);
         RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("EUR", "PLN", getValidDate(), getInValidFutureDate() );
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableExceptionWhenFirstCurrencyIsNotAvailable() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
+        //given
+        //when
+        expectedException.expect(CurrencyNotAvailableException.class);
+        RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("DOL", "EUR", getValidDate(), getValidFutureDate() );
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableExceptionWhenSecondCurrencyIsNotAvailable() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
+        //given
+        //when
+        expectedException.expect(CurrencyNotAvailableException.class);
+        RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("EUR", "DOL", getValidDate(), getValidFutureDate() );
+        //then
+    }
+
+    @Test
+    public void shouldThrowCurrencyNotAvailableExceptionWhenBothCurrenciesAreNotAvailable() throws EntityNotFoundException, TimePeriodNotAvailableException, CurrencyNotAvailableException {
+        //given
+        //when
+        expectedException.expect(CurrencyNotAvailableException.class);
+        RateInWeek rate = averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod("MVN", "DOL", getValidDate(), getValidFutureDate() );
         //then
     }
 }
