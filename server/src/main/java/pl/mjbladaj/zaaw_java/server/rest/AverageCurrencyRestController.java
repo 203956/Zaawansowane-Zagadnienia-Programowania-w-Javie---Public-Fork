@@ -35,9 +35,9 @@ public class AverageCurrencyRestController {
     })
     @GetMapping("/{base}/{goalCurrency}/{startDate}/{endDate}")
     public ResponseEntity getAverageCurrencyForGivenPeriodByDayOfWeek(@ApiParam(value = "base")                     @PathVariable("base") String base,
-                                                                      @ApiParam(value = "goalCurrency")             @PathVariable("goalCurrency") String goalCurrency,
-                                                                      @ApiParam(value = "start date (yyyy-mm-dd)")  @PathVariable("startDate") String startDate,
-                                                                      @ApiParam(value = "end date (yyyy-mm-dd)")    @PathVariable("endDate") String endDate) {
+                                                                      @ApiParam(value = "goalCurrency")     @PathVariable("goalCurrency") String goalCurrency,
+                                                                      @ApiParam(value = "start date (yyyy-mm-dd)")   @PathVariable("startDate") String startDate,
+                                                                      @ApiParam(value = "end date (yyyy-mm-dd)")     @PathVariable("endDate") String endDate) {
        try {
            return ResponseEntity.ok(averageCurrencyRateService.getAverageCurrencyRateInWeekForGivenPeriod(base, goalCurrency, startDate, endDate));
         } catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
