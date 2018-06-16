@@ -13,9 +13,9 @@ import pl.mjbladaj.zaaw_java.server.service.AccountService;
 import pl.mjbladaj.zaaw_java.server.service.AccountStateService;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api")
 @Api(value = "Add currency amount to account.",
-        basePath = "/api/payment",
+        basePath = "/api",
         produces = "application/json",
         description = "Add currency amount to account.")
 public class AccountsRestController {
@@ -38,7 +38,7 @@ public class AccountsRestController {
 
     @ApiImplicitParam(name = "Authorization", value = "Authorization token",
             required = true, dataType = "string", paramType = "header")
-    @PostMapping("")
+    @PostMapping("/payment")
     public ResponseEntity updateAccount(
         @RequestBody AccountStateData accountStateData,
         @RequestHeader(TokenAuthenticationUtils.HEADER_STRING) String token) {
