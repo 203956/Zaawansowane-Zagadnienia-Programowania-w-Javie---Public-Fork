@@ -44,8 +44,7 @@ public class CurrencyExchangeServiceImpl implements CurrencyExchangeService {
         accountStateFrom
                 .get()
                 .setAmount(
-                    safeSub(accountStateFrom.get().getAmount(), amount)
-                );
+                    safeSub(accountStateFrom.get().getAmount(), amount));
 
         double rate = getRate(fromCurrency, toCurrency);
         double exchangedAmount = safeMul(amount, rate);

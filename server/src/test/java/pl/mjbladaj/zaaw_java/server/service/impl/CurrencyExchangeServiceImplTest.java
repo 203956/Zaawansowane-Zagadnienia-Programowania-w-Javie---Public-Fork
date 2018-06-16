@@ -16,6 +16,7 @@ import pl.mjbladaj.zaaw_java.server.StringsMatcher;
 import pl.mjbladaj.zaaw_java.server.dao.AccountStateRepository;
 import pl.mjbladaj.zaaw_java.server.dao.SelectedCurrencyRateDao;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
+import pl.mjbladaj.zaaw_java.server.dto.ExchangeStatus;
 import pl.mjbladaj.zaaw_java.server.entity.Account;
 import pl.mjbladaj.zaaw_java.server.entity.AccountState;
 import pl.mjbladaj.zaaw_java.server.exceptions.AccountStateException;
@@ -74,7 +75,7 @@ public class CurrencyExchangeServiceImplTest {
         ))
                 .thenReturn(Availability.builder().availability(false).build());;
     }
-    private void setUpAccountStateRepository() {
+    private void setUpAccountStateRepository() throws CurrencyNotAvailableException {
         fromCurrencyState = AccountState
                 .builder()
                 .id(1)
@@ -95,6 +96,11 @@ public class CurrencyExchangeServiceImplTest {
                         .id(2)
                         .amount(5.0)
                         .build()));
+
+        Mockito
+                .doThrow(new CurrencyNotAvailableException())
+                .when(accountStateService)
+                .addMoneyToAccount("login","EUR", 1.5);
     }
     private void setUpSelectedCurrencyRateDao() throws EntityNotFoundException {
         Mockito.when(selectedCurrencyRateDao.getRate("USD", "EUR"))
@@ -107,7 +113,7 @@ public class CurrencyExchangeServiceImplTest {
                 .thenThrow(new EntityNotFoundException("Currency does not exists."));
     }
     @Before
-    public void setUp() throws EntityNotFoundException {
+    public void setUp() throws EntityNotFoundException, CurrencyNotAvailableException {
         setUpAccountStateRepository();
         setUpAvailableCurrenciesService();
         setUpSelectedCurrencyRateDao();
@@ -123,9 +129,14 @@ public class CurrencyExchangeServiceImplTest {
     public void shouldExchangeCurrency() throws AccountStateException, EntityNotFoundException, CurrencyNotAvailableException {
         //given
         //when
-        currencyExchangeService
+        ExchangeStatus exchangeStatus = currencyExchangeService
                 .exchange("login", "USD", "EUR", 5);
         //then
+        assertEquals("USD", exchangeStatus.getFromCurrency());
+        assertEquals(5, exchangeStatus.getFromCurrencyAmount(), 0.001);
+        assertEquals("EUR", exchangeStatus.getToCurrency());
+        assertEquals(7.5, exchangeStatus.getToCurrencyAmount(), 0.001);
+
         assertEquals(5.0, fromCurrencyState.getAmount(), 0.001);
 
         Mockito.verify(accountStateService)
