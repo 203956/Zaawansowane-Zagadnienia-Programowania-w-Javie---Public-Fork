@@ -13,7 +13,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 
 @RestController
-@RequestMapping("/api/currencies")
+@RequestMapping("/api/public/index/basic")
 @Api(value = "Basic price currency index for given currency",
         basePath = "/api/public/index/basic",
         produces = "application/json",
