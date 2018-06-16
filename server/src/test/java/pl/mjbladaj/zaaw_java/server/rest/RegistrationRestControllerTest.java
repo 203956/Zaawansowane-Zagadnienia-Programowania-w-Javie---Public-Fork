@@ -85,9 +85,6 @@ public class RegistrationRestControllerTest {
 
     @Test
     public void shouldRegisterUser() throws Exception {
-        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
-        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
-
         mvc.perform(post("/api/public/register")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -100,9 +97,6 @@ public class RegistrationRestControllerTest {
     }
     @Test
     public void shouldReturn401WhenUsernameIsOccupied() throws Exception {
-        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
-        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
-
         mvc.perform(post("/api/public/register")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -114,9 +108,6 @@ public class RegistrationRestControllerTest {
     }
     @Test
     public void shouldReturn401WhenUsernameIsTooShort() throws Exception {
-        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
-        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
-
         mvc.perform(post("/api/public/register")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -128,9 +119,6 @@ public class RegistrationRestControllerTest {
     }
     @Test
     public void shouldReturn401WhenPasswordIsToShort() throws Exception {
-        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
-        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
-
         mvc.perform(post("/api/public/register")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -142,9 +130,6 @@ public class RegistrationRestControllerTest {
     }
     @Test
     public void shouldReturn401WhenUsernameAndPasswordAreTooShort() throws Exception {
-        HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new HttpSessionCsrfTokenRepository();
-        CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
-
         mvc.perform(post("/api/public/register")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
