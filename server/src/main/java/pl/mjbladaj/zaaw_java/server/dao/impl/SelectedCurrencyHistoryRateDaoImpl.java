@@ -81,7 +81,6 @@ public class SelectedCurrencyHistoryRateDaoImpl implements SelectedCurrencyHisto
     private FreeCurrenciesComRateInTime sendRequest(String fromCurrency, String toCurrency, DateTime startDate, DateTime endDate) {
         ResponseEntity<FreeCurrenciesComRateInTime> response = restTemplate
                 .getForEntity(getUrl(fromCurrency, toCurrency, startDate, endDate), FreeCurrenciesComRateInTime.class);
-        String a = getUrl(fromCurrency, toCurrency, startDate, endDate);
         return response.getBody();
     }
 

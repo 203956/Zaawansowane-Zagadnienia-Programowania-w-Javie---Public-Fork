@@ -25,7 +25,7 @@ public class HistoricalRateServiceImpl implements HistoricalRateService {
     public UniversalCurrencyRateInTime getConvertedRateForGivenDay(String fromCurrency, String toCurrency, String date) throws TimePeriodNotAvailableException, EntityNotFoundException, CurrencyNotAvailableException {
         AvailabilityUtils.checkAvailability(availableCurrenciesService, fromCurrency, toCurrency);
 
-        return  selectedCurrencyHistoryRateDao.getGivenDayRate(fromCurrency, toCurrency, date);
+        return selectedCurrencyHistoryRateDao.getGivenDayRate(fromCurrency, toCurrency, date);
     }
 
     @Override
