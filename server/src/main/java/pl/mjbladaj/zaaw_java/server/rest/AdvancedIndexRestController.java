@@ -53,7 +53,7 @@ public class AdvancedIndexRestController {
 
 
             return ResponseEntity.ok(amountAdvancedIndexService.getCurrencyAmountAdvancedIndex(symbol,informationAboutQuantities.getStartTime(), informationAboutQuantities.getEndTime(), firstListOfCurrencyPrices,
-                    secondListOfCurrencyPrices ,amountsInFirstDateTime,amountsInSecondDateTime,
+                    secondListOfCurrencyPrices ,amountsInSecondDateTime,amountsInFirstDateTime,
                     KindOfIndex.Paasche));
         }  catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
             return ResponseEntity.status(404).build();
@@ -91,4 +91,67 @@ public class AdvancedIndexRestController {
             return ResponseEntity.status(500).build();
         }
     }
+
+
+    @ApiOperation(value = "Returns advanced amount Laspeyres index.",
+            response = Index.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Currencies found."),
+            @ApiResponse(code = 401, message = "You are unauthorized."),
+            @ApiResponse(code = 403, message = "You are forbidden to access this resource."),
+            @ApiResponse(code = 404, message = "Currencies not found."),
+            @ApiResponse(code = 500, message = "Unknown error.")
+    })
+    @RequestMapping(method = POST, path = "/{symbol}/{kindOfIndex}/amount/Laspeyres")
+    public ResponseEntity getAdvanceAmountIndexLaspeyres(
+            @ApiParam(value= "Symbol of currency")               @PathVariable("symbol") String symbol,
+            @RequestBody InformationAboutQuantities informationAboutQuantities)
+    {
+        try {
+            List<UniversalCurrencyRateInTime> secondListOfCurrencyPrices = new ArrayList<UniversalCurrencyRateInTime>();
+            List< UniversalCurrencyRateInTime > firstListOfCurrencyPrices = new ArrayList<UniversalCurrencyRateInTime>();
+            List<Double> amountsInFirstDateTime = informationAboutQuantities.getAmounts().stream().map(x->x.getAmountInStartDate()).collect(Collectors.toList());
+            List<Double> amountsInSecondDateTime = informationAboutQuantities.getAmounts().stream().map(x->x.getAmountInEndDate()).collect(Collectors.toList());
+
+
+            return ResponseEntity.ok(amountAdvancedIndexService.getCurrencyAmountAdvancedIndex(symbol,informationAboutQuantities.getStartTime(), informationAboutQuantities.getEndTime(), firstListOfCurrencyPrices,
+                    secondListOfCurrencyPrices ,amountsInSecondDateTime,amountsInFirstDateTime,
+                    KindOfIndex.Laspeyres));
+        }  catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(404).build();
+        }catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @ApiOperation(value = "Returns advanced price Paasche index.",
+            response = Index.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Currencies found."),
+            @ApiResponse(code = 401, message = "You are unauthorized."),
+            @ApiResponse(code = 403, message = "You are forbidden to access this resource."),
+            @ApiResponse(code = 404, message = "Currencies not found."),
+            @ApiResponse(code = 500, message = "Unknown error.")
+    })
+    @RequestMapping(method = POST, path = "/{symbol}/{kindOfIndex}/price/Laspeyres")
+    public ResponseEntity getAdvancePriceIndexLaspeyres(
+            @ApiParam(value= "Symbol of currency")               @PathVariable("symbol") String symbol,
+            @RequestBody InformationAboutQuantities informationAboutQuantities)
+    {
+        try {
+            List<UniversalCurrencyRateInTime> secondListOfCurrencyPrices = new ArrayList<UniversalCurrencyRateInTime>();
+            List< UniversalCurrencyRateInTime > firstListOfCurrencyPrices = new ArrayList<UniversalCurrencyRateInTime>();
+            List<Double> amountsInFirstDateTime = informationAboutQuantities.getAmounts().stream().map(x->x.getAmountInStartDate()).collect(Collectors.toList());
+
+
+            return ResponseEntity.ok(priceAdvancedIndexService.getCurrencyPriceAmountAdvancedIndex(symbol,informationAboutQuantities.getStartTime(), informationAboutQuantities.getEndTime(), firstListOfCurrencyPrices,
+                    secondListOfCurrencyPrices ,amountsInFirstDateTime,amountsInFirstDateTime
+            ));
+        }  catch (EntityNotFoundException | TimePeriodNotAvailableException e) {
+            return ResponseEntity.status(404).build();
+        }catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
 }
