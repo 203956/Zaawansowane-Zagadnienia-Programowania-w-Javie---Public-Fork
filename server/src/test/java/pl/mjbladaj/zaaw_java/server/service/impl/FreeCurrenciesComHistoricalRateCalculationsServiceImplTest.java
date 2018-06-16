@@ -83,6 +83,7 @@ public class FreeCurrenciesComHistoricalRateCalculationsServiceImplTest {
         }
         return result;
     }
+
     private List<UniversalCurrencyRateInTime> getCurrencyListRateInTime2() {
         List<UniversalCurrencyRateInTime> result = new ArrayList<>();
         for (int i = 0; i < 4 ; i++) {

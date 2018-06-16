@@ -39,6 +39,11 @@ export class ExchangerateComponent implements OnInit {
               private averageDifference: AverageDifferenceService) {
   }
 
+  test() {
+    this.averageDifference.test().then(e=> console.log(e));
+
+  }
+
   ngOnInit() {
     this.availableCurrencyService
       .getAvailableCurrency().subscribe(
