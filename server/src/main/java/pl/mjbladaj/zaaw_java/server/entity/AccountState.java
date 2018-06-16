@@ -11,7 +11,9 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-@Table(name = "account_state")
+@Table(name = "account_state",
+        uniqueConstraints =
+        @UniqueConstraint(columnNames = {"account_id", "available_currency_id"}))
 public class AccountState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
