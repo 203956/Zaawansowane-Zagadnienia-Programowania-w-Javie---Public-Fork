@@ -1,5 +1,6 @@
 package pl.mjbladaj.zaaw_java.server.service.impl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,9 @@ import pl.mjbladaj.zaaw_java.server.exceptions.EntityNotFoundException;
 import pl.mjbladaj.zaaw_java.server.exceptions.TimePeriodNotAvailableException;
 import pl.mjbladaj.zaaw_java.server.service.BasicPriceCurrencyIndexService;
 import pl.mjbladaj.zaaw_java.server.dto.Index;
+
+import java.math.RoundingMode;
+import java.math.BigDecimal;
 
 @Service
 public class BasicPriceCurrencyIndexServiceImpl implements BasicPriceCurrencyIndexService {
@@ -27,6 +31,8 @@ public class BasicPriceCurrencyIndexServiceImpl implements BasicPriceCurrencyInd
         UniversalCurrencyRateInTime universalCurrencyRateInStartTime = selectedCurrencyHistoryRateDao.getGivenDayRate(currencySymbol,toCurrency , startDate);
         UniversalCurrencyRateInTime universalCurrencyRateInEndTime = selectedCurrencyHistoryRateDao.getGivenDayRate(currencySymbol,toCurrency , endDate);
         Double quotient = (Double)(universalCurrencyRateInStartTime.getRate()/universalCurrencyRateInEndTime.getRate());
-        return new Index(quotient);
+        Double value = new BigDecimal(quotient.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new Index(value);
+
     }
 }

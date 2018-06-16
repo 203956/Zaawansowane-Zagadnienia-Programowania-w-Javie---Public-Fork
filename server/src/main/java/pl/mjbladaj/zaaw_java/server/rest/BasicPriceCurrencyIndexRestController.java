@@ -33,9 +33,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
             @ApiResponse(code = 500, message = "Unknown error.")
     })
 
-    //@GetMapping("/{currencySymbol}/{startDate}/{endDate}")
-  //  @RequestMapping(value = "/country/employees",
-   //         method = RequestMethod.GET)
+
     @RequestMapping(method = GET, path = "/{currencySymbol}/{startDate}/{endDate}")
     @ResponseBody
     public ResponseEntity getBasicPriceCurrencyForGivenCurrency(
