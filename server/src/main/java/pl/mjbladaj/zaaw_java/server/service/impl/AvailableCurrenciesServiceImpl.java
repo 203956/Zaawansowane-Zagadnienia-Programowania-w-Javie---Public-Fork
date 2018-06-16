@@ -6,7 +6,6 @@ import pl.mjbladaj.zaaw_java.server.converters.AvailableCurrencyConverter;
 import pl.mjbladaj.zaaw_java.server.dao.AvailableCurrencyRepository;
 import pl.mjbladaj.zaaw_java.server.dto.Availability;
 import pl.mjbladaj.zaaw_java.server.dto.AvailableCurrencyDto;
-import pl.mjbladaj.zaaw_java.server.entity.AvailableCurrency;
 import pl.mjbladaj.zaaw_java.server.service.AvailableCurrenciesService;
 
 import java.util.List;
@@ -19,9 +18,8 @@ public class AvailableCurrenciesServiceImpl implements AvailableCurrenciesServic
 
     @Override
     public List<AvailableCurrencyDto> getAll() {
-
         return AvailableCurrencyConverter
-        .getAvaiableCurrencyDto(
+        .getAvailableCurrencyDto(
                 availableCurrencyRepository.findAll());
     }
 
